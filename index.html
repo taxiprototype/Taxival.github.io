@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-size=1.0">
+  <title>TaxiLink • Réservation</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+    :root{
+      --black:#040404;
+      --dark:#0f0f0f;
+      --mid:#555;
+      --light:#fefefe;
+      --white:#ffffff;
+      --shadow:0 22px 55px rgba(0,0,0,0.18);
+      --radius:22px;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Inter",sans-serif;
+      background:var(--light);
+      color:#111;
+      line-height:1.6;
+    }
+    header{
+      min-height:92vh;
+      background:#050505;
+      color:#f5f5f5;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      overflow:hidden;
+    }
+    header > *{position:relative;z-index:1;}
+    .hero-bg{
+      position:absolute;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+    }
+    .hero-bg img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .hero-bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(165deg,rgba(0,0,0,.45) 10%,rgba(0,0,0,.82) 65%);
+    }
+    nav{
+      width:min(1200px,92vw);
+      margin:0 auto;
+      padding:22px 0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .nav-spacer{width:60px;}
+    .logo{
+      font-weight:700;
+      font-size:1.35rem;
+      letter-spacing:.28em;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-transform:uppercase;
+      color:#fff;
+    }
+    .logo span{
+      font-weight:400;
+      font-size:.8rem;
+      letter-spacing:.35em;
+      color:#c6c6c6;
+      margin-top:4px;
+    }
+    .hamburger{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(0,0,0,.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      position:relative;
+    }
+    .hamburger span,
+    .hamburger::before,
+    .hamburger::after{
+      content:"";
+      width:24px;
+      height:2px;
+      background:#f5f5f5;
+      position:absolute;
+      transition:.25s;
+    }
+    .hamburger::before{transform:translateY(-7px);}
+    .hamburger::after{transform:translateY(7px);}
+    .hamburger.active span{opacity:0;}
+    .hamburger.active::before{transform:rotate(45deg);}
+    .hamburger.active::after{transform:rotate(-45deg);}
+    .drawer{
+      position:fixed;
+      top:0;
+      right:-320px;
+      width:320px;
+      height:100vh;
+      background:#050505;
+      border-left:1px solid rgba(255,255,255,.08);
+      box-shadow:-25px 0 60px rgba(0,0,0,.5);
+      padding:38px 32px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      transition:.3s;
+      z-index:30;
+      color:#f5f5f5;
+    }
+    .drawer a{
+      color:#f5f5f5;
+      text-decoration:none;
+      font-weight:500;
+      padding-bottom:12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .drawer.open{right:0;}
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      opacity:0;
+      pointer-events:none;
+      transition:.3s;
+      z-index:20;
+    }
+    .overlay.show{opacity:1;pointer-events:auto;}
+    .hero{
+      width:min(1100px,90vw);
+      margin:60px auto 120px;
+    }
+    .hero-text{
+      max-width:620px;
+      animation:fadeUp 1.2s ease forwards;
+      opacity:0;
+    }
+    .hero-text h2{
+      letter-spacing:.4em;
+      font-weight:400;
+      margin-bottom:6px;
+    }
+    .hero-text h1{
+      font-size:clamp(2.1rem,4vw,3.4rem);
+      text-transform:uppercase;
+      letter-spacing:.15em;
+      margin-bottom:12px;
+    }
+    .hero-text p{color:#d6d6d6;margin-bottom:26px;}
+    .hero-buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+    .hero-buttons button{
+      border:none;
+      border-radius:999px;
+      padding:12px 28px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .btn-light{
+      background:#f5f5f5;
+      color:#111;
+      box-shadow:0 20px 45px rgba(0,0,0,.4);
+    }
+    .btn-outline{
+      background:transparent;
+      color:#f5f5f5;
+      border:1px solid rgba(255,255,255,.35);
+    }
+    @keyframes fadeUp{
+      from{transform:translateY(30px);opacity:0;}
+      to{transform:translateY(0);opacity:1;}
+    }
+    main{
+      background:#ffffff;
+      color:#111;
+      margin-top:-60px;
+      border-top-left-radius:40px;
+      border-top-right-radius:40px;
+      position:relative;
+      z-index:1;
+      padding-top:40px;
+    }
+    main section{padding:70px 0;}
+    .section-container{
+      width:min(1100px,92vw);
+      margin:0 auto;
+    }
+    h3.title{
+      font-size:1.9rem;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      margin-bottom:12px;
+    }
+    p.tagline{color:#4b4b4b;margin-bottom:36px;}
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:24px;
+    }
+    .card{
+      background:#fff;
+      border-radius:var(--radius);
+      border:1px solid #e6e6e6;
+      padding:26px;
+      box-shadow:var(--shadow);
+    }
+    .pill{
+      display:inline-flex;
+      padding:5px 14px;
+      border-radius:999px;
+      border:1px solid #ccc;
+      font-size:.78rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin-bottom:10px;
+      color:#333;
+    }
+    ul.list{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    ul.list li{
+      margin-bottom:10px;
+      color:#555;
+      padding-left:22px;
+      position:relative;
+    }
+    ul.list li::before{
+      content:"■";
+      position:absolute;
+      left:0;
+      top:3px;
+      font-size:.45rem;
+      color:#111;
+    }
+    .timeline{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:18px;
+    }
+    .step{
+      border-radius:var(--radius);
+      border:1px solid #e0e0e0;
+      padding:22px;
+      background:#fff;
+      position:relative;
+      box-shadow:var(--shadow);
+    }
+    .step::before{
+      content:attr(data-step);
+      position:absolute;
+      top:-12px;
+      right:16px;
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      border:1px solid #111;
+      display:grid;
+      place-items:center;
+      font-weight:600;
+      background:#fff;
+      color:#111;
+    }
+    form{display:grid;gap:14px;}
+    input,select{
+      border-radius:15px;
+      border:1px solid #d7d7d7;
+      padding:12px;
+      background:#fff;
+      color:#111;
+    }
+    .map{
+      min-height:260px;
+      border-radius:var(--radius);
+      border:1px dashed #bcbcbc;
+      background:linear-gradient(135deg,#f5f5f5,#e7e7e7);
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+    }
+    .ping{
+      width:16px;height:16px;border-radius:50%;
+      border:2px solid #111;
+      position:absolute;
+      animation:pulse 1.5s infinite;
+    }
+    .ping:nth-child(1){top:40px;left:30%;}
+    .ping:nth-child(2){top:120px;left:60%;animation-delay:.3s;}
+    .ping:nth-child(3){top:180px;left:38%;animation-delay:.6s;}
+    @keyframes pulse{
+      0%{transform:scale(.6);opacity:.8;}
+      100%{transform:scale(2);opacity:0;}
+    }
+    .vehicle-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:24px;
+    }
+    .vehicle-card{
+      background:#fff;
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 35px 60px rgba(0,0,0,.15);
+      display:flex;
+      flex-direction:column;
+      border:1px solid #e5e5e5;
+    }
+    .vehicle-card img{
+      width:100%;
+      height:360px;
+      object-fit:cover;
+      display:block;
+    }
+    .vehicle-card .content{
+      padding:24px;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .vehicle-card h4{
+      font-size:1.35rem;
+      letter-spacing:.08em;
+      margin:0;
+    }
+    .vehicle-card p{color:#555;margin:0;}
+    .vehicle-card button{
+      border:none;
+      border-radius:999px;
+      padding:12px 0;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      font-weight:600;
+      cursor:pointer;
+      background:#111;
+      color:#fff;
+      margin-top:auto;
+    }
+    footer{
+      background:#020202;
+      text-align:center;
+      padding:50px 0 30px;
+      color:#a0a0a0;
+      margin-top:40px;
+    }
+    footer strong{color:#fff;}
+    .services-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:24px;
+    }
+    .service-card{
+      background:#fff;
+      border-radius:var(--radius);
+      border:1px solid #e6e6e6;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    .service-card h4{
+      margin:0;
+      padding:24px 24px 12px;
+      font-size:1.2rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .service-card img{
+      width:100%;
+      height:200px;
+      object-fit:cover;
+    }
+    .service-card .btn-service{
+      margin:16px 24px 24px;
+      display:inline-block;
+      text-align:center;
+      padding:12px 0;
+      border-radius:999px;
+      background:#111;
+      color:#fff;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-weight:600;
+      text-decoration:none;
+      transition:.25s;
+    }
+    .service-card .btn-service:hover{
+      background:#2c2c2c;
+    }
+    #services-details .detail-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:28px;
+    }
+    .detail-card{
+      background:#fff;
+      border-radius:var(--radius);
+      border:1px solid #e6e6e6;
+      padding:28px;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+    .detail-card h4{
+      margin:0;
+      font-size:1.35rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .detail-card p{
+      color:#555;
+      margin:0;
+    }
+    .detail-card img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+      border-radius:18px;
+    }
+    .detail-card .btn-reserver{
+      align-self:flex-start;
+      display:inline-block;
+      padding:12px 28px;
+      border-radius:999px;
+      background:#111;
+      color:#fff;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      font-weight:600;
+      text-decoration:none;
+      transition:.25s;
+    }
+    .detail-card .btn-reserver:hover{
+      background:#2c2c2c;
+    }
+    .reveal-left,
+    .reveal-right{
+      opacity:0;
+      transition:opacity .6s ease, transform .6s ease;
+    }
+    .reveal-left{
+      transform:translateX(-60px);
+    }
+    .reveal-right{
+      transform:translateX(60px);
+    }
+    .visible{
+      opacity:1;
+      transform:translateX(0);
+    }
+    .tarif-block + .tarif-block{
+      margin-top:20px;
+    }
+    .tarif-block h5{
+      margin:0 0 8px;
+      font-size:.95rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#111;
+    }
+    .tarif-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.92rem;
+      background:#fff;
+    }
+    .tarif-table th,
+    .tarif-table td{
+      padding:8px 10px;
+      border-bottom:1px solid #e3e3e3;
+      text-align:left;
+    }
+    .tarif-table th{
+      background:#f3f3f3;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .tarif-table .day{
+      font-weight:600;
+      color:#111;
+    }
+    .tarif-table .night{
+      color:#c0392b;
+      font-weight:600;
+    }
+    .tarif-note{
+      color:#4b4b4b;
+      font-size:.9rem;
+      margin-top:-18px;
+      margin-bottom:36px;
+    }
+    .footer-logo{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin-bottom:18px;
+    }
+    .footer-mark{
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      background:#fff;
+      color:#020202;
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      font-size:1.1rem;
+      letter-spacing:.18em;
+    }
+    .footer-wordmark{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+    }
+    .footer-wordmark span{
+      font-size:.7rem;
+      letter-spacing:.3em;
+      color:#c6c6c6;
+    }
+    @media(max-width:640px){
+      .nav-spacer{display:none;}
+      nav{justify-content:center;}
+      .hamburger{position:absolute;right:24px;}
+      .hero-buttons button{flex:1;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<header>
+  <div class="hero-bg">
+    <img src="https://i.postimg.cc/k5ptSVsX/Visit-Bus-Mercedes-V-klasa-AMG-wynajem-z-kierowca-Warszawa.jpg" alt="Mercedes Classe V">
+  </div>
+
+  <nav>
+    <div class="nav-spacer"></div>
+    <a class="logo" href="#top">TAXILINK<span>TRANSPORT</span></a>
+    <button class="hamburger" id="hamburger"><span></span></button>
+  </nav>
+
+  <aside class="drawer" id="drawer">
+    <a href="#concept">Architecture</a>
+    <a href="#vehicles">Véhicules</a>
+    <a href="#process">Processus</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#contact">Contact</a>
+  </aside>
+
+  <div class="hero">
+    <div class="hero-text">
+      <h2>TAXI VAL-D’ISÈRE • VONA ★★★</h2>
+      <h1>Service premium 24/7 toutes distances</h1>
+      <p>Réservez vos trajets en toute sérénité avec chauffeurs certifiés, suivi GPS précis et support disponible à chaque instant.</p>
+      <div class="hero-buttons">
+        <button class="btn-light">Réservation</button>
+        <button class="btn-outline">Tarifs</button>
+        <button class="btn-outline">Nos services</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="concept">
+    <div class="section-container">
+      <h3 class="title">Architecture multi-profils</h3>
+      <p class="tagline">Des parcours sur mesure pour passagers, chauffeurs et administrateurs afin d’assurer rapidité, sécurité et conformité.</p>
+      <div class="cards">
+        <article class="card">
+          <div class="pill">Passagers</div>
+          <h4>Réservation instantanée</h4>
+          <ul class="list">
+            <li>Inscription email/téléphone + vérification SMS</li>
+            <li>Point de départ géolocalisé, destination manuelle</li>
+            <li>Choix du véhicule, estimation tarifaire</li>
+            <li>Suivi GPS, photo chauffeur, plaque, téléphone</li>
+            <li>Historique filtrable & support 24/7</li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="pill">Chauffeurs</div>
+          <h4>Gestion des courses</h4>
+          <ul class="list">
+            <li>Onboarding complet (identité, licence, véhicule)</li>
+            <li>Mode disponible / indisponible</li>
+            <li>Notifications visuelles + sonores (15 s)</li>
+            <li>GPS intégré, “Client à bord/destination”</li>
+            <li>Historique acceptés / refusés</li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="pill">Administrateurs</div>
+          <h4>Pilotage & conformité</h4>
+          <ul class="list">
+            <li>Validation partenaires, blocage licences expirées</li>
+            <li>Carte live de la flotte et des passagers</li>
+            <li>Recherche avancée sur les commandes</li>
+            <li>Dashboards CA, taux d’acceptation, SLA</li>
+            <li>Chiffrement, RGPD, MFA, audit trail</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="vehicles">
+    <div class="section-container">
+      <h3 class="title">Véhicules à disposition pour tous vos trajets</h3>
+      <p class="tagline">Choisissez le confort idéal pour vos transferts privés, professionnels ou événements.</p>
+      <div class="vehicle-grid">
+        <article class="vehicle-card">
+          <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=900&q=80" alt="Berline prestige">
+          <div class="content">
+            <h4>Berline Prestige</h4>
+            <p>Confort maximal, sièges cuir et chauffeur bilingue. Idéale pour vos trajets d’affaires et liaisons aéroport/gare.</p>
+            <button>Réserver</button>
+          </div>
+        </article>
+        <article class="vehicle-card">
+          <img src="https://images.unsplash.com/photo-1529429617124-aee711a70412?auto=format&fit=crop&w=900&q=80" alt="Van luxe">
+          <div class="content">
+            <h4>Van Familial Luxe</h4>
+            <p>Espace 7 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.</p>
+            <button>Réserver</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="services-transport">
+    <div class="section-container">
+      <h3 class="title">Nos services de transport en détail</h3>
+      <p class="tagline">Découvrez toutes nos offres spécialisées et accédez en un clic à la prestation qui répond à votre besoin.</p>
+      <div class="services-grid">
+        <article class="service-card reveal-left">
+          <h4>Toutes distances</h4>
+          <img src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80" alt="Taxi sur route de montagne">
+          <a class="btn-service" href="#service-toutes-distances">En savoir +</a>
+        </article>
+        <article class="service-card reveal-right">
+          <h4>Taxi 24/7-nuit</h4>
+          <img src="https://images.unsplash.com/photo-1517940310602-14590d480e62?auto=format&fit=crop&w=900&q=80" alt="Taxi de nuit en ville">
+          <a class="btn-service" href="#service-taxi-nuit">En savoir +</a>
+        </article>
+        <article class="service-card reveal-left">
+          <h4>Navette aéroport</h4>
+          <img src="https://images.unsplash.com/photo-1521917441209-e886f0404a7b?auto=format&fit=crop&w=900&q=80" alt="Navette aéroport devant terminal">
+          <a class="btn-service" href="#service-navette-aeroport">En savoir +</a>
+        </article>
+        <article class="service-card reveal-right">
+          <h4>Navette gare</h4>
+          <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=900&q=80" alt="Taxi devant une gare">
+          <a class="btn-service" href="#service-navette-gare">En savoir +</a>
+        </article>
+        <article class="service-card reveal-left">
+          <h4>Navette station</h4>
+          <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=900&q=80" alt="Navette en station de ski">
+          <a class="btn-service" href="#service-navette-station">En savoir +</a>
+        </article>
+        <article class="service-card reveal-right">
+          <h4>Transfert hôtel</h4>
+          <img src="https://images.unsplash.com/photo-1542314926-094ddb1e09a9?auto=format&fit=crop&w=900&q=80" alt="Entrée d'hôtel premium avec voiture">
+          <a class="btn-service" href="#service-transfert-hotel">En savoir +</a>
+        </article>
+        <article class="service-card reveal-left">
+          <h4>Service business</h4>
+          <img src="https://images.unsplash.com/photo-1493764815954-4b07de6e1f23?auto=format&fit=crop&w=900&q=80" alt="Homme d'affaires montant dans un taxi">
+          <a class="btn-service" href="#service-business">En savoir +</a>
+        </article>
+        <article class="service-card reveal-right">
+          <h4>Tourisme</h4>
+          <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80" alt="Touristes admirant la montagne">
+          <a class="btn-service" href="#service-tourisme">En savoir +</a>
+        </article>
+        <article class="service-card reveal-left">
+          <h4>Événementiel</h4>
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Voiture devant un événement">
+          <a class="btn-service" href="#service-evenementiel">En savoir +</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="services-details">
+    <div class="section-container">
+      <h3 class="title">Détails des prestations</h3>
+      <p class="tagline">Chaque service dispose d’une logistique dédiée, de chauffeurs formés et d’options sur mesure pour un confort maximal.</p>
+      <div class="detail-grid">
+        <article class="detail-card reveal-right" id="service-toutes-distances">
+          <h4>Toutes distances</h4>
+          <p>Partez où vous voulez, quand vous voulez. Nos chauffeurs assurent vos trajets interurbains, interstations ou vers les vallées voisines avec un suivi GPS continu et une tarification transparente.</p>
+          <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80" alt="Voiture sur une route panoramique">
+          <a class="btn-reserver" href="#contact">Réserver</a>
+        </article>
+        <article class="detail-card reveal-left" id="service-taxi-nuit">
+          <h4>Taxi 24/7-nuit</h4>
+          <p>Besoin d’un retour tardif après un dîner, un club ou un vol de nuit&nbsp;? Nous assurons une permanence nocturne et une sécurité renforcée grâce à la géolocalisation partagée et aux alertes chauffeur.</p>
+          <img src="https://images.unsplash.com/photo-1517940310602-14590d480e62?auto=format&fit=crop&w=900&q=80" alt="Taxi illuminé la nuit">
+          <a class="btn-reserver" href="#contact">Réserver</a>
+        </article>
+        <article class="detail-card reveal-right" id="service-navette-aeroport">
+          <h4>Navette aéroport</h4>
+          <p>Transferts privés depuis et vers les aéroports de Genève, Lyon et Chambéry. Suivi des vols en temps réel, accueil personnalisé et assistance bagages incluse.</p>
+          <img src="https://images.unsplash.com/photo-1521917441209-e886f0404a7b?auto=format&fit=crop&w=900&q=80" alt="Voiture devant un terminal d'aéroport">
+          <a class="btn-reserver" href="#contact">Réserver</a>
+        </article>
+        <article class="detail-card reveal-left" id="service-navette-gare">
+          <h4>Navette gare</h4>
+          <p>Arrivez serein en station grâce à notre service gare&nbsp;: accueil sur quai, aide aux équipements de ski et coordination avec vos horaires de train.</p>
+          <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80" alt="Taxi près des rails de gare">
+          <a class="btn-reserver" href="#contact">Réserver</a>
+        </article>
+        <article class="detail-card reveal-right" id="service-navette-station">
+          <h4>Navette station</h4>
+          <p>Reliez facilement Val-d’Isère aux stations voisines. Véhicules équipés neige, porte-skis et chauffeurs rompus aux routes alpines pour garantir ponctualité et sécurité.</p>
+          <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=900&q=80" alt="Navette dans une station de ski enneigée">
+          <a class="btn-reserver" href="#contact">Réserver</a>
+        </article>
+        <article class="detail-card reveal-left" id="service-transfert-hotel">
+          <h4>Transfert hôtel</h4>
+          <p>Recevez vos clients VIP avec une prise en charge front desk&nbsp;: signalétique personnalisée, bouteille d’eau premium et coordination avec la conciergerie de votre établissement.</p>
+          <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=80" alt="Voiture devant un hôtel de luxe">
+          <a class="btn-reserver" href="#contact">Réserver</a>
+        </article>
+        <article class="detail-card reveal-right" id="service-business">
+          <h4>Service business</h4>
+          <p>Optimisez vos déplacements professionnels grâce à nos véhicules haut de gamme, chauffeurs bilingues, Wi-Fi embarqué et facturation consolidée pour vos équipes.</p>
+          <img src="https://images.unsplash.com/photo-1492778297155-7fda4b01c5b0?auto=format&fit=crop&w=900&q=80" alt="Homme d'affaires dans une berline">
+          <a class="btn-reserver" href="#contact">Réserver</a>
+        </article>
+        <article class="detail-card reveal-left" id="service-tourisme">
+          <h4>Tourisme</h4>
+          <p>Partez à la découverte des panoramas alpins, villages savoyards et tables d’exception. Itinéraires sur mesure et conseils locaux pour un séjour riche en émotions.</p>
+          <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80" alt="Paysage alpin avec lac et montagnes">
+          <a class="btn-reserver" href="#contact">Réserver</a>
+        </article>
+        <article class="detail-card reveal-right" id="service-evenementiel">
+          <h4>Événementiel</h4>
+          <p>Congrès, mariages, séminaires&nbsp;: nous coordonnons flottes de véhicules, accueil VIP et plan de circulation pour une logistique fluide et impeccable.</p>
+          <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80" alt="Voitures alignées pour un événement">
+          <a class="btn-reserver" href="#contact">Réserver</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="section-container">
+      <h3 class="title">Processus de commande</h3>
+      <div class="timeline">
+        <div class="step" data-step="01">
+          <strong>Demande planifiée</strong>
+          <p>Choisissez date, heure, lieux de prise en charge et précisez bagages ou besoins spéciaux.</p>
+        </div>
+        <div class="step" data-step="02">
+          <strong>Confirmation concierge</strong>
+          <p>Notre équipe vérifie la disponibilité puis vous envoie un récapitulatif par email et SMS.</p>
+        </div>
+        <div class="step" data-step="03">
+          <strong>Attribution chauffeur</strong>
+          <p>Nous sélectionnons le conducteur idéal et partageons ses coordonnées jusqu’à 24 h avant le trajet.</p>
+        </div>
+        <div class="step" data-step="04">
+          <strong>Ajustements flexibles</strong>
+          <p>Modifiez horaires ou étapes jusqu’à 12 h avant la prise en charge directement depuis votre espace client.</p>
+        </div>
+        <div class="step" data-step="05">
+          <strong>Rappel automatique</strong>
+          <p>Recevez une notification 3 h avant le départ avec statut du chauffeur et heure estimée d’arrivée.</p>
+        </div>
+        <div class="step" data-step="06">
+          <strong>Prise en charge</strong>
+          <p>Le chauffeur se présente à l’heure convenue, confirme votre identité et assure l’assistance bagages.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tarifs">
+    <div class="section-container">
+      <h3 class="title">Tarifs des transferts</h3>
+      <p class="tarif-note">Forfaits au départ de Val-d’Isère. Les colonnes “Jour” et “Nuit” correspondent aux créneaux diurnes et nocturnes.</p>
+      <div class="cards">
+        <article class="card">
+          <h4>Aéroports</h4>
+          <div class="tarif-block">
+            <h5>Aéroport de Chambéry</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Capacité</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1 à 4 pers.</td><td class="day">320 €</td><td class="night">430 €</td></tr>
+                <tr><td>5 pers.</td><td class="day">330 €</td><td class="night">440 €</td></tr>
+                <tr><td>6 pers.</td><td class="day">340 €</td><td class="night">450 €</td></tr>
+                <tr><td>7 pers.</td><td class="day">350 €</td><td class="night">460 €</td></tr>
+                <tr><td>8 pers.</td><td class="day">360 €</td><td class="night">470 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5>Aéroport de Genève</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Capacité</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1 à 4 pers.</td><td class="day">420 €</td><td class="night">550 €</td></tr>
+                <tr><td>5 pers.</td><td class="day">430 €</td><td class="night">560 €</td></tr>
+                <tr><td>6 pers.</td><td class="day">440 €</td><td class="night">570 €</td></tr>
+                <tr><td>7 pers.</td><td class="day">450 €</td><td class="night">580 €</td></tr>
+                <tr><td>8 pers.</td><td class="day">450 €</td><td class="night">580 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5>Aéroport de Grenoble</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Capacité</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1 à 4 pers.</td><td class="day">500 €</td><td class="night">630 €</td></tr>
+                <tr><td>5 pers.</td><td class="day">510 €</td><td class="night">640 €</td></tr>
+                <tr><td>6 pers.</td><td class="day">520 €</td><td class="night">650 €</td></tr>
+                <tr><td>7 pers.</td><td class="day">530 €</td><td class="night">660 €</td></tr>
+                <tr><td>8 pers.</td><td class="day">540 €</td><td class="night">670 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5>Aéroport de Lyon</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Capacité</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1 à 4 pers.</td><td class="day">500 €</td><td class="night">650 €</td></tr>
+                <tr><td>5 pers.</td><td class="day">510 €</td><td class="night">660 €</td></tr>
+                <tr><td>6 pers.</td><td class="day">520 €</td><td class="night">670 €</td></tr>
+                <tr><td>7 pers.</td><td class="day">530 €</td><td class="night">680 €</td></tr>
+                <tr><td>8 pers.</td><td class="day">540 €</td><td class="night">690 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card">
+          <h4>Gares</h4>
+          <div class="tarif-block">
+            <h5>Gare de Bourg St Maurice</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Capacité</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1 à 4 pers.</td><td class="day">110 €</td><td class="night">—</td></tr>
+                <tr><td>5 pers.</td><td class="day">120 €</td><td class="night">—</td></tr>
+                <tr><td>6 pers.</td><td class="day">130 €</td><td class="night">—</td></tr>
+                <tr><td>7 pers.</td><td class="day">140 €</td><td class="night">—</td></tr>
+                <tr><td>8 pers.</td><td class="day">150 €</td><td class="night">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5>Gare de Chambéry</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Capacité</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1 à 4 pers.</td><td class="day">300 €</td><td class="night">400 €</td></tr>
+                <tr><td>5 pers.</td><td class="day">310 €</td><td class="night">410 €</td></tr>
+                <tr><td>6 pers.</td><td class="day">320 €</td><td class="night">420 €</td></tr>
+                <tr><td>7 pers.</td><td class="day">330 €</td><td class="night">430 €</td></tr>
+                <tr><td>8 pers.</td><td class="day">340 €</td><td class="night">440 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5>Gare de Lyon</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Capacité</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1 à 4 pers.</td><td class="day">550 €</td><td class="night">690 €</td></tr>
+                <tr><td>5 pers.</td><td class="day">560 €</td><td class="night">700 €</td></tr>
+                <tr><td>6 pers.</td><td class="day">570 €</td><td class="night">710 €</td></tr>
+                <tr><td>7 pers.</td><td class="day">580 €</td><td class="night">720 €</td></tr>
+                <tr><td>8 pers.</td><td class="day">590 €</td><td class="night">730 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5>Gare de Moûtiers</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Capacité</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1 à 4 pers.</td><td class="day">200 €</td><td class="night">—</td></tr>
+                <tr><td>5 pers.</td><td class="day">210 €</td><td class="night">—</td></tr>
+                <tr><td>6 pers.</td><td class="day">220 €</td><td class="night">—</td></tr>
+                <tr><td>7 pers.</td><td class="day">230 €</td><td class="night">—</td></tr>
+                <tr><td>8 pers.</td><td class="day">240 €</td><td class="night">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card">
+          <h4>Stations & longues distances</h4>
+          <div class="tarif-block">
+            <h5>Stations voisines</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Trajet</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Ste Foy – Villaroger (1 à 4 pers.)</td><td class="day">80 €</td><td class="night">—</td></tr>
+                <tr><td>Ste Foy – Villaroger (5 pers.)</td><td class="day">90 €</td><td class="night">—</td></tr>
+                <tr><td>Ste Foy – Villaroger (6 pers.)</td><td class="day">100 €</td><td class="night">—</td></tr>
+                <tr><td>Ste Foy – Villaroger (7 pers.)</td><td class="day">110 €</td><td class="night">—</td></tr>
+                <tr><td>Ste Foy – Villaroger (8 pers.)</td><td class="day">120 €</td><td class="night">—</td></tr>
+                <tr><td>La Rosière (1 à 4 pers.)</td><td class="day">150 €</td><td class="night">—</td></tr>
+                <tr><td>La Rosière (5 pers.)</td><td class="day">160 €</td><td class="night">—</td></tr>
+                <tr><td>La Rosière (6 pers.)</td><td class="day">170 €</td><td class="night">—</td></tr>
+                <tr><td>La Rosière (7 pers.)</td><td class="day">180 €</td><td class="night">—</td></tr>
+                <tr><td>La Rosière (8 pers.)</td><td class="day">190 €</td><td class="night">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5>Grandes distances</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Trajet</th>
+                  <th>Jour</th>
+                  <th>Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Turin (1 à 4 pers.)</td><td class="day">800 €</td><td class="night">—</td></tr>
+                <tr><td>Turin (5 pers.)</td><td class="day">810 €</td><td class="night">—</td></tr>
+                <tr><td>Turin (6 pers.)</td><td class="day">820 €</td><td class="night">—</td></tr>
+                <tr><td>Turin (7 pers.)</td><td class="day">830 €</td><td class="night">—</td></tr>
+                <tr><td>Turin (8 pers.)</td><td class="day">850 €</td><td class="night">—</td></tr>
+                <tr><td>Milan (1 à 4 pers.)</td><td class="day">1200 €</td><td class="night">—</td></tr>
+                <tr><td>Milan (5 pers.)</td><td class="day">1250 €</td><td class="night">—</td></tr>
+                <tr><td>Milan (6 pers.)</td><td class="day">1300 €</td><td class="night">—</td></tr>
+                <tr><td>Milan (7 pers.)</td><td class="day">1350 €</td><td class="night">—</td></tr>
+                <tr><td>Milan (8 pers.)</td><td class="day">1400 €</td><td class="night">—</td></tr>
+                <tr><td>Paris (1 à 4 pers.)</td><td class="day">1600 €</td><td class="night">—</td></tr>
+                <tr><td>Paris (5 pers.)</td><td class="day">1650 €</td><td class="night">—</td></tr>
+                <tr><td>Paris (6 pers.)</td><td class_short="day">1700 €</td><td class="night">—</td></tr>
+                <tr><td>Paris (7 pers.)</td><td class="day">1750 €</td><td class="night">—</td></tr>
+                <tr><td>Paris (8 pers.)</td><td class="day">1800 €</td><td class="night">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="section-container">
+    <div class="footer-logo">
+      <div class="footer-mark">TV</div>
+      <div class="footer-wordmark">
+        <strong>TAXILINK</strong>
+        <span>transport</span>
+      </div>
+    </div>
+    <strong>TAXILINK • Service Val-d’Isère</strong>
+    <p>Email : support@taxilink.fr • Disponible 24/7</p>
+    <p>© 2025 TaxiLink — Design noir & blanc, expérience premium.</p>
+  </div>
+</footer>
+
+<script>
+  const hamburger = document.getElementById("hamburger");
+  const drawer = document.getElementById("drawer");
+  const overlay = document.getElementById("overlay");
+
+  const closeMenu = () => {
+    drawer.classList.remove("open");
+    hamburger.classList.remove("active");
+    overlay.classList.remove("show");
+  };
+
+  const toggleMenu = () => {
+    if(drawer.classList.contains("open")) closeMenu();
+    else{
+      drawer.classList.add("open");
+      hamburger.classList.add("active");
+      overlay.classList.add("show");
+    }
+  };
+
+  hamburger.addEventListener("click",(e)=>{
+    e.stopPropagation();
+    toggleMenu();
+  });
+  overlay.addEventListener("click",closeMenu);
+  document.addEventListener("click",(e)=>{
+    if(!drawer.contains(e.target) && !hamburger.contains(e.target)){
+      closeMenu();
+    }
+  });
+
+  const revealElements = document.querySelectorAll(".reveal-left, .reveal-right");
+  const revealObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("visible");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.15});
+
+  revealElements.forEach(el=>revealObserver.observe(el));
+</script>
+
+</body>
+</html>
