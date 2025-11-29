@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-size=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>TaxiLink • Réservation</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
@@ -16,6 +16,9 @@
       --radius:22px;
     }
     *{box-sizing:border-box;}
+    html{
+      overflow-x:hidden;
+    }
     body{
       margin:0;
       font-family:"Inter",sans-serif;
@@ -459,17 +462,12 @@
     .reveal-left,
     .reveal-right{
       opacity:0;
+      transform:translateY(60px);
       transition:opacity .6s ease, transform .6s ease;
-    }
-    .reveal-left{
-      transform:translateX(-60px);
-    }
-    .reveal-right{
-      transform:translateX(60px);
     }
     .visible{
       opacity:1;
-      transform:translateX(0);
+      transform:translateY(0);
     }
     .tarif-block + .tarif-block{
       margin-top:20px;
@@ -726,7 +724,7 @@
         </article>
         <article class="detail-card reveal-left" id="service-taxi-nuit">
           <h4>Taxi 24/7-nuit</h4>
-          <p>Besoin d’un retour tardif après un dîner, un club ou un vol de nuit&nbsp;? Nous assurons une permanence nocturne et une sécurité renforcée grâce à la géolocalisation partagée et aux alertes chauffeur.</p>
+          <p>Besoin d’un retour tardif après un dîner, un club ou un vol de nuit ? Nous assurons une permanence nocturne et une sécurité renforcée grâce à la géolocalisation partagée et aux alertes chauffeur.</p>
           <img src="https://images.unsplash.com/photo-1517940310602-14590d480e62?auto=format&fit=crop&w=900&q=80" alt="Taxi illuminé la nuit">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
@@ -738,7 +736,7 @@
         </article>
         <article class="detail-card reveal-left" id="service-navette-gare">
           <h4>Navette gare</h4>
-          <p>Arrivez serein en station grâce à notre service gare&nbsp;: accueil sur quai, aide aux équipements de ski et coordination avec vos horaires de train.</p>
+          <p>Arrivez serein en station grâce à notre service gare : accueil sur quai, aide aux équipements de ski et coordination avec vos horaires de train.</p>
           <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80" alt="Taxi près des rails de gare">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
@@ -750,7 +748,7 @@
         </article>
         <article class="detail-card reveal-left" id="service-transfert-hotel">
           <h4>Transfert hôtel</h4>
-          <p>Recevez vos clients VIP avec une prise en charge front desk&nbsp;: signalétique personnalisée, bouteille d’eau premium et coordination avec la conciergerie de votre établissement.</p>
+          <p>Recevez vos clients VIP avec une prise en charge front desk : signalétique personnalisée, bouteille d’eau premium et coordination avec la conciergerie de votre établissement.</p>
           <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=80" alt="Voiture devant un hôtel de luxe">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
@@ -768,7 +766,7 @@
         </article>
         <article class="detail-card reveal-right" id="service-evenementiel">
           <h4>Événementiel</h4>
-          <p>Congrès, mariages, séminaires&nbsp;: nous coordonnons flottes de véhicules, accueil VIP et plan de circulation pour une logistique fluide et impeccable.</p>
+          <p>Congrès, mariages, séminaires : nous coordonnons flottes de véhicules, accueil VIP et plan de circulation pour une logistique fluide et impeccable.</p>
           <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80" alt="Voitures alignées pour un événement">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
@@ -1022,7 +1020,7 @@
                 <tr><td>Milan (8 pers.)</td><td class="day">1400 €</td><td class="night">—</td></tr>
                 <tr><td>Paris (1 à 4 pers.)</td><td class="day">1600 €</td><td class="night">—</td></tr>
                 <tr><td>Paris (5 pers.)</td><td class="day">1650 €</td><td class="night">—</td></tr>
-                <tr><td>Paris (6 pers.)</td><td class_short="day">1700 €</td><td class="night">—</td></tr>
+                <tr><td>Paris (6 pers.)</td><td class="day">1700 €</td><td class="night">—</td></tr>
                 <tr><td>Paris (7 pers.)</td><td class="day">1750 €</td><td class="night">—</td></tr>
                 <tr><td>Paris (8 pers.)</td><td class="day">1800 €</td><td class="night">—</td></tr>
               </tbody>
@@ -1094,4 +1092,4 @@
 </script>
 
 </body>
-      </html>
+  </html>
