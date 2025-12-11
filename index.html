@@ -57,32 +57,41 @@
       inset:0;
       background:linear-gradient(165deg,rgba(0,0,0,.45) 10%,rgba(0,0,0,.82) 65%);
     }
-    nav{
-      width:min(1200px,92vw);
-      margin:0 auto;
+    .nav-wrapper{
+      width:100%;
       padding:22px 0;
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:center;
+      position:relative;
     }
-    .nav-spacer{width:60px;}
-    .logo{
-      font-weight:700;
-      font-size:1.35rem;
-      letter-spacing:.28em;
+    nav{
+      width:min(1200px,92vw);
+      margin:0 auto;
       display:flex;
-      flex-direction:column;
       align-items:center;
-      text-transform:uppercase;
-      color:#fff;
+      justify-content:center;
     }
-    .logo span{
-      font-weight:400;
-      font-size:.8rem;
-      letter-spacing:.35em;
-      color:#c6c6c6;
-      margin-top:4px;
+    .nav-spacer,
+    .nav-dummy{
+      width:52px;
+      height:52px;
+      flex-shrink:0;
+      visibility:hidden;
+      pointer-events:none;
     }
+.logo {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:60px;
+}
+
+.logo img {
+  height:100%;
+  width:auto;
+  display:block;
+}
     .hamburger{
       width:52px;
       height:52px;
@@ -93,7 +102,11 @@
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      position:relative;
+      position:absolute;
+      right:clamp(8px,2.8vw,48px);
+      top:50%;
+      transform:translateY(-50%);
+      z-index:5;
     }
     .hamburger span,
     .hamburger::before,
@@ -519,6 +532,11 @@
       gap:10px;
       margin-bottom:18px;
     }
+    .footer-logo img{
+      width:140px;
+      height:auto;
+      display:block;
+    }
     .footer-mark{
       width:64px;
       height:64px;
@@ -545,9 +563,15 @@
       color:#c6c6c6;
     }
     @media(max-width:640px){
-      .nav-spacer{display:none;}
+      .nav-wrapper{padding:18px 0;}
+      .nav-spacer,
+      .nav-dummy{display:none;}
       nav{justify-content:center;}
-      .hamburger{position:absolute;right:24px;}
+      .hamburger{
+        right:16px;
+        top:50%;
+        transform:translateY(-50%);
+      }
       .hero-buttons button{flex:1;}
     }
   </style>
@@ -561,11 +585,16 @@
     <img src="https://i.postimg.cc/k5ptSVsX/Visit-Bus-Mercedes-V-klasa-AMG-wynajem-z-kierowca-Warszawa.jpg" alt="Mercedes Classe V">
   </div>
 
-  <nav>
-    <div class="nav-spacer"></div>
-    <a class="logo" href="#top">TAXILINK<span>TRANSPORT</span></a>
+  <div class="nav-wrapper">
+    <nav>
+      <div class="nav-spacer" aria-hidden="true"></div>
+      <a class="logo" href="#top">
+        <img src="https://i.postimg.cc/4x3R5yGY/Photo-Room-20251205-173426.png" alt="TAXILINK TRANSPORT">
+      </a>
+      <div class="nav-dummy" aria-hidden="true"></div>
+    </nav>
     <button class="hamburger" id="hamburger"><span></span></button>
-  </nav>
+  </div>
 
   <aside class="drawer" id="drawer">
     <a href="#concept">Architecture</a>
@@ -577,13 +606,13 @@
 
   <div class="hero">
     <div class="hero-text">
-      <h2>TAXI VAL-D’ISÈRE • VONA ★★★</h2>
+      <h2>TAXI VAL-D’ISÈRE ★★★★</h2>
       <h1>Service premium 24/7 toutes distances</h1>
       <p>Réservez vos trajets en toute sérénité avec chauffeurs certifiés, suivi GPS précis et support disponible à chaque instant.</p>
       <div class="hero-buttons">
-        <button class="btn-light">Réservation</button>
-        <button class="btn-outline">Tarifs</button>
-        <button class="btn-outline">Nos services</button>
+        <button class="btn-light" onclick="window.location.href='res.html'">Réservation</button>
+        <button class="btn-outline" onclick="document.getElementById('tarifs').scrollIntoView({behavior:'smooth'});">Tarifs</button>
+        <button class="btn-outline" onclick="document.getElementById('services-transport').scrollIntoView({behavior:'smooth'});">Nos services</button>
       </div>
     </div>
   </div>
@@ -593,39 +622,33 @@
   <section id="concept">
     <div class="section-container">
       <h3 class="title">Architecture multi-profils</h3>
-      <p class="tagline">Des parcours sur mesure pour passagers, chauffeurs et administrateurs afin d’assurer rapidité, sécurité et conformité.</p>
+      <p class="tagline">Un parcours conciergerie en six étapes pour garantir ponctualité, coordination chauffeur et confort client de bout en bout.</p>
       <div class="cards">
         <article class="card">
-          <div class="pill">Passagers</div>
-          <h4>Réservation instantanée</h4>
+          <div class="pill">Étapes 01-02</div>
+          <h4>Planification personnalisée</h4>
           <ul class="list">
-            <li>Inscription email/téléphone + vérification SMS</li>
-            <li>Point de départ géolocalisé, destination manuelle</li>
-            <li>Choix du véhicule, estimation tarifaire</li>
-            <li>Suivi GPS, photo chauffeur, plaque, téléphone</li>
-            <li>Historique filtrable & support 24/7</li>
+            <li>Demande planifiée avec date, heure, lieux de prise en charge et besoins spéciaux.</li>
+            <li>Confirmation concierge : validation des disponibilités et récapitulatif email + SMS.</li>
+            <li>Prise en compte des bagages et équipements avant validation définitive.</li>
           </ul>
         </article>
         <article class="card">
-          <div class="pill">Chauffeurs</div>
-          <h4>Gestion des courses</h4>
+          <div class="pill">Étapes 03-04</div>
+          <h4>Coordination chauffeur</h4>
           <ul class="list">
-            <li>Onboarding complet (identité, licence, véhicule)</li>
-            <li>Mode disponible / indisponible</li>
-            <li>Notifications visuelles + sonores (15 s)</li>
-            <li>GPS intégré, “Client à bord/destination”</li>
-            <li>Historique acceptés / refusés</li>
+            <li>Attribution du conducteur idéal jusqu’à 24 h avant le départ avec partage de ses coordonnées.</li>
+            <li>Suivi des préparatifs et alignement sur les contraintes clients ou d’événement.</li>
+            <li>Ajustements possibles jusqu’à 12 h avant via l’espace client.</li>
           </ul>
         </article>
         <article class="card">
-          <div class="pill">Administrateurs</div>
-          <h4>Pilotage & conformité</h4>
+          <div class="pill">Étapes 05-06</div>
+          <h4>Suivi & prise en charge</h4>
           <ul class="list">
-            <li>Validation partenaires, blocage licences expirées</li>
-            <li>Carte live de la flotte et des passagers</li>
-            <li>Recherche avancée sur les commandes</li>
-            <li>Dashboards CA, taux d’acceptation, SLA</li>
-            <li>Chiffrement, RGPD, MFA, audit trail</li>
+            <li>Rappel automatique 3 h avant avec statut du chauffeur et ETA actualisée.</li>
+            <li>Notification finale au moment de l’approche du véhicule.</li>
+            <li>Prise en charge ponctuelle avec vérification d’identité et assistance bagages.</li>
           </ul>
         </article>
       </div>
@@ -638,18 +661,26 @@
       <p class="tagline">Choisissez le confort idéal pour vos transferts privés, professionnels ou événements.</p>
       <div class="vehicle-grid">
         <article class="vehicle-card">
-          <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=900&q=80" alt="Berline prestige">
+          <img src="https://i.postimg.cc/ZqZNRhxm/IMG-20251202-WA0019.jpg" alt="Berline prestige">
           <div class="content">
-            <h4>Berline Prestige</h4>
+            <h4>Mercedes class V noir 8 places</h4>
             <p>Confort maximal, sièges cuir et chauffeur bilingue. Idéale pour vos trajets d’affaires et liaisons aéroport/gare.</p>
             <button>Réserver</button>
           </div>
         </article>
         <article class="vehicle-card">
-          <img src="https://images.unsplash.com/photo-1529429617124-aee711a70412?auto=format&fit=crop&w=900&q=80" alt="Van luxe">
+          <img src="https://i.postimg.cc/vmRztjLc/Photo-Room-20251211-004312.png" alt="Van luxe">
           <div class="content">
-            <h4>Van Familial Luxe</h4>
-            <p>Espace 7 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.</p>
+            <h4>Renault trafic noir 9 places</h4>
+            <p>Espace 9 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.</p>
+            <button>Réserver</button>
+          </div>
+        </article>
+        <article class="vehicle-card">
+          <img src="https://i.postimg.cc/m2YX6Tk9/Photo-Room-20251211-010642.png" alt="Van luxe">
+          <div class="content">
+            <h4>Renault trafic gris 9 places</h4>
+            <p>Espace 9 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.</p>
             <button>Réserver</button>
           </div>
         </article>
@@ -664,47 +695,47 @@
       <div class="services-grid">
         <article class="service-card reveal-left">
           <h4>Toutes distances</h4>
-          <img src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80" alt="Taxi sur route de montagne">
+          <img src="https://i.postimg.cc/5tCFn29S/IMG-20251202-WA0014.jpg" alt="Taxi sur route de montagne">
           <a class="btn-service" href="#service-toutes-distances">En savoir +</a>
         </article>
         <article class="service-card reveal-right">
           <h4>Taxi 24/7-nuit</h4>
-          <img src="https://images.unsplash.com/photo-1517940310602-14590d480e62?auto=format&fit=crop&w=900&q=80" alt="Taxi de nuit en ville">
+          <img src="https://i.postimg.cc/BnYxhvW2/yupp-generated-image-814979.png" alt="Taxi de nuit en ville">
           <a class="btn-service" href="#service-taxi-nuit">En savoir +</a>
         </article>
         <article class="service-card reveal-left">
           <h4>Navette aéroport</h4>
-          <img src="https://images.unsplash.com/photo-1521917441209-e886f0404a7b?auto=format&fit=crop&w=900&q=80" alt="Navette aéroport devant terminal">
+          <img src="https://i.postimg.cc/2Ss58phK/yupp-generated-image-891235.png" alt="Navette aéroport devant terminal">
           <a class="btn-service" href="#service-navette-aeroport">En savoir +</a>
         </article>
         <article class="service-card reveal-right">
           <h4>Navette gare</h4>
-          <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=900&q=80" alt="Taxi devant une gare">
+          <img src="https://i.postimg.cc/NFS37tsK/yupp-generated-image-172198.png" alt="Taxi devant une gare">
           <a class="btn-service" href="#service-navette-gare">En savoir +</a>
         </article>
         <article class="service-card reveal-left">
           <h4>Navette station</h4>
-          <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=900&q=80" alt="Navette en station de ski">
+          <img src="https://i.postimg.cc/g2sPQf4w/yupp-generated-image-232309.png" alt="Navette en station de ski">
           <a class="btn-service" href="#service-navette-station">En savoir +</a>
         </article>
         <article class="service-card reveal-right">
           <h4>Transfert hôtel</h4>
-          <img src="https://images.unsplash.com/photo-1542314926-094ddb1e09a9?auto=format&fit=crop&w=900&q=80" alt="Entrée d'hôtel premium avec voiture">
+          <img src="https://i.postimg.cc/d0fgKvC5/yupp-generated-image-826408.png" alt="Entrée d'hôtel premium avec voiture">
           <a class="btn-service" href="#service-transfert-hotel">En savoir +</a>
         </article>
         <article class="service-card reveal-left">
           <h4>Service business</h4>
-          <img src="https://images.unsplash.com/photo-1493764815954-4b07de6e1f23?auto=format&fit=crop&w=900&q=80" alt="Homme d'affaires montant dans un taxi">
+          <img src="https://i.postimg.cc/85MGKsYz/yupp-generated-image-362377.png" alt="Homme d'affaires montant dans un taxi">
           <a class="btn-service" href="#service-business">En savoir +</a>
         </article>
         <article class="service-card reveal-right">
           <h4>Tourisme</h4>
-          <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80" alt="Touristes admirant la montagne">
+          <img src="https://i.postimg.cc/BbmVM0J6/IMG-20251202-WA0017.jpg" alt="Touristes admirant la montagne">
           <a class="btn-service" href="#service-tourisme">En savoir +</a>
         </article>
         <article class="service-card reveal-left">
           <h4>Événementiel</h4>
-          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Voiture devant un événement">
+          <img src="https://i.postimg.cc/9QhLZ0d7/yupp-generated-image-508636.png" alt="Voiture devant un événement">
           <a class="btn-service" href="#service-evenementiel">En savoir +</a>
         </article>
       </div>
@@ -719,55 +750,55 @@
         <article class="detail-card reveal-right" id="service-toutes-distances">
           <h4>Toutes distances</h4>
           <p>Partez où vous voulez, quand vous voulez. Nos chauffeurs assurent vos trajets interurbains, interstations ou vers les vallées voisines avec un suivi GPS continu et une tarification transparente.</p>
-          <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80" alt="Voiture sur une route panoramique">
+          <img src="https://i.postimg.cc/5tCFn29S/IMG-20251202-WA0014.jpg" alt="Voiture sur une route panoramique">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
         <article class="detail-card reveal-left" id="service-taxi-nuit">
           <h4>Taxi 24/7-nuit</h4>
           <p>Besoin d’un retour tardif après un dîner, un club ou un vol de nuit ? Nous assurons une permanence nocturne et une sécurité renforcée grâce à la géolocalisation partagée et aux alertes chauffeur.</p>
-          <img src="https://images.unsplash.com/photo-1517940310602-14590d480e62?auto=format&fit=crop&w=900&q=80" alt="Taxi illuminé la nuit">
+          <img src="https://i.postimg.cc/BnYxhvW2/yupp-generated-image-814979.png" alt="Taxi illuminé la nuit">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
         <article class="detail-card reveal-right" id="service-navette-aeroport">
           <h4>Navette aéroport</h4>
           <p>Transferts privés depuis et vers les aéroports de Genève, Lyon et Chambéry. Suivi des vols en temps réel, accueil personnalisé et assistance bagages incluse.</p>
-          <img src="https://images.unsplash.com/photo-1521917441209-e886f0404a7b?auto=format&fit=crop&w=900&q=80" alt="Voiture devant un terminal d'aéroport">
+          <img src="https://i.postimg.cc/2Ss58phK/yupp-generated-image-891235.png" alt="Voiture devant un terminal d'aéroport">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
         <article class="detail-card reveal-left" id="service-navette-gare">
           <h4>Navette gare</h4>
           <p>Arrivez serein en station grâce à notre service gare : accueil sur quai, aide aux équipements de ski et coordination avec vos horaires de train.</p>
-          <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80" alt="Taxi près des rails de gare">
+          <img src="https://i.postimg.cc/NFS37tsK/yupp-generated-image-172198.png" alt="Taxi près des rails de gare">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
         <article class="detail-card reveal-right" id="service-navette-station">
           <h4>Navette station</h4>
           <p>Reliez facilement Val-d’Isère aux stations voisines. Véhicules équipés neige, porte-skis et chauffeurs rompus aux routes alpines pour garantir ponctualité et sécurité.</p>
-          <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=900&q=80" alt="Navette dans une station de ski enneigée">
+          <img src="https://i.postimg.cc/g2sPQf4w/yupp-generated-image-232309.png" alt="Navette dans une station de ski enneigée">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
         <article class="detail-card reveal-left" id="service-transfert-hotel">
           <h4>Transfert hôtel</h4>
           <p>Recevez vos clients VIP avec une prise en charge front desk : signalétique personnalisée, bouteille d’eau premium et coordination avec la conciergerie de votre établissement.</p>
-          <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=80" alt="Voiture devant un hôtel de luxe">
+          <img src="https://i.postimg.cc/d0fgKvC5/yupp-generated-image-826408.png" alt="Voiture devant un hôtel de luxe">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
         <article class="detail-card reveal-right" id="service-business">
           <h4>Service business</h4>
           <p>Optimisez vos déplacements professionnels grâce à nos véhicules haut de gamme, chauffeurs bilingues, Wi-Fi embarqué et facturation consolidée pour vos équipes.</p>
-          <img src="https://images.unsplash.com/photo-1492778297155-7fda4b01c5b0?auto=format&fit=crop&w=900&q=80" alt="Homme d'affaires dans une berline">
+          <img src="https://i.postimg.cc/85MGKsYz/yupp-generated-image-362377.png" alt="Homme d'affaires dans une berline">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
         <article class="detail-card reveal-left" id="service-tourisme">
           <h4>Tourisme</h4>
           <p>Partez à la découverte des panoramas alpins, villages savoyards et tables d’exception. Itinéraires sur mesure et conseils locaux pour un séjour riche en émotions.</p>
-          <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80" alt="Paysage alpin avec lac et montagnes">
+          <img src="https://i.postimg.cc/BbmVM0J6/IMG-20251202-WA0017.jpg" alt="Paysage alpin avec lac et montagnes">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
         <article class="detail-card reveal-right" id="service-evenementiel">
           <h4>Événementiel</h4>
           <p>Congrès, mariages, séminaires : nous coordonnons flottes de véhicules, accueil VIP et plan de circulation pour une logistique fluide et impeccable.</p>
-          <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80" alt="Voitures alignées pour un événement">
+          <img src="https://i.postimg.cc/9QhLZ0d7/yupp-generated-image-508636.png" alt="Voitures alignées pour un événement">
           <a class="btn-reserver" href="#contact">Réserver</a>
         </article>
       </div>
@@ -1035,15 +1066,11 @@
 <footer id="contact">
   <div class="section-container">
     <div class="footer-logo">
-      <div class="footer-mark">TV</div>
-      <div class="footer-wordmark">
-        <strong>TAXILINK</strong>
-        <span>transport</span>
-      </div>
+      <img src="https://i.postimg.cc/4x3R5yGY/Photo-Room-20251205-173426.png" alt="Taxi Val-d’Isère">
     </div>
-    <strong>TAXILINK • Service Val-d’Isère</strong>
-    <p>Email : support@taxilink.fr • Disponible 24/7</p>
-    <p>© 2025 TaxiLink — Design noir & blanc, expérience premium.</p>
+    <strong>Taxi Val-d’Isère • Service Val-d’Isère</strong>
+    <p>Email : Taxisvaldisere@gmail.com • Disponible 24/7</p>
+    <p>© 2025 Taxi Val-d’Isère — Tout droit réservé.</p>
   </div>
 </footer>
 
@@ -1092,4 +1119,4 @@
 </script>
 
 </body>
-  </html>
+</html>
