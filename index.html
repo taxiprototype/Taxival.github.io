@@ -16,9 +16,7 @@
       --radius:22px;
     }
     *{box-sizing:border-box;}
-    html{
-      overflow-x:hidden;
-    }
+    html{overflow-x:hidden;}
     body{
       margin:0;
       font-family:"Inter",sans-serif;
@@ -37,7 +35,9 @@
       justify-content:flex-start;
       overflow:hidden;
     }
-    header > *{position:relative;z-index:1;}
+    /* IMPORTANT : On retire le z-index générique pour le gérer manuellement */
+    header > *{position:relative;} 
+
     .hero-bg{
       position:absolute;
       inset:0;
@@ -57,6 +57,8 @@
       inset:0;
       background:linear-gradient(165deg,rgba(0,0,0,.45) 10%,rgba(0,0,0,.82) 65%);
     }
+    
+    /* CORRECTION Z-INDEX : La nav passe au dessus de tout (100) */
     .nav-wrapper{
       width:100%;
       padding:22px 0;
@@ -64,6 +66,7 @@
       align-items:center;
       justify-content:center;
       position:relative;
+      z-index:100; 
     }
     nav{
       width:min(1200px,92vw);
@@ -71,6 +74,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      position:relative;
     }
     .nav-spacer,
     .nav-dummy{
@@ -80,18 +84,19 @@
       visibility:hidden;
       pointer-events:none;
     }
-.logo {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  height:60px;
-}
-
-.logo img {
-  height:100%;
-  width:auto;
-  display:block;
-}
+    /* CORRECTION LOGO : Décalage gauche */
+    .logo {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:60px;
+      margin-right:20px; /* Décalage demandé */
+    }
+    .logo img {
+      height:100%;
+      width:auto;
+      display:block;
+    }
     .hamburger{
       width:52px;
       height:52px;
@@ -103,10 +108,10 @@
       justify-content:center;
       cursor:pointer;
       position:absolute;
-      right:clamp(8px,2.8vw,48px);
+      left:clamp(8px,2.8vw,48px);
       top:50%;
       transform:translateY(-50%);
-      z-index:5;
+      z-index:105; /* Au dessus de la nav */
     }
     .hamburger span,
     .hamburger::before,
@@ -123,21 +128,22 @@
     .hamburger.active span{opacity:0;}
     .hamburger.active::before{transform:rotate(45deg);}
     .hamburger.active::after{transform:rotate(-45deg);}
+    
     .drawer{
       position:fixed;
       top:0;
-      right:-320px;
+      left:-320px;
       width:320px;
       height:100vh;
       background:#050505;
-      border-left:1px solid rgba(255,255,255,.08);
-      box-shadow:-25px 0 60px rgba(0,0,0,.5);
+      border-right:1px solid rgba(255,255,255,.08);
+      box-shadow:25px 0 60px rgba(0,0,0,.5);
       padding:38px 32px;
       display:flex;
       flex-direction:column;
       gap:18px;
       transition:.3s;
-      z-index:30;
+      z-index:200; /* Très haut */
       color:#f5f5f5;
     }
     .drawer a{
@@ -147,7 +153,7 @@
       padding-bottom:12px;
       border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .drawer.open{right:0;}
+    .drawer.open{left:0;}
     .overlay{
       position:fixed;
       inset:0;
@@ -155,12 +161,16 @@
       opacity:0;
       pointer-events:none;
       transition:.3s;
-      z-index:20;
+      z-index:150;
     }
     .overlay.show{opacity:1;pointer-events:auto;}
+    
+    /* Le Hero est en z-index 1, donc en dessous de la nav (100) */
     .hero{
       width:min(1100px,90vw);
       margin:60px auto 120px;
+      z-index:1; 
+      position:relative;
     }
     .hero-text{
       max-width:620px;
@@ -214,7 +224,7 @@
       border-top-left-radius:40px;
       border-top-right-radius:40px;
       position:relative;
-      z-index:1;
+      z-index:10; /* Au dessus du hero bg */
       padding-top:40px;
     }
     main section{padding:70px 0;}
@@ -568,12 +578,128 @@
       .nav-dummy{display:none;}
       nav{justify-content:center;}
       .hamburger{
-        right:16px;
+        left:16px;
         top:50%;
         transform:translateY(-50%);
       }
       .hero-buttons button{flex:1;}
     }
+    /* Lang selector */
+    .lang-selector{
+      position:absolute;
+      right:clamp(12px,2.8vw,48px);
+      top:50%;
+      transform:translateY(-50%);
+      z-index:110; /* Encore plus haut */
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .lang-btn{
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(0,0,0,.55);
+      color:#f5f5f5;
+      border-radius:18px;
+      padding:10px 14px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-weight:600;
+      letter-spacing:.06em;
+      position:relative;
+      z-index:110;
+    }
+    .lang-btn span.flag{font-size:1.05rem;}
+    .lang-menu{
+      position:absolute;
+      top:54px;
+      right:0;
+      background:#050505;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      box-shadow:0 18px 45px rgba(0,0,0,.5);
+      overflow:hidden;
+      display:none;
+      min-width:150px;
+      z-index:120;
+    }
+    .lang-menu.open{display:block;}
+    .lang-option{
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#f5f5f5;
+      cursor:pointer;
+      font-weight:500;
+    }
+    .lang-option:hover{background:rgba(255,255,255,.06);}
+    /* Slider for Mercedes GLE */
+    .slider{
+      position:relative;
+      overflow:hidden;
+    }
+    .slides{
+      display:flex;
+      transition:transform .4s ease;
+    }
+    .slides img{
+      width:100%;
+      height:360px;
+      object-fit:cover;
+      flex-shrink:0;
+    }
+    .slider-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,0.5);
+      color:#fff;
+      border:none;
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      font-weight:700;
+    }
+    .slider-btn.prev{left:12px;}
+    .slider-btn.next{right:12px;}
+    .whatsapp-floating{
+  position:fixed;
+  bottom:26px;
+  right:26px;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:#25D366;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 20px 45px rgba(6,10,30,0.55);
+  text-decoration:none;
+  z-index:220;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.whatsapp-floating:hover{
+  transform:translateY(-4px) scale(1.04);
+  box-shadow:0 28px 60px rgba(6,10,30,0.65);
+}
+.whatsapp-floating svg{
+  width:32px;
+  height:32px;
+}
+@media(max-width:640px){
+  .whatsapp-floating{
+    bottom:18px;
+    right:18px;
+    width:56px;
+    height:56px;
+  }
+}
   </style>
 </head>
 <body>
@@ -586,6 +712,7 @@
   </div>
 
   <div class="nav-wrapper">
+    <button class="hamburger" id="hamburger"><span></span></button>
     <nav>
       <div class="nav-spacer" aria-hidden="true"></div>
       <a class="logo" href="#top">
@@ -593,26 +720,33 @@
       </a>
       <div class="nav-dummy" aria-hidden="true"></div>
     </nav>
-    <button class="hamburger" id="hamburger"><span></span></button>
+    <div class="lang-selector">
+      <button class="lang-btn" id="langBtn"><span class="flag">🇫🇷</span><span id="langLabel">FR</span></button>
+      <div class="lang-menu" id="langMenu">
+        <div class="lang-option" data-lang="fr"><span class="flag">🇫🇷</span><span>Français</span></div>
+        <div class="lang-option" data-lang="en"><span class="flag">🇬🇧</span><span>English</span></div>
+        <div class="lang-option" data-lang="es"><span class="flag">🇪🇸</span><span>Español</span></div>
+      </div>
+    </div>
   </div>
 
   <aside class="drawer" id="drawer">
-    <a href="#concept">Architecture</a>
-    <a href="#vehicles">Véhicules</a>
-    <a href="#process">Processus</a>
-    <a href="#tarifs">Tarifs</a>
-    <a href="#contact">Contact</a>
+    <a href="#concept" data-i18n="Architecture">Architecture</a>
+    <a href="#vehicles" data-i18n="Véhicules">Véhicules</a>
+    <a href="#process" data-i18n="Processus">Processus</a>
+    <a href="#tarifs" data-i18n="Tarifs">Tarifs</a>
+    <a href="#contact" data-i18n="Contact">Contact</a>
   </aside>
 
   <div class="hero">
     <div class="hero-text">
-      <h2>TAXI VAL-D’ISÈRE ★★★★</h2>
-      <h1>Service premium 24/7 toutes distances</h1>
-      <p>Réservez vos trajets en toute sérénité avec chauffeurs certifiés, suivi GPS précis et support disponible à chaque instant.</p>
+      <h2 data-i18n="TAXI VAL-D'ISÈRE ★★★★★">TAXI VAL-D'ISÈRE ★★★★★</h2>
+      <h1 data-i18n="Service premium 24/7 toutes distances">Service premium 24/7 toutes distances</h1>
+      <p data-i18n="HeroDesc">Réservez vos trajets en toute sérénité avec chauffeurs certifiés, suivi GPS précis et support disponible à chaque instant.</p>
       <div class="hero-buttons">
-        <button class="btn-light" onclick="window.location.href='res.html'">Réservation</button>
-        <button class="btn-outline" onclick="document.getElementById('tarifs').scrollIntoView({behavior:'smooth'});">Tarifs</button>
-        <button class="btn-outline" onclick="document.getElementById('services-transport').scrollIntoView({behavior:'smooth'});">Nos services</button>
+        <button class="btn-light" onclick="window.location.href='res.html'" data-i18n="Réservation">Réservation</button>
+        <button class="btn-outline" onclick="document.getElementById('tarifs').scrollIntoView({behavior:'smooth'});" data-i18n="TarifsBtn">Tarifs</button>
+        <button class="btn-outline" onclick="document.getElementById('services-transport').scrollIntoView({behavior:'smooth'});" data-i18n="Nos services">Nos services</button>
       </div>
     </div>
   </div>
@@ -621,34 +755,34 @@
 <main>
   <section id="concept">
     <div class="section-container">
-      <h3 class="title">Architecture multi-profils</h3>
-      <p class="tagline">Un parcours conciergerie en six étapes pour garantir ponctualité, coordination chauffeur et confort client de bout en bout.</p>
+      <h3 class="title" data-i18n="Architecture multi-profils">Architecture multi-profils</h3>
+      <p class="tagline" data-i18n="TaglineArch">Un parcours conciergerie en six étapes pour garantir ponctualité, coordination chauffeur et confort client de bout en bout.</p>
       <div class="cards">
         <article class="card">
-          <div class="pill">Étapes 01-02</div>
-          <h4>Planification personnalisée</h4>
+          <div class="pill" data-i18n="Étapes 01-02">Étapes 01-02</div>
+          <h4 data-i18n="Planification personnalisée">Planification personnalisée</h4>
           <ul class="list">
-            <li>Demande planifiée avec date, heure, lieux de prise en charge et besoins spéciaux.</li>
-            <li>Confirmation concierge : validation des disponibilités et récapitulatif email + SMS.</li>
-            <li>Prise en compte des bagages et équipements avant validation définitive.</li>
+            <li data-i18n="C1L1">Demande planifiée avec date, heure, lieux de prise en charge et besoins spéciaux.</li>
+            <li data-i18n="C1L2">Confirmation concierge : validation des disponibilités et récapitulatif email + SMS.</li>
+            <li data-i18n="C1L3">Prise en compte des bagages et équipements avant validation définitive.</li>
           </ul>
         </article>
         <article class="card">
-          <div class="pill">Étapes 03-04</div>
-          <h4>Coordination chauffeur</h4>
+          <div class="pill" data-i18n="Étapes 03-04">Étapes 03-04</div>
+          <h4 data-i18n="Coordination chauffeur">Coordination chauffeur</h4>
           <ul class="list">
-            <li>Attribution du conducteur idéal jusqu’à 24 h avant le départ avec partage de ses coordonnées.</li>
-            <li>Suivi des préparatifs et alignement sur les contraintes clients ou d’événement.</li>
-            <li>Ajustements possibles jusqu’à 12 h avant via l’espace client.</li>
+            <li data-i18n="C2L1">Attribution du conducteur idéal jusqu'à 24 h avant le départ avec partage de ses coordonnées.</li>
+            <li data-i18n="C2L2">Suivi des préparatifs et alignement sur les contraintes clients ou d'événement.</li>
+            <li data-i18n="C2L3">Ajustements possibles jusqu'à 12 h avant via l'espace client.</li>
           </ul>
         </article>
         <article class="card">
-          <div class="pill">Étapes 05-06</div>
-          <h4>Suivi & prise en charge</h4>
+          <div class="pill" data-i18n="Étapes 05-06">Étapes 05-06</div>
+          <h4 data-i18n="Suivi & prise en charge">Suivi & prise en charge</h4>
           <ul class="list">
-            <li>Rappel automatique 3 h avant avec statut du chauffeur et ETA actualisée.</li>
-            <li>Notification finale au moment de l’approche du véhicule.</li>
-            <li>Prise en charge ponctuelle avec vérification d’identité et assistance bagages.</li>
+            <li data-i18n="C3L1">Rappel automatique 3 h avant avec statut du chauffeur et ETA actualisée.</li>
+            <li data-i18n="C3L2">Notification finale au moment de l'approche du véhicule.</li>
+            <li data-i18n="C3L3">Prise en charge ponctuelle avec vérification d'identité et assistance bagages.</li>
           </ul>
         </article>
       </div>
@@ -657,31 +791,47 @@
 
   <section id="vehicles">
     <div class="section-container">
-      <h3 class="title">Véhicules à disposition pour tous vos trajets</h3>
-      <p class="tagline">Choisissez le confort idéal pour vos transferts privés, professionnels ou événements.</p>
+      <h3 class="title" data-i18n="Véhicules à disposition pour tous vos trajets">Véhicules à disposition pour tous vos trajets</h3>
+      <p class="tagline" data-i18n="TaglineVeh">Choisissez le confort idéal pour vos transferts privés, professionnels ou événements.</p>
       <div class="vehicle-grid">
         <article class="vehicle-card">
           <img src="https://i.postimg.cc/ZqZNRhxm/IMG-20251202-WA0019.jpg" alt="Berline prestige">
           <div class="content">
-            <h4>Mercedes class V noir 8 places</h4>
-            <p>Confort maximal, sièges cuir et chauffeur bilingue. Idéale pour vos trajets d’affaires et liaisons aéroport/gare.</p>
-            <button>Réserver</button>
+            <h4 data-i18n="Veh1Title">Mercedes class V noir 8 places</h4>
+            <p data-i18n="Veh1Desc">Confort maximal, sièges cuir et chauffeur bilingue. Idéale pour vos trajets d'affaires et liaisons aéroport/gare.</p>
+            <button data-i18n="Réserver">Réserver</button>
           </div>
         </article>
         <article class="vehicle-card">
           <img src="https://i.postimg.cc/vmRztjLc/Photo-Room-20251211-004312.png" alt="Van luxe">
           <div class="content">
-            <h4>Renault trafic noir 9 places</h4>
-            <p>Espace 9 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.</p>
-            <button>Réserver</button>
+            <h4 data-i18n="Veh2Title">Renault trafic noir 9 places</h4>
+            <p data-i18n="Veh2Desc">Espace 9 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.</p>
+            <button data-i18n="Réserver">Réserver</button>
           </div>
         </article>
         <article class="vehicle-card">
           <img src="https://i.postimg.cc/m2YX6Tk9/Photo-Room-20251211-010642.png" alt="Van luxe">
           <div class="content">
-            <h4>Renault trafic gris 9 places</h4>
-            <p>Espace 9 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.</p>
-            <button>Réserver</button>
+            <h4 data-i18n="Veh3Title">Renault trafic gris 9 places</h4>
+            <p data-i18n="Veh3Desc">Espace 9 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.</p>
+            <button data-i18n="Réserver">Réserver</button>
+          </div>
+        </article>
+        <article class="vehicle-card">
+          <div class="slider" data-slider>
+            <div class="slides">
+              <img src="https://i.postimg.cc/WbxKY0h1/yupp-generated-image-949642.png" alt="Mercedes GLE Coupé 350d">
+              <img src="https://i.postimg.cc/hjGptGXv/Photo_Room_20251217_225318.png" alt="Mercedes GLE Coupé 350d">
+              <img src="https://i.postimg.cc/W4T5x8jk/Photo_Room_20251217_225524.png" alt="Mercedes GLE Coupé 350d">
+            </div>
+            <button class="slider-btn prev" aria-label="Précédent">‹</button>
+            <button class="slider-btn next" aria-label="Suivant">›</button>
+          </div>
+          <div class="content">
+            <h4 data-i18n="Veh4Title">Mercedes GLE Coupé 350d</h4>
+            <p data-i18n="Veh4Desc">SUV coupé luxueux, sièges cuir, confort haut de gamme et conduite optimale pour routes de montagne.</p>
+            <button data-i18n="Réserver">Réserver</button>
           </div>
         </article>
       </div>
@@ -690,53 +840,53 @@
 
   <section id="services-transport">
     <div class="section-container">
-      <h3 class="title">Nos services de transport en détail</h3>
-      <p class="tagline">Découvrez toutes nos offres spécialisées et accédez en un clic à la prestation qui répond à votre besoin.</p>
+      <h3 class="title" data-i18n="Nos services de transport en détail">Nos services de transport en détail</h3>
+      <p class="tagline" data-i18n="TaglineServ">Découvrez toutes nos offres spécialisées et accédez en un clic à la prestation qui répond à votre besoin.</p>
       <div class="services-grid">
         <article class="service-card reveal-left">
-          <h4>Toutes distances</h4>
+          <h4 data-i18n="Toutes distances">Toutes distances</h4>
           <img src="https://i.postimg.cc/5tCFn29S/IMG-20251202-WA0014.jpg" alt="Taxi sur route de montagne">
-          <a class="btn-service" href="#service-toutes-distances">En savoir +</a>
+          <a class="btn-service" href="#service-toutes-distances" data-i18n="En savoir +">En savoir +</a>
         </article>
         <article class="service-card reveal-right">
-          <h4>Taxi 24/7-nuit</h4>
+          <h4 data-i18n="Taxi 24/7-nuit">Taxi 24/7-nuit</h4>
           <img src="https://i.postimg.cc/BnYxhvW2/yupp-generated-image-814979.png" alt="Taxi de nuit en ville">
-          <a class="btn-service" href="#service-taxi-nuit">En savoir +</a>
+          <a class="btn-service" href="#service-taxi-nuit" data-i18n="En savoir +">En savoir +</a>
         </article>
         <article class="service-card reveal-left">
-          <h4>Navette aéroport</h4>
+          <h4 data-i18n="Navette aéroport">Navette aéroport</h4>
           <img src="https://i.postimg.cc/2Ss58phK/yupp-generated-image-891235.png" alt="Navette aéroport devant terminal">
-          <a class="btn-service" href="#service-navette-aeroport">En savoir +</a>
+          <a class="btn-service" href="#service-navette-aeroport" data-i18n="En savoir +">En savoir +</a>
         </article>
         <article class="service-card reveal-right">
-          <h4>Navette gare</h4>
+          <h4 data-i18n="Navette gare">Navette gare</h4>
           <img src="https://i.postimg.cc/NFS37tsK/yupp-generated-image-172198.png" alt="Taxi devant une gare">
-          <a class="btn-service" href="#service-navette-gare">En savoir +</a>
+          <a class="btn-service" href="#service-navette-gare" data-i18n="En savoir +">En savoir +</a>
         </article>
         <article class="service-card reveal-left">
-          <h4>Navette station</h4>
+          <h4 data-i18n="Navette station">Navette station</h4>
           <img src="https://i.postimg.cc/g2sPQf4w/yupp-generated-image-232309.png" alt="Navette en station de ski">
-          <a class="btn-service" href="#service-navette-station">En savoir +</a>
+          <a class="btn-service" href="#service-navette-station" data-i18n="En savoir +">En savoir +</a>
         </article>
         <article class="service-card reveal-right">
-          <h4>Transfert hôtel</h4>
+          <h4 data-i18n="Transfert hôtel">Transfert hôtel</h4>
           <img src="https://i.postimg.cc/d0fgKvC5/yupp-generated-image-826408.png" alt="Entrée d'hôtel premium avec voiture">
-          <a class="btn-service" href="#service-transfert-hotel">En savoir +</a>
+          <a class="btn-service" href="#service-transfert-hotel" data-i18n="En savoir +">En savoir +</a>
         </article>
         <article class="service-card reveal-left">
-          <h4>Service business</h4>
+          <h4 data-i18n="Service business">Service business</h4>
           <img src="https://i.postimg.cc/85MGKsYz/yupp-generated-image-362377.png" alt="Homme d'affaires montant dans un taxi">
-          <a class="btn-service" href="#service-business">En savoir +</a>
+          <a class="btn-service" href="#service-business" data-i18n="En savoir +">En savoir +</a>
         </article>
         <article class="service-card reveal-right">
-          <h4>Tourisme</h4>
+          <h4 data-i18n="Tourisme">Tourisme</h4>
           <img src="https://i.postimg.cc/BbmVM0J6/IMG-20251202-WA0017.jpg" alt="Touristes admirant la montagne">
-          <a class="btn-service" href="#service-tourisme">En savoir +</a>
+          <a class="btn-service" href="#service-tourisme" data-i18n="En savoir +">En savoir +</a>
         </article>
         <article class="service-card reveal-left">
-          <h4>Événementiel</h4>
+          <h4 data-i18n="Événementiel">Événementiel</h4>
           <img src="https://i.postimg.cc/9QhLZ0d7/yupp-generated-image-508636.png" alt="Voiture devant un événement">
-          <a class="btn-service" href="#service-evenementiel">En savoir +</a>
+          <a class="btn-service" href="#service-evenementiel" data-i18n="En savoir +">En savoir +</a>
         </article>
       </div>
     </div>
@@ -744,62 +894,62 @@
 
   <section id="services-details">
     <div class="section-container">
-      <h3 class="title">Détails des prestations</h3>
-      <p class="tagline">Chaque service dispose d’une logistique dédiée, de chauffeurs formés et d’options sur mesure pour un confort maximal.</p>
+      <h3 class="title" data-i18n="Détails des prestations">Détails des prestations</h3>
+      <p class="tagline" data-i18n="TaglineDetails">Chaque service dispose d'une logistique dédiée, de chauffeurs formés et d'options sur mesure pour un confort maximal.</p>
       <div class="detail-grid">
         <article class="detail-card reveal-right" id="service-toutes-distances">
-          <h4>Toutes distances</h4>
-          <p>Partez où vous voulez, quand vous voulez. Nos chauffeurs assurent vos trajets interurbains, interstations ou vers les vallées voisines avec un suivi GPS continu et une tarification transparente.</p>
+          <h4 data-i18n="Toutes distances">Toutes distances</h4>
+          <p data-i18n="DD1">Partez où vous voulez, quand vous voulez. Nos chauffeurs assurent vos trajets interurbains, interstations ou vers les vallées voisines avec un suivi GPS continu et une tarification transparente.</p>
           <img src="https://i.postimg.cc/5tCFn29S/IMG-20251202-WA0014.jpg" alt="Voiture sur une route panoramique">
-          <a class="btn-reserver" href="#contact">Réserver</a>
+          <a class="btn-reserver" href="#contact" data-i18n="Réserver">Réserver</a>
         </article>
         <article class="detail-card reveal-left" id="service-taxi-nuit">
-          <h4>Taxi 24/7-nuit</h4>
-          <p>Besoin d’un retour tardif après un dîner, un club ou un vol de nuit ? Nous assurons une permanence nocturne et une sécurité renforcée grâce à la géolocalisation partagée et aux alertes chauffeur.</p>
+          <h4 data-i18n="Taxi 24/7-nuit">Taxi 24/7-nuit</h4>
+          <p data-i18n="DD2">Besoin d'un retour tardif après un dîner, un club ou un vol de nuit ? Nous assurons une permanence nocturne et une sécurité renforcée grâce à la géolocalisation partagée et aux alertes chauffeur.</p>
           <img src="https://i.postimg.cc/BnYxhvW2/yupp-generated-image-814979.png" alt="Taxi illuminé la nuit">
-          <a class="btn-reserver" href="#contact">Réserver</a>
+          <a class="btn-reserver" href="#contact" data-i18n="Réserver">Réserver</a>
         </article>
         <article class="detail-card reveal-right" id="service-navette-aeroport">
-          <h4>Navette aéroport</h4>
-          <p>Transferts privés depuis et vers les aéroports de Genève, Lyon et Chambéry. Suivi des vols en temps réel, accueil personnalisé et assistance bagages incluse.</p>
+          <h4 data-i18n="Navette aéroport">Navette aéroport</h4>
+          <p data-i18n="DD3">Transferts privés depuis et vers les aéroports de Genève, Lyon et Chambéry. Suivi des vols en temps réel, accueil personnalisé et assistance bagages incluse.</p>
           <img src="https://i.postimg.cc/2Ss58phK/yupp-generated-image-891235.png" alt="Voiture devant un terminal d'aéroport">
-          <a class="btn-reserver" href="#contact">Réserver</a>
+          <a class="btn-reserver" href="#contact" data-i18n="Réserver">Réserver</a>
         </article>
         <article class="detail-card reveal-left" id="service-navette-gare">
-          <h4>Navette gare</h4>
-          <p>Arrivez serein en station grâce à notre service gare : accueil sur quai, aide aux équipements de ski et coordination avec vos horaires de train.</p>
+          <h4 data-i18n="Navette gare">Navette gare</h4>
+          <p data-i18n="DD4">Arrivez serein en station grâce à notre service gare : accueil sur quai, aide aux équipements de ski et coordination avec vos horaires de train.</p>
           <img src="https://i.postimg.cc/NFS37tsK/yupp-generated-image-172198.png" alt="Taxi près des rails de gare">
-          <a class="btn-reserver" href="#contact">Réserver</a>
+          <a class="btn-reserver" href="#contact" data-i18n="Réserver">Réserver</a>
         </article>
         <article class="detail-card reveal-right" id="service-navette-station">
-          <h4>Navette station</h4>
-          <p>Reliez facilement Val-d’Isère aux stations voisines. Véhicules équipés neige, porte-skis et chauffeurs rompus aux routes alpines pour garantir ponctualité et sécurité.</p>
+          <h4 data-i18n="Navette station">Navette station</h4>
+          <p data-i18n="DD5">Reliez facilement Val-d'Isère aux stations voisines. Véhicules équipés neige, porte-skis et chauffeurs rompus aux routes alpines pour garantir ponctualité et sécurité.</p>
           <img src="https://i.postimg.cc/g2sPQf4w/yupp-generated-image-232309.png" alt="Navette dans une station de ski enneigée">
-          <a class="btn-reserver" href="#contact">Réserver</a>
+          <a class="btn-reserver" href="#contact" data-i18n="Réserver">Réserver</a>
         </article>
         <article class="detail-card reveal-left" id="service-transfert-hotel">
-          <h4>Transfert hôtel</h4>
-          <p>Recevez vos clients VIP avec une prise en charge front desk : signalétique personnalisée, bouteille d’eau premium et coordination avec la conciergerie de votre établissement.</p>
+          <h4 data-i18n="Transfert hôtel">Transfert hôtel</h4>
+          <p data-i18n="DD6">Recevez vos clients VIP avec une prise en charge front desk : signalétique personnalisée, bouteille d'eau premium et coordination avec la conciergerie de votre établissement.</p>
           <img src="https://i.postimg.cc/d0fgKvC5/yupp-generated-image-826408.png" alt="Voiture devant un hôtel de luxe">
-          <a class="btn-reserver" href="#contact">Réserver</a>
+          <a class="btn-reserver" href="#contact" data-i18n="Réserver">Réserver</a>
         </article>
         <article class="detail-card reveal-right" id="service-business">
-          <h4>Service business</h4>
-          <p>Optimisez vos déplacements professionnels grâce à nos véhicules haut de gamme, chauffeurs bilingues, Wi-Fi embarqué et facturation consolidée pour vos équipes.</p>
+          <h4 data-i18n="Service business">Service business</h4>
+          <p data-i18n="DD7">Optimisez vos déplacements professionnels grâce à nos véhicules haut de gamme, chauffeurs bilingues, Wi-Fi embarqué et facturation consolidée pour vos équipes.</p>
           <img src="https://i.postimg.cc/85MGKsYz/yupp-generated-image-362377.png" alt="Homme d'affaires dans une berline">
-          <a class="btn-reserver" href="#contact">Réserver</a>
+          <a class="btn-reserver" href="#contact" data-i18n="Réserver">Réserver</a>
         </article>
         <article class="detail-card reveal-left" id="service-tourisme">
-          <h4>Tourisme</h4>
-          <p>Partez à la découverte des panoramas alpins, villages savoyards et tables d’exception. Itinéraires sur mesure et conseils locaux pour un séjour riche en émotions.</p>
+          <h4 data-i18n="Tourisme">Tourisme</h4>
+          <p data-i18n="DD8">Partez à la découverte des panoramas alpins, villages savoyards et tables d'exception. Itinéraires sur mesure et conseils locaux pour un séjour riche en émotions.</p>
           <img src="https://i.postimg.cc/BbmVM0J6/IMG-20251202-WA0017.jpg" alt="Paysage alpin avec lac et montagnes">
-          <a class="btn-reserver" href="#contact">Réserver</a>
+          <a class="btn-reserver" href="#contact" data-i18n="Réserver">Réserver</a>
         </article>
         <article class="detail-card reveal-right" id="service-evenementiel">
-          <h4>Événementiel</h4>
-          <p>Congrès, mariages, séminaires : nous coordonnons flottes de véhicules, accueil VIP et plan de circulation pour une logistique fluide et impeccable.</p>
+          <h4 data-i18n="Événementiel">Événementiel</h4>
+          <p data-i18n="DD9">Congrès, mariages, séminaires : nous coordonnons flottes de véhicules, accueil VIP et plan de circulation pour une logistique fluide et impeccable.</p>
           <img src="https://i.postimg.cc/9QhLZ0d7/yupp-generated-image-508636.png" alt="Voitures alignées pour un événement">
-          <a class="btn-reserver" href="#contact">Réserver</a>
+          <a class="btn-reserver" href="#contact" data-i18n="Réserver">Réserver</a>
         </article>
       </div>
     </div>
@@ -807,31 +957,31 @@
 
   <section id="process">
     <div class="section-container">
-      <h3 class="title">Processus de commande</h3>
+      <h3 class="title" data-i18n="Processus de commande">Processus de commande</h3>
       <div class="timeline">
         <div class="step" data-step="01">
-          <strong>Demande planifiée</strong>
-          <p>Choisissez date, heure, lieux de prise en charge et précisez bagages ou besoins spéciaux.</p>
+          <strong data-i18n="Demande planifiée">Demande planifiée</strong>
+          <p data-i18n="P1">Choisissez date, heure, lieux de prise en charge et précisez bagages ou besoins spéciaux.</p>
         </div>
         <div class="step" data-step="02">
-          <strong>Confirmation concierge</strong>
-          <p>Notre équipe vérifie la disponibilité puis vous envoie un récapitulatif par email et SMS.</p>
+          <strong data-i18n="Confirmation concierge">Confirmation concierge</strong>
+          <p data-i18n="P2">Notre équipe vérifie la disponibilité puis vous envoie un récapitulatif par email et SMS.</p>
         </div>
         <div class="step" data-step="03">
-          <strong>Attribution chauffeur</strong>
-          <p>Nous sélectionnons le conducteur idéal et partageons ses coordonnées jusqu’à 24 h avant le trajet.</p>
+          <strong data-i18n="Attribution chauffeur">Attribution chauffeur</strong>
+          <p data-i18n="P3">Nous sélectionnons le conducteur idéal et partageons ses coordonnées jusqu'à 24 h avant le trajet.</p>
         </div>
         <div class="step" data-step="04">
-          <strong>Ajustements flexibles</strong>
-          <p>Modifiez horaires ou étapes jusqu’à 12 h avant la prise en charge directement depuis votre espace client.</p>
+          <strong data-i18n="Ajustements flexibles">Ajustements flexibles</strong>
+          <p data-i18n="P4">Modifiez horaires ou étapes jusqu'à 12 h avant la prise en charge directement depuis votre espace client.</p>
         </div>
         <div class="step" data-step="05">
-          <strong>Rappel automatique</strong>
-          <p>Recevez une notification 3 h avant le départ avec statut du chauffeur et heure estimée d’arrivée.</p>
+          <strong data-i18n="Rappel automatique">Rappel automatique</strong>
+          <p data-i18n="P5">Recevez une notification 3 h avant le départ avec statut du chauffeur et heure estimée d'arrivée.</p>
         </div>
         <div class="step" data-step="06">
-          <strong>Prise en charge</strong>
-          <p>Le chauffeur se présente à l’heure convenue, confirme votre identité et assure l’assistance bagages.</p>
+          <strong data-i18n="Prise en charge">Prise en charge</strong>
+          <p data-i18n="P6">Le chauffeur se présente à l'heure convenue, confirme votre identité et assure l'assistance bagages.</p>
         </div>
       </div>
     </div>
@@ -839,221 +989,221 @@
 
   <section id="tarifs">
     <div class="section-container">
-      <h3 class="title">Tarifs des transferts</h3>
-      <p class="tarif-note">Forfaits au départ de Val-d’Isère. Les colonnes “Jour” et “Nuit” correspondent aux créneaux diurnes et nocturnes.</p>
+      <h3 class="title" data-i18n="Tarifs des transferts">Tarifs des transferts</h3>
+      <p class="tarif-note" data-i18n="TarifNote">Forfaits au départ de Val-d'Isère. Les colonnes "Jour" et "Nuit" correspondent aux créneaux diurnes et nocturnes.</p>
       <div class="cards">
         <article class="card">
-          <h4>Aéroports</h4>
+          <h4 data-i18n="Aéroports">Aéroports</h4>
           <div class="tarif-block">
-            <h5>Aéroport de Chambéry</h5>
+            <h5 data-i18n="Aéroport de Chambéry">Aéroport de Chambéry</h5>
             <table class="tarif-table">
               <thead>
                 <tr>
-                  <th>Capacité</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
+                  <th data-i18n="Capacité">Capacité</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>1 à 4 pers.</td><td class="day">320 €</td><td class="night">430 €</td></tr>
-                <tr><td>5 pers.</td><td class="day">330 €</td><td class="night">440 €</td></tr>
-                <tr><td>6 pers.</td><td class="day">340 €</td><td class="night">450 €</td></tr>
-                <tr><td>7 pers.</td><td class="day">350 €</td><td class="night">460 €</td></tr>
-                <tr><td>8 pers.</td><td class="day">360 €</td><td class="night">470 €</td></tr>
+                <tr><td data-i18n="1 à 4 pers.">1 à 4 pers.</td><td class="day">320 €</td><td class="night">430 €</td></tr>
+                <tr><td data-i18n="5 pers.">5 pers.</td><td class="day">330 €</td><td class="night">440 €</td></tr>
+                <tr><td data-i18n="6 pers.">6 pers.</td><td class="day">340 €</td><td class="night">450 €</td></tr>
+                <tr><td data-i18n="7 pers.">7 pers.</td><td class="day">350 €</td><td class="night">460 €</td></tr>
+                <tr><td data-i18n="8 pers.">8 pers.</td><td class="day">360 €</td><td class="night">470 €</td></tr>
               </tbody>
             </table>
           </div>
           <div class="tarif-block">
-            <h5>Aéroport de Genève</h5>
+            <h5 data-i18n="Aéroport de Genève">Aéroport de Genève</h5>
             <table class="tarif-table">
               <thead>
                 <tr>
-                  <th>Capacité</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
+                  <th data-i18n="Capacité">Capacité</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>1 à 4 pers.</td><td class="day">420 €</td><td class="night">550 €</td></tr>
-                <tr><td>5 pers.</td><td class="day">430 €</td><td class="night">560 €</td></tr>
-                <tr><td>6 pers.</td><td class="day">440 €</td><td class="night">570 €</td></tr>
-                <tr><td>7 pers.</td><td class="day">450 €</td><td class="night">580 €</td></tr>
-                <tr><td>8 pers.</td><td class="day">450 €</td><td class="night">580 €</td></tr>
+                <tr><td data-i18n="1 à 4 pers.">1 à 4 pers.</td><td class="day">420 €</td><td class="night">550 €</td></tr>
+                <tr><td data-i18n="5 pers.">5 pers.</td><td class="day">430 €</td><td class="night">560 €</td></tr>
+                <tr><td data-i18n="6 pers.">6 pers.</td><td class="day">440 €</td><td class="night">570 €</td></tr>
+                <tr><td data-i18n="7 pers.">7 pers.</td><td class="day">450 €</td><td class="night">580 €</td></tr>
+                <tr><td data-i18n="8 pers.">8 pers.</td><td class="day">450 €</td><td class="night">580 €</td></tr>
               </tbody>
             </table>
           </div>
           <div class="tarif-block">
-            <h5>Aéroport de Grenoble</h5>
+            <h5 data-i18n="Aéroport de Grenoble">Aéroport de Grenoble</h5>
             <table class="tarif-table">
               <thead>
                 <tr>
-                  <th>Capacité</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
+                  <th data-i18n="Capacité">Capacité</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>1 à 4 pers.</td><td class="day">500 €</td><td class="night">630 €</td></tr>
-                <tr><td>5 pers.</td><td class="day">510 €</td><td class="night">640 €</td></tr>
-                <tr><td>6 pers.</td><td class="day">520 €</td><td class="night">650 €</td></tr>
-                <tr><td>7 pers.</td><td class="day">530 €</td><td class="night">660 €</td></tr>
-                <tr><td>8 pers.</td><td class="day">540 €</td><td class="night">670 €</td></tr>
+                <tr><td data-i18n="1 à 4 pers.">1 à 4 pers.</td><td class="day">500 €</td><td class="night">630 €</td></tr>
+                <tr><td data-i18n="5 pers.">5 pers.</td><td class="day">510 €</td><td class="night">640 €</td></tr>
+                <tr><td data-i18n="6 pers.">6 pers.</td><td class="day">520 €</td><td class="night">650 €</td></tr>
+                <tr><td data-i18n="7 pers.">7 pers.</td><td class="day">530 €</td><td class="night">660 €</td></tr>
+                <tr><td data-i18n="8 pers.">8 pers.</td><td class="day">540 €</td><td class="night">670 €</td></tr>
               </tbody>
             </table>
           </div>
           <div class="tarif-block">
-            <h5>Aéroport de Lyon</h5>
+            <h5 data-i18n="Aéroport de Lyon">Aéroport de Lyon</h5>
             <table class="tarif-table">
               <thead>
                 <tr>
-                  <th>Capacité</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
+                  <th data-i18n="Capacité">Capacité</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>1 à 4 pers.</td><td class="day">500 €</td><td class="night">650 €</td></tr>
-                <tr><td>5 pers.</td><td class="day">510 €</td><td class="night">660 €</td></tr>
-                <tr><td>6 pers.</td><td class="day">520 €</td><td class="night">670 €</td></tr>
-                <tr><td>7 pers.</td><td class="day">530 €</td><td class="night">680 €</td></tr>
-                <tr><td>8 pers.</td><td class="day">540 €</td><td class="night">690 €</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </article>
-
-        <article class="card">
-          <h4>Gares</h4>
-          <div class="tarif-block">
-            <h5>Gare de Bourg St Maurice</h5>
-            <table class="tarif-table">
-              <thead>
-                <tr>
-                  <th>Capacité</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>1 à 4 pers.</td><td class="day">110 €</td><td class="night">—</td></tr>
-                <tr><td>5 pers.</td><td class="day">120 €</td><td class="night">—</td></tr>
-                <tr><td>6 pers.</td><td class="day">130 €</td><td class="night">—</td></tr>
-                <tr><td>7 pers.</td><td class="day">140 €</td><td class="night">—</td></tr>
-                <tr><td>8 pers.</td><td class="day">150 €</td><td class="night">—</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="tarif-block">
-            <h5>Gare de Chambéry</h5>
-            <table class="tarif-table">
-              <thead>
-                <tr>
-                  <th>Capacité</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>1 à 4 pers.</td><td class="day">300 €</td><td class="night">400 €</td></tr>
-                <tr><td>5 pers.</td><td class="day">310 €</td><td class="night">410 €</td></tr>
-                <tr><td>6 pers.</td><td class="day">320 €</td><td class="night">420 €</td></tr>
-                <tr><td>7 pers.</td><td class="day">330 €</td><td class="night">430 €</td></tr>
-                <tr><td>8 pers.</td><td class="day">340 €</td><td class="night">440 €</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="tarif-block">
-            <h5>Gare de Lyon</h5>
-            <table class="tarif-table">
-              <thead>
-                <tr>
-                  <th>Capacité</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>1 à 4 pers.</td><td class="day">550 €</td><td class="night">690 €</td></tr>
-                <tr><td>5 pers.</td><td class="day">560 €</td><td class="night">700 €</td></tr>
-                <tr><td>6 pers.</td><td class="day">570 €</td><td class="night">710 €</td></tr>
-                <tr><td>7 pers.</td><td class="day">580 €</td><td class="night">720 €</td></tr>
-                <tr><td>8 pers.</td><td class="day">590 €</td><td class="night">730 €</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="tarif-block">
-            <h5>Gare de Moûtiers</h5>
-            <table class="tarif-table">
-              <thead>
-                <tr>
-                  <th>Capacité</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>1 à 4 pers.</td><td class="day">200 €</td><td class="night">—</td></tr>
-                <tr><td>5 pers.</td><td class="day">210 €</td><td class="night">—</td></tr>
-                <tr><td>6 pers.</td><td class="day">220 €</td><td class="night">—</td></tr>
-                <tr><td>7 pers.</td><td class="day">230 €</td><td class="night">—</td></tr>
-                <tr><td>8 pers.</td><td class="day">240 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="1 à 4 pers.">1 à 4 pers.</td><td class="day">500 €</td><td class="night">650 €</td></tr>
+                <tr><td data-i18n="5 pers.">5 pers.</td><td class="day">510 €</td><td class="night">660 €</td></tr>
+                <tr><td data-i18n="6 pers.">6 pers.</td><td class="day">520 €</td><td class="night">670 €</td></tr>
+                <tr><td data-i18n="7 pers.">7 pers.</td><td class="day">530 €</td><td class="night">680 €</td></tr>
+                <tr><td data-i18n="8 pers.">8 pers.</td><td class="day">540 €</td><td class="night">690 €</td></tr>
               </tbody>
             </table>
           </div>
         </article>
 
         <article class="card">
-          <h4>Stations & longues distances</h4>
+          <h4 data-i18n="Gares">Gares</h4>
           <div class="tarif-block">
-            <h5>Stations voisines</h5>
+            <h5 data-i18n="Gare de Bourg St Maurice">Gare de Bourg St Maurice</h5>
             <table class="tarif-table">
               <thead>
                 <tr>
-                  <th>Trajet</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
+                  <th data-i18n="Capacité">Capacité</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>Ste Foy – Villaroger (1 à 4 pers.)</td><td class="day">80 €</td><td class="night">—</td></tr>
-                <tr><td>Ste Foy – Villaroger (5 pers.)</td><td class="day">90 €</td><td class="night">—</td></tr>
-                <tr><td>Ste Foy – Villaroger (6 pers.)</td><td class="day">100 €</td><td class="night">—</td></tr>
-                <tr><td>Ste Foy – Villaroger (7 pers.)</td><td class="day">110 €</td><td class="night">—</td></tr>
-                <tr><td>Ste Foy – Villaroger (8 pers.)</td><td class="day">120 €</td><td class="night">—</td></tr>
-                <tr><td>La Rosière (1 à 4 pers.)</td><td class="day">150 €</td><td class="night">—</td></tr>
-                <tr><td>La Rosière (5 pers.)</td><td class="day">160 €</td><td class="night">—</td></tr>
-                <tr><td>La Rosière (6 pers.)</td><td class="day">170 €</td><td class="night">—</td></tr>
-                <tr><td>La Rosière (7 pers.)</td><td class="day">180 €</td><td class="night">—</td></tr>
-                <tr><td>La Rosière (8 pers.)</td><td class="day">190 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="1 à 4 pers.">1 à 4 pers.</td><td class="day">110 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="5 pers.">5 pers.</td><td class="day">120 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="6 pers.">6 pers.</td><td class="day">130 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="7 pers.">7 pers.</td><td class="day">140 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="8 pers.">8 pers.</td><td class="day">150 €</td><td class="night">—</td></tr>
               </tbody>
             </table>
           </div>
           <div class="tarif-block">
-            <h5>Grandes distances</h5>
+            <h5 data-i18n="Gare de Chambéry">Gare de Chambéry</h5>
             <table class="tarif-table">
               <thead>
                 <tr>
-                  <th>Trajet</th>
-                  <th>Jour</th>
-                  <th>Nuit</th>
+                  <th data-i18n="Capacité">Capacité</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>Turin (1 à 4 pers.)</td><td class="day">800 €</td><td class="night">—</td></tr>
-                <tr><td>Turin (5 pers.)</td><td class="day">810 €</td><td class="night">—</td></tr>
-                <tr><td>Turin (6 pers.)</td><td class="day">820 €</td><td class="night">—</td></tr>
-                <tr><td>Turin (7 pers.)</td><td class="day">830 €</td><td class="night">—</td></tr>
-                <tr><td>Turin (8 pers.)</td><td class="day">850 €</td><td class="night">—</td></tr>
-                <tr><td>Milan (1 à 4 pers.)</td><td class="day">1200 €</td><td class="night">—</td></tr>
-                <tr><td>Milan (5 pers.)</td><td class="day">1250 €</td><td class="night">—</td></tr>
-                <tr><td>Milan (6 pers.)</td><td class="day">1300 €</td><td class="night">—</td></tr>
-                <tr><td>Milan (7 pers.)</td><td class="day">1350 €</td><td class="night">—</td></tr>
-                <tr><td>Milan (8 pers.)</td><td class="day">1400 €</td><td class="night">—</td></tr>
-                <tr><td>Paris (1 à 4 pers.)</td><td class="day">1600 €</td><td class="night">—</td></tr>
-                <tr><td>Paris (5 pers.)</td><td class="day">1650 €</td><td class="night">—</td></tr>
-                <tr><td>Paris (6 pers.)</td><td class="day">1700 €</td><td class="night">—</td></tr>
-                <tr><td>Paris (7 pers.)</td><td class="day">1750 €</td><td class="night">—</td></tr>
-                <tr><td>Paris (8 pers.)</td><td class="day">1800 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="1 à 4 pers.">1 à 4 pers.</td><td class="day">300 €</td><td class="night">400 €</td></tr>
+                <tr><td data-i18n="5 pers.">5 pers.</td><td class="day">310 €</td><td class="night">410 €</td></tr>
+                <tr><td data-i18n="6 pers.">6 pers.</td><td class="day">320 €</td><td class="night">420 €</td></tr>
+                <tr><td data-i18n="7 pers.">7 pers.</td><td class="day">330 €</td><td class="night">430 €</td></tr>
+                <tr><td data-i18n="8 pers.">8 pers.</td><td class="day">340 €</td><td class="night">440 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5 data-i18n="Gare de Lyon">Gare de Lyon</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th data-i18n="Capacité">Capacité</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td data-i18n="1 à 4 pers.">1 à 4 pers.</td><td class="day">550 €</td><td class="night">690 €</td></tr>
+                <tr><td data-i18n="5 pers.">5 pers.</td><td class="day">560 €</td><td class="night">700 €</td></tr>
+                <tr><td data-i18n="6 pers.">6 pers.</td><td class="day">570 €</td><td class="night">710 €</td></tr>
+                <tr><td data-i18n="7 pers.">7 pers.</td><td class="day">580 €</td><td class="night">720 €</td></tr>
+                <tr><td data-i18n="8 pers.">8 pers.</td><td class="day">590 €</td><td class="night">730 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5 data-i18n="Gare de Moûtiers">Gare de Moûtiers</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th data-i18n="Capacité">Capacité</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td data-i18n="1 à 4 pers.">1 à 4 pers.</td><td class="day">200 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="5 pers.">5 pers.</td><td class="day">210 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="6 pers.">6 pers.</td><td class="day">220 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="7 pers.">7 pers.</td><td class="day">230 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="8 pers.">8 pers.</td><td class="day">240 €</td><td class="night">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card">
+          <h4 data-i18n="Stations & longues distances">Stations & longues distances</h4>
+          <div class="tarif-block">
+            <h5 data-i18n="Stations voisines">Stations voisines</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th data-i18n="Trajet">Trajet</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td data-i18n="Ste Foy – Villaroger (1 à 4 pers.)">Ste Foy – Villaroger (1 à 4 pers.)</td><td class="day">80 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Ste Foy – Villaroger (5 pers.)">Ste Foy – Villaroger (5 pers.)</td><td class="day">90 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Ste Foy – Villaroger (6 pers.)">Ste Foy – Villaroger (6 pers.)</td><td class="day">100 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Ste Foy – Villaroger (7 pers.)">Ste Foy – Villaroger (7 pers.)</td><td class="day">110 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Ste Foy – Villaroger (8 pers.)">Ste Foy – Villaroger (8 pers.)</td><td class="day">120 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="La Rosière (1 à 4 pers.)">La Rosière (1 à 4 pers.)</td><td class="day">150 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="La Rosière (5 pers.)">La Rosière (5 pers.)</td><td class="day">160 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="La Rosière (6 pers.)">La Rosière (6 pers.)</td><td class="day">170 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="La Rosière (7 pers.)">La Rosière (7 pers.)</td><td class="day">180 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="La Rosière (8 pers.)">La Rosière (8 pers.)</td><td class="day">190 €</td><td class="night">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tarif-block">
+            <h5 data-i18n="Grandes distances">Grandes distances</h5>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th data-i18n="Trajet">Trajet</th>
+                  <th data-i18n="Jour">Jour</th>
+                  <th data-i18n="Nuit">Nuit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td data-i18n="Turin (1 à 4 pers.)">Turin (1 à 4 pers.)</td><td class="day">800 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Turin (5 pers.)">Turin (5 pers.)</td><td class="day">810 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Turin (6 pers.)">Turin (6 pers.)</td><td class="day">820 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Turin (7 pers.)">Turin (7 pers.)</td><td class="day">830 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Turin (8 pers.)">Turin (8 pers.)</td><td class="day">850 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Milan (1 à 4 pers.)">Milan (1 à 4 pers.)</td><td class="day">1200 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Milan (5 pers.)">Milan (5 pers.)</td><td class="day">1250 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Milan (6 pers.)">Milan (6 pers.)</td><td class="day">1300 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Milan (7 pers.)">Milan (7 pers.)</td><td class="day">1350 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Milan (8 pers.)">Milan (8 pers.)</td><td class="day">1400 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Paris (1 à 4 pers.)">Paris (1 à 4 pers.)</td><td class="day">1600 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Paris (5 pers.)">Paris (5 pers.)</td><td class="day">1650 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Paris (6 pers.)">Paris (6 pers.)</td><td class="day">1700 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Paris (7 pers.)">Paris (7 pers.)</td><td class="day">1750 €</td><td class="night">—</td></tr>
+                <tr><td data-i18n="Paris (8 pers.)">Paris (8 pers.)</td><td class="day">1800 €</td><td class="night">—</td></tr>
               </tbody>
             </table>
           </div>
@@ -1066,18 +1216,22 @@
 <footer id="contact">
   <div class="section-container">
     <div class="footer-logo">
-      <img src="https://i.postimg.cc/4x3R5yGY/Photo-Room-20251205-173426.png" alt="Taxi Val-d’Isère">
+      <img src="https://i.postimg.cc/4x3R5yGY/Photo-Room-20251205-173426.png" alt="Taxi Val-d'Isère">
     </div>
-    <strong>Taxi Val-d’Isère • Service Val-d’Isère</strong>
-    <p>Email : Taxisvaldisere@gmail.com • Disponible 24/7</p>
-    <p>© 2025 Taxi Val-d’Isère — Tout droit réservé.</p>
+    <strong data-i18n="FooterTitle">Taxi Val-d'Isère • Service Val-d'Isère</strong>
+    <p data-i18n="FooterContact">Email : Taxisvaldisere@gmail.com • Disponible 24/7</p>
+    <p data-i18n="FooterRights">© 2025 Taxi Val-d'Isère — Tout droit réservé.</p>
   </div>
 </footer>
 
 <script>
+  // Core elements
   const hamburger = document.getElementById("hamburger");
   const drawer = document.getElementById("drawer");
   const overlay = document.getElementById("overlay");
+  const langBtn = document.getElementById("langBtn");
+  const langMenu = document.getElementById("langMenu");
+  const langLabel = document.getElementById("langLabel");
 
   const closeMenu = () => {
     drawer.classList.remove("open");
@@ -1099,12 +1253,8 @@
     toggleMenu();
   });
   overlay.addEventListener("click",closeMenu);
-  document.addEventListener("click",(e)=>{
-    if(!drawer.contains(e.target) && !hamburger.contains(e.target)){
-      closeMenu();
-    }
-  });
 
+  // Reveal animations
   const revealElements = document.querySelectorAll(".reveal-left, .reveal-right");
   const revealObserver = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
@@ -1114,9 +1264,481 @@
       }
     });
   },{threshold:0.15});
-
   revealElements.forEach(el=>revealObserver.observe(el));
+
+  // Slider
+  document.querySelectorAll("[data-slider]").forEach(slider=>{
+    const slides = slider.querySelector(".slides");
+    const imgs = slides.querySelectorAll("img");
+    let index = 0;
+    const update = ()=>{slides.style.transform = `translateX(-${index*100}%)`;};
+    slider.querySelector(".prev").addEventListener("click", ()=>{
+      index = (index-1+imgs.length)%imgs.length;
+      update();
+    });
+    slider.querySelector(".next").addEventListener("click", ()=>{
+      index = (index+1)%imgs.length;
+      update();
+    });
+  });
+
+  // Language translations - COMPLETE VERSION
+  const translations = {
+    fr: {
+      "Architecture": "Architecture",
+      "Véhicules": "Véhicules",
+      "Processus": "Processus",
+      "Tarifs": "Tarifs",
+      "Contact": "Contact",
+      "TAXI VAL-D'ISÈRE ★★★★★": "TAXI VAL-D'ISÈRE ★★★★★",
+      "Service premium 24/7 toutes distances": "Service premium 24/7 toutes distances",
+      "HeroDesc": "Réservez vos trajets en toute sérénité avec chauffeurs certifiés, suivi GPS précis et support disponible à chaque instant.",
+      "Réservation": "Réservation",
+      "TarifsBtn": "Tarifs",
+      "Nos services": "Nos services",
+      "Architecture multi-profils": "Architecture multi-profils",
+      "TaglineArch": "Un parcours conciergerie en six étapes pour garantir ponctualité, coordination chauffeur et confort client de bout en bout.",
+      "Étapes 01-02": "Étapes 01-02",
+      "Planification personnalisée": "Planification personnalisée",
+      "C1L1": "Demande planifiée avec date, heure, lieux de prise en charge et besoins spéciaux.",
+      "C1L2": "Confirmation concierge : validation des disponibilités et récapitulatif email + SMS.",
+      "C1L3": "Prise en compte des bagages et équipements avant validation définitive.",
+      "Étapes 03-04": "Étapes 03-04",
+      "Coordination chauffeur": "Coordination chauffeur",
+      "C2L1": "Attribution du conducteur idéal jusqu'à 24 h avant le départ avec partage de ses coordonnées.",
+      "C2L2": "Suivi des préparatifs et alignement sur les contraintes clients ou d'événement.",
+      "C2L3": "Ajustements possibles jusqu'à 12 h avant via l'espace client.",
+      "Étapes 05-06": "Étapes 05-06",
+      "Suivi & prise en charge": "Suivi & prise en charge",
+      "C3L1": "Rappel automatique 3 h avant avec statut du chauffeur et ETA actualisée.",
+      "C3L2": "Notification finale au moment de l'approche du véhicule.",
+      "C3L3": "Prise en charge ponctuelle avec vérification d'identité et assistance bagages.",
+      "Véhicules à disposition pour tous vos trajets": "Véhicules à disposition pour tous vos trajets",
+      "TaglineVeh": "Choisissez le confort idéal pour vos transferts privés, professionnels ou événements.",
+      "Veh1Title": "Mercedes class V noir 8 places",
+      "Veh1Desc": "Confort maximal, sièges cuir et chauffeur bilingue. Idéale pour vos trajets d'affaires et liaisons aéroport/gare.",
+      "Veh2Title": "Renault trafic noir 9 places",
+      "Veh2Desc": "Espace 9 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.",
+      "Veh3Title": "Renault trafic gris 9 places",
+      "Veh3Desc": "Espace 9 places, grands coffres et confort premium. Parfait pour groupes, séjours ski et navettes hôtels.",
+      "Veh4Title": "Mercedes GLE Coupé 350d",
+      "Veh4Desc": "SUV coupé luxueux, sièges cuir, confort haut de gamme et conduite optimale pour routes de montagne.",
+      "Réserver": "Réserver",
+      "Nos services de transport en détail": "Nos services de transport en détail",
+      "TaglineServ": "Découvrez toutes nos offres spécialisées et accédez en un clic à la prestation qui répond à votre besoin.",
+      "Toutes distances": "Toutes distances",
+      "En savoir +": "En savoir +",
+      "Taxi 24/7-nuit": "Taxi 24/7-nuit",
+      "Navette aéroport": "Navette aéroport",
+      "Navette gare": "Navette gare",
+      "Navette station": "Navette station",
+      "Transfert hôtel": "Transfert hôtel",
+      "Service business": "Service business",
+      "Tourisme": "Tourisme",
+      "Événementiel": "Événementiel",
+      "Détails des prestations": "Détails des prestations",
+      "TaglineDetails": "Chaque service dispose d'une logistique dédiée, de chauffeurs formés et d'options sur mesure pour un confort maximal.",
+      "DD1": "Partez où vous voulez, quand vous voulez. Nos chauffeurs assurent vos trajets interurbains, interstations ou vers les vallées voisines avec un suivi GPS continu et une tarification transparente.",
+      "DD2": "Besoin d'un retour tardif après un dîner, un club ou un vol de nuit ? Nous assurons une permanence nocturne et une sécurité renforcée grâce à la géolocalisation partagée et aux alertes chauffeur.",
+      "DD3": "Transferts privés depuis et vers les aéroports de Genève, Lyon et Chambéry. Suivi des vols en temps réel, accueil personnalisé et assistance bagages incluse.",
+      "DD4": "Arrivez serein en station grâce à notre service gare : accueil sur quai, aide aux équipements de ski et coordination avec vos horaires de train.",
+      "DD5": "Reliez facilement Val-d'Isère aux stations voisines. Véhicules équipés neige, porte-skis et chauffeurs rompus aux routes alpines pour garantir ponctualité et sécurité.",
+      "DD6": "Recevez vos clients VIP avec une prise en charge front desk : signalétique personnalisée, bouteille d'eau premium et coordination avec la conciergerie de votre établissement.",
+      "DD7": "Optimisez vos déplacements professionnels grâce à nos véhicules haut de gamme, chauffeurs bilingues, Wi-Fi embarqué et facturation consolidée pour vos équipes.",
+      "DD8": "Partez à la découverte des panoramas alpins, villages savoyards et tables d'exception. Itinéraires sur mesure et conseils locaux pour un séjour riche en émotions.",
+      "DD9": "Congrès, mariages, séminaires : nous coordonnons flottes de véhicules, accueil VIP et plan de circulation pour une logistique fluide et impeccable.",
+      "Processus de commande": "Processus de commande",
+      "Demande planifiée": "Demande planifiée",
+      "P1": "Choisissez date, heure, lieux de prise en charge et précisez bagages ou besoins spéciaux.",
+      "Confirmation concierge": "Confirmation concierge",
+      "P2": "Notre équipe vérifie la disponibilité puis vous envoie un récapitulatif par email et SMS.",
+      "Attribution chauffeur": "Attribution chauffeur",
+      "P3": "Nous sélectionnons le conducteur idéal et partageons ses coordonnées jusqu'à 24 h avant le trajet.",
+      "Ajustements flexibles": "Ajustements flexibles",
+      "P4": "Modifiez horaires ou étapes jusqu'à 12 h avant la prise en charge directement depuis votre espace client.",
+      "Rappel automatique": "Rappel automatique",
+      "P5": "Recevez une notification 3 h avant le départ avec statut du chauffeur et heure estimée d'arrivée.",
+      "Prise en charge": "Prise en charge",
+      "P6": "Le chauffeur se présente à l'heure convenue, confirme votre identité et assure l'assistance bagages.",
+      "Tarifs des transferts": "Tarifs des transferts",
+      "TarifNote": "Forfaits au départ de Val-d'Isère. Les colonnes \"Jour\" et \"Nuit\" correspondent aux créneaux diurnes et nocturnes.",
+      "Aéroports": "Aéroports",
+      "Aéroport de Chambéry": "Aéroport de Chambéry",
+      "Capacité": "Capacité",
+      "Jour": "Jour",
+      "Nuit": "Nuit",
+      "1 à 4 pers.": "1 à 4 pers.",
+      "5 pers.": "5 pers.",
+      "6 pers.": "6 pers.",
+      "7 pers.": "7 pers.",
+      "8 pers.": "8 pers.",
+      "Aéroport de Genève": "Aéroport de Genève",
+      "Aéroport de Grenoble": "Aéroport de Grenoble",
+      "Aéroport de Lyon": "Aéroport de Lyon",
+      "Gares": "Gares",
+      "Gare de Bourg St Maurice": "Gare de Bourg St Maurice",
+      "Gare de Chambéry": "Gare de Chambéry",
+      "Gare de Lyon": "Gare de Lyon",
+      "Gare de Moûtiers": "Gare de Moûtiers",
+      "Stations & longues distances": "Stations & longues distances",
+      "Stations voisines": "Stations voisines",
+      "Trajet": "Trajet",
+      "Ste Foy – Villaroger (1 à 4 pers.)": "Ste Foy – Villaroger (1 à 4 pers.)",
+      "Ste Foy – Villaroger (5 pers.)": "Ste Foy – Villaroger (5 pers.)",
+      "Ste Foy – Villaroger (6 pers.)": "Ste Foy – Villaroger (6 pers.)",
+      "Ste Foy – Villaroger (7 pers.)": "Ste Foy – Villaroger (7 pers.)",
+      "Ste Foy – Villaroger (8 pers.)": "Ste Foy – Villaroger (8 pers.)",
+      "La Rosière (1 à 4 pers.)": "La Rosière (1 à 4 pers.)",
+      "La Rosière (5 pers.)": "La Rosière (5 pers.)",
+      "La Rosière (6 pers.)": "La Rosière (6 pers.)",
+      "La Rosière (7 pers.)": "La Rosière (7 pers.)",
+      "La Rosière (8 pers.)": "La Rosière (8 pers.)",
+      "Grandes distances": "Grandes distances",
+      "Turin (1 à 4 pers.)": "Turin (1 à 4 pers.)",
+      "Turin (5 pers.)": "Turin (5 pers.)",
+      "Turin (6 pers.)": "Turin (6 pers.)",
+      "Turin (7 pers.)": "Turin (7 pers.)",
+      "Turin (8 pers.)": "Turin (8 pers.)",
+      "Milan (1 à 4 pers.)": "Milan (1 à 4 pers.)",
+      "Milan (5 pers.)": "Milan (5 pers.)",
+      "Milan (6 pers.)": "Milan (6 pers.)",
+      "Milan (7 pers.)": "Milan (7 pers.)",
+      "Milan (8 pers.)": "Milan (8 pers.)",
+      "Paris (1 à 4 pers.)": "Paris (1 à 4 pers.)",
+      "Paris (5 pers.)": "Paris (5 pers.)",
+      "Paris (6 pers.)": "Paris (6 pers.)",
+      "Paris (7 pers.)": "Paris (7 pers.)",
+      "Paris (8 pers.)": "Paris (8 pers.)",
+      "FooterTitle": "Taxi Val-d'Isère • Service Val-d'Isère",
+      "FooterContact": "Email : Taxisvaldisere@gmail.com • Disponible 24/7",
+      "FooterRights": "© 2025 Taxi Val-d'Isère — Tout droit réservé."
+    },
+    en: {
+      "Architecture": "Architecture",
+      "Véhicules": "Vehicles",
+      "Processus": "Process",
+      "Tarifs": "Rates",
+      "Contact": "Contact",
+      "TAXI VAL-D'ISÈRE ★★★★★": "TAXI VAL-D'ISÈRE ★★★★★",
+      "Service premium 24/7 toutes distances": "Premium 24/7 service all distances",
+      "HeroDesc": "Book your trips with peace of mind with certified drivers, precise GPS tracking and support available at all times.",
+      "Réservation": "Booking",
+      "TarifsBtn": "Rates",
+      "Nos services": "Our services",
+      "Architecture multi-profils": "Multi-profile architecture",
+      "TaglineArch": "A six-step concierge journey to guarantee punctuality, driver coordination and end-to-end customer comfort.",
+      "Étapes 01-02": "Steps 01-02",
+      "Planification personnalisée": "Personalized planning",
+      "C1L1": "Scheduled request with date, time, pick-up locations and special needs.",
+      "C1L2": "Concierge confirmation: availability validation and email + SMS summary.",
+      "C1L3": "Luggage and equipment consideration before final validation.",
+      "Étapes 03-04": "Steps 03-04",
+      "Coordination chauffeur": "Driver coordination",
+      "C2L1": "Assignment of the ideal driver up to 24 hours before departure with sharing of their contact details.",
+      "C2L2": "Monitoring of preparations and alignment with customer or event constraints.",
+      "C2L3": "Adjustments possible up to 12 hours before via customer area.",
+      "Étapes 05-06": "Steps 05-06",
+      "Suivi & prise en charge": "Tracking & pick-up",
+      "C3L1": "Automatic reminder 3 hours before with driver status and updated ETA.",
+      "C3L2": "Final notification upon vehicle approach.",
+      "C3L3": "Punctual pick-up with identity verification and luggage assistance.",
+      "Véhicules à disposition pour tous vos trajets": "Vehicles available for all your trips",
+      "TaglineVeh": "Choose the ideal comfort for your private, professional or event transfers.",
+      "Veh1Title": "Mercedes V-Class black 8 seats",
+      "Veh1Desc": "Maximum comfort, leather seats and bilingual driver. Ideal for your business trips and airport/station connections.",
+      "Veh2Title": "Renault Trafic black 9 seats",
+      "Veh2Desc": "9-seat space, large trunks and premium comfort. Perfect for groups, ski holidays and hotel shuttles.",
+      "Veh3Title": "Renault Trafic grey 9 seats",
+      "Veh3Desc": "9-seat space, large trunks and premium comfort. Perfect for groups, ski holidays and hotel shuttles.",
+      "Veh4Title": "Mercedes GLE Coupé 350d",
+      "Veh4Desc": "Luxurious SUV coupé, leather seats, high-end comfort and optimal driving for mountain roads.",
+      "Réserver": "Book",
+      "Nos services de transport en détail": "Our transport services in detail",
+      "TaglineServ": "Discover all our specialized offers and access in one click the service that meets your need.",
+      "Toutes distances": "All distances",
+      "En savoir +": "Learn more",
+      "Taxi 24/7-nuit": "Taxi 24/7-night",
+      "Navette aéroport": "Airport shuttle",
+      "Navette gare": "Station shuttle",
+      "Navette station": "Resort shuttle",
+      "Transfert hôtel": "Hotel transfer",
+      "Service business": "Business service",
+      "Tourisme": "Tourism",
+      "Événementiel": "Events",
+      "Détails des prestations": "Service details",
+      "TaglineDetails": "Each service has dedicated logistics, trained drivers and custom options for maximum comfort.",
+      "DD1": "Go wherever you want, whenever you want. Our drivers provide your intercity, inter-resort or to neighboring valleys trips with continuous GPS tracking and transparent pricing.",
+      "DD2": "Need a late return after dinner, a club or a night flight? We ensure night coverage and enhanced security through shared geolocation and driver alerts.",
+      "DD3": "Private transfers to and from Geneva, Lyon and Chambéry airports. Real-time flight tracking, personalized welcome and luggage assistance included.",
+      "DD4": "Arrive serenely at the resort thanks to our station service: platform welcome, ski equipment assistance and coordination with your train schedules.",
+      "DD5": "Easily connect Val-d'Isère to neighboring resorts. Snow-equipped vehicles, ski racks and drivers experienced in Alpine roads to ensure punctuality and safety.",
+      "DD6": "Receive your VIP guests with front desk pick-up: personalized signage, premium water bottle and coordination with your establishment's concierge.",
+      "DD7": "Optimize your business travel with our high-end vehicles, bilingual drivers, on-board Wi-Fi and consolidated billing for your teams.",
+      "DD8": "Discover Alpine panoramas, Savoyard villages and exceptional dining. Custom itineraries and local advice for an emotion-filled stay.",
+      "DD9": "Congresses, weddings, seminars: we coordinate vehicle fleets, VIP welcome and traffic plan for smooth and impeccable logistics.",
+      "Processus de commande": "Booking process",
+      "Demande planifiée": "Scheduled request",
+      "P1": "Choose date, time, pick-up locations and specify luggage or special needs.",
+      "Confirmation concierge": "Concierge confirmation",
+      "P2": "Our team checks availability then sends you a summary by email and SMS.",
+      "Attribution chauffeur": "Driver assignment",
+      "P3": "We select the ideal driver and share their contact details up to 24 hours before the trip.",
+      "Ajustements flexibles": "Flexible adjustments",
+      "P4": "Modify schedules or stops up to 12 hours before pick-up directly from your customer area.",
+      "Rappel automatique": "Automatic reminder",
+      "P5": "Receive a notification 3 hours before departure with driver status and estimated time of arrival.",
+      "Prise en charge": "Pick-up",
+      "P6": "The driver arrives at the agreed time, confirms your identity and provides luggage assistance.",
+      "Tarifs des transferts": "Transfer rates",
+      "TarifNote": "Fixed rates from Val-d'Isère. \"Day\" and \"Night\" columns correspond to daytime and nighttime slots.",
+      "Aéroports": "Airports",
+      "Aéroport de Chambéry": "Chambéry Airport",
+      "Capacité": "Capacity",
+      "Jour": "Day",
+      "Nuit": "Night",
+      "1 à 4 pers.": "1 to 4 ppl",
+      "5 pers.": "5 ppl",
+      "6 pers.": "6 ppl",
+      "7 pers.": "7 ppl",
+      "8 pers.": "8 ppl",
+      "Aéroport de Genève": "Geneva Airport",
+      "Aéroport de Grenoble": "Grenoble Airport",
+      "Aéroport de Lyon": "Lyon Airport",
+      "Gares": "Stations",
+      "Gare de Bourg St Maurice": "Bourg St Maurice Station",
+      "Gare de Chambéry": "Chambéry Station",
+      "Gare de Lyon": "Lyon Station",
+      "Gare de Moûtiers": "Moûtiers Station",
+      "Stations & longues distances": "Resorts & long distances",
+      "Stations voisines": "Neighboring resorts",
+      "Trajet": "Route",
+      "Ste Foy – Villaroger (1 à 4 pers.)": "Ste Foy – Villaroger (1-4 ppl)",
+      "Ste Foy – Villaroger (5 pers.)": "Ste Foy – Villaroger (5 ppl)",
+      "Ste Foy – Villaroger (6 pers.)": "Ste Foy – Villaroger (6 ppl)",
+      "Ste Foy – Villaroger (7 pers.)": "Ste Foy – Villaroger (7 ppl)",
+      "Ste Foy – Villaroger (8 pers.)": "Ste Foy – Villaroger (8 ppl)",
+      "La Rosière (1 à 4 pers.)": "La Rosière (1-4 ppl)",
+      "La Rosière (5 pers.)": "La Rosière (5 ppl)",
+      "La Rosière (6 pers.)": "La Rosière (6 ppl)",
+      "La Rosière (7 pers.)": "La Rosière (7 ppl)",
+      "La Rosière (8 pers.)": "La Rosière (8 ppl)",
+      "Grandes distances": "Long distances",
+      "Turin (1 à 4 pers.)": "Turin (1-4 ppl)",
+      "Turin (5 pers.)": "Turin (5 ppl)",
+      "Turin (6 pers.)": "Turin (6 ppl)",
+      "Turin (7 pers.)": "Turin (7 ppl)",
+      "Turin (8 pers.)": "Turin (8 ppl)",
+      "Milan (1 à 4 pers.)": "Milan (1-4 ppl)",
+      "Milan (5 pers.)": "Milan (5 ppl)",
+      "Milan (6 pers.)": "Milan (6 ppl)",
+      "Milan (7 pers.)": "Milan (7 ppl)",
+      "Milan (8 pers.)": "Milan (8 ppl)",
+      "Paris (1 à 4 pers.)": "Paris (1-4 ppl)",
+      "Paris (5 pers.)": "Paris (5 ppl)",
+      "Paris (6 pers.)": "Paris (6 ppl)",
+      "Paris (7 pers.)": "Paris (7 ppl)",
+      "Paris (8 pers.)": "Paris (8 ppl)",
+      "FooterTitle": "Taxi Val-d'Isère • Val-d'Isère Service",
+      "FooterContact": "Email: Taxisvaldisere@gmail.com • Available 24/7",
+      "FooterRights": "© 2025 Taxi Val-d'Isère — All rights reserved."
+    },
+    es: {
+      "Architecture": "Arquitectura",
+      "Véhicules": "Vehículos",
+      "Processus": "Proceso",
+      "Tarifs": "Tarifas",
+      "Contact": "Contacto",
+      "TAXI VAL-D'ISÈRE ★★★★★": "TAXI VAL-D'ISÈRE ★★★★★",
+      "Service premium 24/7 toutes distances": "Servicio premium 24/7 todas las distancias",
+      "HeroDesc": "Reserve sus viajes con total tranquilidad con conductores certificados, seguimiento GPS preciso y soporte disponible en todo momento.",
+      "Réservation": "Reservar",
+      "TarifsBtn": "Tarifas",
+      "Nos services": "Nuestros servicios",
+      "Architecture multi-profils": "Arquitectura multi-perfil",
+      "TaglineArch": "Un recorrido de conserjería en seis etapas para garantizar puntualidad, coordinación del conductor y comodidad del cliente de principio a fin.",
+      "Étapes 01-02": "Etapas 01-02",
+      "Planification personnalisée": "Planificación personalizada",
+      "C1L1": "Solicitud programada con fecha, hora, lugares de recogida y necesidades especiales.",
+      "C1L2": "Confirmación del conserje: validación de disponibilidad y resumen por email + SMS.",
+      "C1L3": "Consideración de equipaje y equipamiento antes de la validación final.",
+      "Étapes 03-04": "Etapas 03-04",
+      "Coordination chauffeur": "Coordinación del conductor",
+      "C2L1": "Asignación del conductor ideal hasta 24 horas antes de la salida con intercambio de sus datos de contacto.",
+      "C2L2": "Seguimiento de preparativos y alineación con restricciones del cliente o del evento.",
+      "C2L3": "Ajustes posibles hasta 12 horas antes a través del área de cliente.",
+      "Étapes 05-06": "Etapas 05-06",
+      "Suivi & prise en charge": "Seguimiento y recogida",
+      "C3L1": "Recordatorio automático 3 horas antes con estado del conductor y ETA actualizada.",
+      "C3L2": "Notificación final en el momento de la llegada del vehículo.",
+      "C3L3": "Recogida puntual con verificación de identidad y asistencia con el equipaje.",
+      "Véhicules à disposition pour tous vos trajets": "Vehículos disponibles para todos sus viajes",
+      "TaglineVeh": "Elija el confort ideal para sus traslados privados, profesionales o de eventos.",
+      "Veh1Title": "Mercedes Clase V negro 8 plazas",
+      "Veh1Desc": "Confort máximo, asientos de cuero y conductor bilingüe. Ideal para sus viajes de negocios y conexiones aeropuerto/estación.",
+      "Veh2Title": "Renault Trafic negro 9 plazas",
+      "Veh2Desc": "Espacio para 9 personas, maleteros grandes y confort premium. Perfecto para grupos, estancias de esquí y traslados hoteleros.",
+      "Veh3Title": "Renault Trafic gris 9 plazas",
+      "Veh3Desc": "Espacio para 9 personas, maleteros grandes y confort premium. Perfecto para grupos, estancias de esquí y traslados hoteleros.",
+      "Veh4Title": "Mercedes GLE Coupé 350d",
+      "Veh4Desc": "SUV coupé lujoso, asientos de cuero, confort de alta gama y conducción óptima para carreteras de montaña.",
+      "Réserver": "Reservar",
+      "Nos services de transport en détail": "Nuestros servicios de transporte en detalle",
+      "TaglineServ": "Descubra todas nuestras ofertas especializadas y acceda con un clic al servicio que satisface su necesidad.",
+      "Toutes distances": "Todas las distancias",
+      "En savoir +": "Saber más",
+      "Taxi 24/7-nuit": "Taxi 24/7-noche",
+      "Navette aéroport": "Traslado al aeropuerto",
+      "Navette gare": "Traslado a la estación",
+      "Navette station": "Traslado a la estación",
+      "Transfert hôtel": "Traslado al hotel",
+      "Service business": "Servicio business",
+      "Tourisme": "Turismo",
+      "Événementiel": "Eventos",
+      "Détails des prestations": "Detalles de los servicios",
+      "TaglineDetails": "Cada servicio cuenta con logística dedicada, conductores capacitados y opciones a medida para máximo confort.",
+      "DD1": "Vaya donde quiera, cuando quiera. Nuestros conductores aseguran sus viajes interurbanos, entre estaciones o hacia valles vecinos con seguimiento GPS continuo y tarifas transparentes.",
+      "DD2": "¿Necesita un regreso tardío después de una cena, un club o un vuelo nocturno? Aseguramos cobertura nocturna y seguridad reforzada mediante geolocalización compartida y alertas del conductor.",
+      "DD3": "Traslados privados desde y hacia los aeropuertos de Ginebra, Lyon y Chambéry. Seguimiento de vuelos en tiempo real, bienvenida personalizada y asistencia con equipaje incluida.",
+      "DD4": "Llegue tranquilo a la estación gracias a nuestro servicio de estación: recepción en el andén, ayuda con el equipo de esquí y coordinación con sus horarios de tren.",
+      "DD5": "Conecte fácilmente Val-d'Isère con las estaciones vecinas. Vehículos equipados para nieve, portaesquís y conductores experimentados en carreteras alpinas para garantizar puntualidad y seguridad.",
+      "DD6": "Reciba a sus clientes VIP con recogida en recepción: señalización personalizada, botella de agua premium y coordinación con la conserjería de su establecimiento.",
+      "DD7": "Optimice sus viajes de negocios con nuestros vehículos de alta gama, conductores bilingües, Wi-Fi a bordo y facturación consolidada para sus equipos.",
+      "DD8": "Descubra panoramas alpinos, pueblos saboyanos y mesas excepcionales. Itinerarios a medida y consejos locales para una estancia rica en emociones.",
+      "DD9": "Congresos, bodas, seminarios: coordinamos flotas de vehículos, recepción VIP y plan de circulación para una logística fluida e impecable.",
+      "Processus de commande": "Proceso de reserva",
+      "Demande planifiée": "Solicitud programada",
+      "P1": "Elija fecha, hora, lugares de recogida y especifique equipaje o necesidades especiales.",
+      "Confirmation concierge": "Confirmación del conserje",
+      "P2": "Nuestro equipo verifica la disponibilidad y le envía un resumen por email y SMS.",
+      "Attribution chauffeur": "Asignación del conductor",
+      "P3": "Seleccionamos el conductor ideal y compartimos sus datos de contacto hasta 24 horas antes del viaje.",
+      "Ajustements flexibles": "Ajustes flexibles",
+      "P4": "Modifique horarios o paradas hasta 12 horas antes de la recogida directamente desde su área de cliente.",
+      "Rappel automatique": "Recordatorio automático",
+      "P5": "Reciba una notificación 3 horas antes de la salida con estado del conductor y hora estimada de llegada.",
+      "Prise en charge": "Recogida",
+      "P6": "El conductor se presenta a la hora acordada, confirma su identidad y proporciona asistencia con el equipaje.",
+      "Tarifs des transferts": "Tarifas de traslados",
+      "TarifNote": "Tarifas fijas desde Val-d'Isère. Las columnas \"Día\" y \"Noche\" corresponden a franjas horarias diurnas y nocturnas.",
+      "Aéroports": "Aeropuertos",
+      "Aéroport de Chambéry": "Aeropuerto de Chambéry",
+      "Capacité": "Capacidad",
+      "Jour": "Día",
+      "Nuit": "Noche",
+      "1 à 4 pers.": "1 a 4 pers.",
+      "5 pers.": "5 pers.",
+      "6 pers.": "6 pers.",
+      "7 pers.": "7 pers.",
+      "8 pers.": "8 pers.",
+      "Aéroport de Genève": "Aeropuerto de Ginebra",
+      "Aéroport de Grenoble": "Aeropuerto de Grenoble",
+      "Aéroport de Lyon": "Aeropuerto de Lyon",
+      "Gares": "Estaciones",
+      "Gare de Bourg St Maurice": "Estación de Bourg St Maurice",
+      "Gare de Chambéry": "Estación de Chambéry",
+      "Gare de Lyon": "Estación de Lyon",
+      "Gare de Moûtiers": "Estación de Moûtiers",
+      "Stations & longues distances": "Estaciones y largas distancias",
+      "Stations voisines": "Estaciones vecinas",
+      "Trajet": "Ruta",
+      "Ste Foy – Villaroger (1 à 4 pers.)": "Ste Foy – Villaroger (1-4 pers.)",
+      "Ste Foy – Villaroger (5 pers.)": "Ste Foy – Villaroger (5 pers.)",
+      "Ste Foy – Villaroger (6 pers.)": "Ste Foy – Villaroger (6 pers.)",
+      "Ste Foy – Villaroger (7 pers.)": "Ste Foy – Villaroger (7 pers.)",
+      "Ste Foy – Villaroger (8 pers.)": "Ste Foy – Villaroger (8 pers.)",
+      "La Rosière (1 à 4 pers.)": "La Rosière (1-4 pers.)",
+      "La Rosière (5 pers.)": "La Rosière (5 pers.)",
+      "La Rosière (6 pers.)": "La Rosière (6 pers.)",
+      "La Rosière (7 pers.)": "La Rosière (7 pers.)",
+      "La Rosière (8 pers.)": "La Rosière (8 pers.)",
+      "Grandes distances": "Largas distancias",
+      "Turin (1 à 4 pers.)": "Turín (1-4 pers.)",
+      "Turin (5 pers.)": "Turín (5 pers.)",
+      "Turin (6 pers.)": "Turín (6 pers.)",
+      "Turin (7 pers.)": "Turín (7 pers.)",
+      "Turin (8 pers.)": "Turín (8 pers.)",
+      "Milan (1 à 4 pers.)": "Milán (1-4 pers.)",
+      "Milan (5 pers.)": "Milán (5 pers.)",
+      "Milan (6 pers.)": "Milán (6 pers.)",
+      "Milan (7 pers.)": "Milán (7 pers.)",
+      "Milan (8 pers.)": "Milán (8 pers.)",
+      "Paris (1 à 4 pers.)": "París (1-4 pers.)",
+      "Paris (5 pers.)": "París (5 pers.)",
+      "Paris (6 pers.)": "París (6 pers.)",
+      "Paris (7 pers.)": "París (7 pers.)",
+      "Paris (8 pers.)": "París (8 pers.)",
+      "FooterTitle": "Taxi Val-d'Isère • Servicio Val-d'Isère",
+      "FooterContact": "Email: Taxisvaldisere@gmail.com • Disponible 24/7",
+      "FooterRights": "© 2025 Taxi Val-d'Isère — Todos los derechos reservados."
+    }
+  };
+
+  function applyTranslations(lang){
+    document.querySelectorAll("[data-i18n]").forEach(el=>{
+      const key = el.dataset.i18n;
+      const t = translations[lang] && translations[lang][key];
+      if(t) {
+        el.textContent = t;
+      }
+    });
+    const flagMap = {fr:"🇫🇷", en:"🇬🇧", es:"🇪🇸"};
+    langLabel.textContent = lang.toUpperCase();
+    const oldFlag = langBtn.querySelector(".flag");
+    if(oldFlag) oldFlag.remove();
+    const flagSpan = document.createElement("span");
+    flagSpan.className = "flag";
+    flagSpan.textContent = flagMap[lang] || "🌐";
+    langBtn.insertBefore(flagSpan, langBtn.firstChild);
+    document.documentElement.lang = lang;
+  }
+
+  // Toggle language menu
+  langBtn.addEventListener("click",(e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    langMenu.classList.toggle("open");
+  });
+
+  // Language option clicks
+  document.querySelectorAll(".lang-option").forEach(opt=>{
+    opt.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      const lang = this.getAttribute("data-lang");
+      localStorage.setItem("lang", lang);
+      applyTranslations(lang);
+      langMenu.classList.remove("open");
+    });
+  });
+
+  // Close menus on outside click
+  document.addEventListener("click",(e)=>{
+    if(!drawer.contains(e.target) && !hamburger.contains(e.target)){
+      closeMenu();
+    }
+    if(!langMenu.contains(e.target) && !langBtn.contains(e.target)){
+      langMenu.classList.remove("open");
+    }
+  });
+
+  // Apply saved language on load
+  const savedLang = localStorage.getItem("lang") || "fr";
+  applyTranslations(savedLang);
 </script>
 
+<a
+  href="https://wa.me/330626339813?text=Bonjour%20Taxivaldisere%20!"
+  class="whatsapp-floating"
+  target="_blank"
+  rel="noopener"
+  aria-label="Chat WhatsApp TaxiLink"
+>
+  <svg viewBox="0 0 32 32" role="img" aria-hidden="true">
+    <path
+      fill="currentColor"
+      d="M16 3C9 3 3.5 8.6 3.5 15.5c0 2.8.9 5.4 2.6 7.6L4 29l6-1.6c1.9 1 4 1.5 6 1.5 7 0 12.5-5.6 12.5-12.5S23 3 16 3zm0 22.6c-1.8 0-3.5-.5-5-1.4l-.3-.2-3.6.9 1-3.5-.2-.3c-1.5-2-2.3-4.3-2.3-6.7C5.5 9.4 10.2 4.9 16 4.9c5.8 0 10.5 4.5 10.5 10.1 0 5.6-4.7 10.6-10.5 10.6zm5.8-6.5c-.3-.1-1.8-.9-2-1-.2-.1-.4-.1-.6.1-.2.3-.8 1-.9 1.1-.2.1-.3.2-.6.1s-1.2-.4-2.3-1.4c-.9-.8-1.5-1.8-1.7-2.1s0-.5.1-.6c.1-.1.3-.3.4-.5.2-.2.3-.3.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.6-1.6-.8-2.2c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.3s-1 1-1 2.4 1.1 2.8 1.2 3 .2.4.4.6c.2.2 2.3 3.6 5.6 4.9.8.4 1.5.6 2 .8.8.3 1.5.3 2 .2.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"
+    />
+  </svg>
+</a>
 </body>
-</html>
+    </html>
