@@ -35,9 +35,7 @@
       justify-content:flex-start;
       overflow:hidden;
     }
-    /* IMPORTANT : On retire le z-index générique pour le gérer manuellement */
-    header > *{position:relative;} 
-
+    header > *{position:relative;}
     .hero-bg{
       position:absolute;
       inset:0;
@@ -57,8 +55,6 @@
       inset:0;
       background:linear-gradient(165deg,rgba(0,0,0,.45) 10%,rgba(0,0,0,.82) 65%);
     }
-    
-    /* CORRECTION Z-INDEX : La nav passe au dessus de tout (100) */
     .nav-wrapper{
       width:100%;
       padding:22px 0;
@@ -66,7 +62,7 @@
       align-items:center;
       justify-content:center;
       position:relative;
-      z-index:100; 
+      z-index:100;
     }
     nav{
       width:min(1200px,92vw);
@@ -84,13 +80,12 @@
       visibility:hidden;
       pointer-events:none;
     }
-    /* CORRECTION LOGO : Décalage gauche */
     .logo {
       display:inline-flex;
       align-items:center;
       justify-content:center;
       height:60px;
-      margin-right:20px; /* Décalage demandé */
+      margin-right:20px;
     }
     .logo img {
       height:100%;
@@ -111,7 +106,7 @@
       left:clamp(8px,2.8vw,48px);
       top:50%;
       transform:translateY(-50%);
-      z-index:105; /* Au dessus de la nav */
+      z-index:105;
     }
     .hamburger span,
     .hamburger::before,
@@ -128,7 +123,43 @@
     .hamburger.active span{opacity:0;}
     .hamburger.active::before{transform:rotate(45deg);}
     .hamburger.active::after{transform:rotate(-45deg);}
-    
+    .lang-bar{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .lang-bar--header{
+      width:min(1200px,92vw);
+      margin:12px auto 0;
+    }
+    .lang-item{
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(0,0,0,.55);
+      color:#f5f5f5;
+      border-radius:999px;
+      padding:8px 16px;
+      letter-spacing:.06em;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      cursor:pointer;
+      transition:background .25s ease, color .25s ease, transform .25s ease, border-color .25s ease;
+    }
+    .lang-item .flag{font-size:1rem;}
+    .lang-item.active{
+      background:#f5f5f5;
+      color:#111;
+      border-color:transparent;
+      transform:translateY(-1px);
+    }
+    .footer-lang-bar{
+      margin:20px auto 10px;
+    }
+    .footer-lang-bar .lang-item{
+      border-color:rgba(255,255,255,.25);
+    }
     .drawer{
       position:fixed;
       top:0;
@@ -143,7 +174,7 @@
       flex-direction:column;
       gap:18px;
       transition:.3s;
-      z-index:200; /* Très haut */
+      z-index:200;
       color:#f5f5f5;
     }
     .drawer a{
@@ -164,12 +195,10 @@
       z-index:150;
     }
     .overlay.show{opacity:1;pointer-events:auto;}
-    
-    /* Le Hero est en z-index 1, donc en dessous de la nav (100) */
     .hero{
       width:min(1100px,90vw);
       margin:60px auto 120px;
-      z-index:1; 
+      z-index:1;
       position:relative;
     }
     .hero-text{
@@ -224,7 +253,7 @@
       border-top-left-radius:40px;
       border-top-right-radius:40px;
       position:relative;
-      z-index:10; /* Au dessus du hero bg */
+      z-index:10;
       padding-top:40px;
     }
     main section{padding:70px 0;}
@@ -392,6 +421,19 @@
       margin-top:40px;
     }
     footer strong{color:#fff;}
+    .footer-logo{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin-bottom:18px;
+    }
+    .footer-logo img{
+      width:140px;
+      height:auto;
+      display:block;
+    }
     .services-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -534,39 +576,6 @@
       margin-top:-18px;
       margin-bottom:36px;
     }
-    .footer-logo{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      margin-bottom:18px;
-    }
-    .footer-logo img{
-      width:140px;
-      height:auto;
-      display:block;
-    }
-    .footer-mark{
-      width:64px;
-      height:64px;
-      border-radius:50%;
-      background:#fff;
-      color:#020202;
-      display:grid;
-      place-items:center;
-      font-weight:700;
-      font-size:1.1rem;
-      letter-spacing:.18em;
-    }
-    .footer-wordmark{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:4px;
-      text-transform:uppercase;
-      letter-spacing:.2em;
-    }
     .footer-wordmark span{
       font-size:.7rem;
       letter-spacing:.3em;
@@ -583,59 +592,13 @@
         transform:translateY(-50%);
       }
       .hero-buttons button{flex:1;}
+      .lang-bar--header{
+        width:96vw;
+      }
+      .lang-item{
+        padding:8px 14px;
+      }
     }
-    /* Lang selector */
-    .lang-selector{
-      position:absolute;
-      right:clamp(12px,2.8vw,48px);
-      top:50%;
-      transform:translateY(-50%);
-      z-index:110; /* Encore plus haut */
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .lang-btn{
-      border:1px solid rgba(255,255,255,.35);
-      background:rgba(0,0,0,.55);
-      color:#f5f5f5;
-      border-radius:18px;
-      padding:10px 14px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-weight:600;
-      letter-spacing:.06em;
-      position:relative;
-      z-index:110;
-    }
-    .lang-btn span.flag{font-size:1.05rem;}
-    .lang-menu{
-      position:absolute;
-      top:54px;
-      right:0;
-      background:#050505;
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:16px;
-      box-shadow:0 18px 45px rgba(0,0,0,.5);
-      overflow:hidden;
-      display:none;
-      min-width:150px;
-      z-index:120;
-    }
-    .lang-menu.open{display:block;}
-    .lang-option{
-      padding:12px 14px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color:#f5f5f5;
-      cursor:pointer;
-      font-weight:500;
-    }
-    .lang-option:hover{background:rgba(255,255,255,.06);}
-    /* Slider for Mercedes GLE */
     .slider{
       position:relative;
       overflow:hidden;
@@ -668,38 +631,38 @@
     .slider-btn.prev{left:12px;}
     .slider-btn.next{right:12px;}
     .whatsapp-floating{
-  position:fixed;
-  bottom:26px;
-  right:26px;
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  background:#25D366;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 20px 45px rgba(6,10,30,0.55);
-  text-decoration:none;
-  z-index:220;
-  transition:transform .25s ease, box-shadow .25s ease;
-}
-.whatsapp-floating:hover{
-  transform:translateY(-4px) scale(1.04);
-  box-shadow:0 28px 60px rgba(6,10,30,0.65);
-}
-.whatsapp-floating svg{
-  width:32px;
-  height:32px;
-}
-@media(max-width:640px){
-  .whatsapp-floating{
-    bottom:18px;
-    right:18px;
-    width:56px;
-    height:56px;
-  }
-}
+      position:fixed;
+      bottom:26px;
+      right:26px;
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      background:#25D366;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 20px 45px rgba(6,10,30,0.55);
+      text-decoration:none;
+      z-index:220;
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .whatsapp-floating:hover{
+      transform:translateY(-4px) scale(1.04);
+      box-shadow:0 28px 60px rgba(6,10,30,0.65);
+    }
+    .whatsapp-floating svg{
+      width:32px;
+      height:32px;
+    }
+    @media(max-width:640px){
+      .whatsapp-floating{
+        bottom:18px;
+        right:18px;
+        width:56px;
+        height:56px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -720,14 +683,13 @@
       </a>
       <div class="nav-dummy" aria-hidden="true"></div>
     </nav>
-    <div class="lang-selector">
-      <button class="lang-btn" id="langBtn"><span class="flag">🇫🇷</span><span id="langLabel">FR</span></button>
-      <div class="lang-menu" id="langMenu">
-        <div class="lang-option" data-lang="fr"><span class="flag">🇫🇷</span><span>Français</span></div>
-        <div class="lang-option" data-lang="en"><span class="flag">🇬🇧</span><span>English</span></div>
-        <div class="lang-option" data-lang="es"><span class="flag">🇪🇸</span><span>Español</span></div>
-      </div>
-    </div>
+  </div>
+
+  <div class="lang-bar lang-bar--header" role="group" aria-label="Sélecteur de langue principal">
+    <button class="lang-item" data-lang-btn data-lang="fr" aria-pressed="false"><span class="flag">🇫🇷</span><span>FR</span></button>
+    <button class="lang-item" data-lang-btn data-lang="en" aria-pressed="false"><span class="flag">🇬🇧</span><span>EN</span></button>
+    <button class="lang-item" data-lang-btn data-lang="es" aria-pressed="false"><span class="flag">🇪🇸</span><span>ES</span></button>
+    <button class="lang-item" data-lang-btn data-lang="ar" aria-pressed="false"><span class="flag">🇦🇪</span><span>AR</span></button>
   </div>
 
   <aside class="drawer" id="drawer">
@@ -995,7 +957,7 @@
         <article class="card">
           <h4 data-i18n="Aéroports">Aéroports</h4>
           <div class="tarif-block">
-            <h5 data-i18n="Aéroport de Chambéry">Aéroport de Chambéry</h5>
+            <h5 data-i18n="Aéroport de Chambéry">Aéroport deque Chambéry</h5>
             <table class="tarif-table">
               <thead>
                 <tr>
@@ -1220,18 +1182,22 @@
     </div>
     <strong data-i18n="FooterTitle">Taxi Val-d'Isère • Service Val-d'Isère</strong>
     <p data-i18n="FooterContact">Email : Taxisvaldisere@gmail.com • Disponible 24/7</p>
+    <p data-i18n="FooterPhone">Téléphone : +33 6 26 33 98 13</p>
+    <div class="lang-bar footer-lang-bar" role="group" aria-label="Sélecteur de langue pied de page">
+      <button class="lang-item" data-lang-btn data-lang="fr" aria-pressed="false"><span class="flag">🇫🇷</span><span>FR</span></button>
+      <button class="lang-item" data-lang-btn data-lang="en" aria-pressed="false"><span class="flag">🇬🇧</span><span>EN</span></button>
+      <button class="lang-item" data-lang-btn data-lang="es" aria-pressed="false"><span class="flag">🇪🇸</span><span>ES</span></button>
+      <button class="lang-item" data-lang-btn data-lang="ar" aria-pressed="false"><span class="flag">🇦🇪</span><span>AR</span></button>
+    </div>
     <p data-i18n="FooterRights">© 2025 Taxi Val-d'Isère — Tout droit réservé.</p>
   </div>
 </footer>
 
 <script>
-  // Core elements
   const hamburger = document.getElementById("hamburger");
   const drawer = document.getElementById("drawer");
   const overlay = document.getElementById("overlay");
-  const langBtn = document.getElementById("langBtn");
-  const langMenu = document.getElementById("langMenu");
-  const langLabel = document.getElementById("langLabel");
+  const langButtons = document.querySelectorAll("[data-lang-btn]");
 
   const closeMenu = () => {
     drawer.classList.remove("open");
@@ -1254,7 +1220,12 @@
   });
   overlay.addEventListener("click",closeMenu);
 
-  // Reveal animations
+  document.addEventListener("click",(e)=>{
+    if(!drawer.contains(e.target) && !hamburger.contains(e.target)){
+      closeMenu();
+    }
+  });
+
   const revealElements = document.querySelectorAll(".reveal-left, .reveal-right");
   const revealObserver = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
@@ -1266,7 +1237,6 @@
   },{threshold:0.15});
   revealElements.forEach(el=>revealObserver.observe(el));
 
-  // Slider
   document.querySelectorAll("[data-slider]").forEach(slider=>{
     const slides = slider.querySelector(".slides");
     const imgs = slides.querySelectorAll("img");
@@ -1282,7 +1252,6 @@
     });
   });
 
-  // Language translations - COMPLETE VERSION
   const translations = {
     fr: {
       "Architecture": "Architecture",
@@ -1411,6 +1380,7 @@
       "Paris (8 pers.)": "Paris (8 pers.)",
       "FooterTitle": "Taxi Val-d'Isère • Service Val-d'Isère",
       "FooterContact": "Email : Taxisvaldisere@gmail.com • Disponible 24/7",
+      "FooterPhone": "Téléphone : +33 6 26 33 98 13",
       "FooterRights": "© 2025 Taxi Val-d'Isère — Tout droit réservé."
     },
     en: {
@@ -1540,6 +1510,7 @@
       "Paris (8 pers.)": "Paris (8 ppl)",
       "FooterTitle": "Taxi Val-d'Isère • Val-d'Isère Service",
       "FooterContact": "Email: Taxisvaldisere@gmail.com • Available 24/7",
+      "FooterPhone": "Phone: +33 6 26 33 98 13",
       "FooterRights": "© 2025 Taxi Val-d'Isère — All rights reserved."
     },
     es: {
@@ -1669,61 +1640,175 @@
       "Paris (8 pers.)": "París (8 pers.)",
       "FooterTitle": "Taxi Val-d'Isère • Servicio Val-d'Isère",
       "FooterContact": "Email: Taxisvaldisere@gmail.com • Disponible 24/7",
+      "FooterPhone": "Teléfono: +33 6 26 33 98 13",
       "FooterRights": "© 2025 Taxi Val-d'Isère — Todos los derechos reservados."
+    },
+    ar: {
+      "Architecture": "الهيكل العام",
+      "Véhicules": "المركبات",
+      "Processus": "الإجراءات",
+      "Tarifs": "التعريفات",
+      "Contact": "اتصل بنا",
+      "TAXI VAL-D'ISÈRE ★★★★★": "تاكسي فال ديزير ★★★★★",
+      "Service premium 24/7 toutes distances": "خدمة متميزة على مدار الساعة لجميع المسافات",
+      "HeroDesc": "احجز رحلاتك بكل طمأنينة مع سائقين معتمدين، وتتبع GPS دقيق، ودعم متاح في كل لحظة.",
+      "Réservation": "حجز",
+      "TarifsBtn": "التعريفات",
+      "Nos services": "خدماتنا",
+      "Architecture multi-profils": "منظومة متعددة الملفات",
+      "TaglineArch": "رحلة كونسيرج بست مراحل تضمن الدقة في المواعيد، وتنسيق السائق، وراحة العميل من البداية إلى النهاية.",
+      "Étapes 01-02": "المرحلتان 01-02",
+      "Planification personnalisée": "تخطيط مخصص",
+      "C1L1": "طلب مجدول مع التاريخ والوقت ومواقع الانطلاق والاحتياجات الخاصة.",
+      "C1L2": "تأكيد من فريق الكونسيرج: التحقق من التوافر وإرسال ملخص عبر البريد الإلكتروني والرسائل النصية.",
+      "C1L3": "أخذ الأمتعة والمعدات في الاعتبار قبل التأكيد النهائي.",
+      "Étapes 03-04": "المرحلتان 03-04",
+      "Coordination chauffeur": "تنسيق السائق",
+      "C2L1": "تخصيص السائق المثالي حتى 24 ساعة قبل المغادرة مع مشاركة بياناته.",
+      "C2L2": "متابعة التحضيرات والمواءمة مع متطلبات العميل أو الحدث.",
+      "C2L3": "إمكانية إجراء تعديلات حتى 12 ساعة قبل الموعد عبر مساحة العميل.",
+      "Étapes 05-06": "المرحلتان 05-06",
+      "Suivi & prise en charge": "متابعة واستلام",
+      "C3L1": "تذكير تلقائي قبل 3 ساعات مع حالة السائق ووقت الوصول المحدث.",
+      "C3L2": "إشعار نهائي عند اقتراب المركبة.",
+      "C3L3": "استلام في الوقت المحدد مع التحقق من الهوية ومساعدة في الأمتعة.",
+      "Véhicules à disposition pour tous vos trajets": "مركبات متاحة لجميع رحلاتك",
+      "TaglineVeh": "اختر مستوى الراحة المثالي لرحلاتك الخاصة أو المهنية أو الفعالية.",
+      "Veh1Title": "مرسيدس الفئة V سوداء 8 مقاعد",
+      "Veh1Desc": "أقصى درجات الراحة مع مقاعد جلد وسائق ثنائي اللغة. مثالية لرحلات الأعمال والربط بين المطار أو المحطة.",
+      "Veh2Title": "رينو ترافيك أسود 9 مقاعد",
+      "Veh2Desc": "مساحة لتسعة ركاب وصناديق كبيرة وراحة فاخرة. مثالية للمجموعات ورحلات التزلج وخدمات الفنادق.",
+      "Veh3Title": "رينو ترافيك رمادي 9 مقاعد",
+      "Veh3Desc": "مساحة لتسعة ركاب وصناديق كبيرة وراحة فاخرة. مثالية للمجموعات ورحلات التزلج وخدمات الفنادق.",
+      "Veh4Title": "مرسيدس GLE كوبيه 350d",
+      "Veh4Desc": "سيارة SUV كوبيه فاخرة بمقاعد جلدية وراحة عالية المستوى وأداء مثالي لطرق الجبال.",
+      "Réserver": "احجز الآن",
+      "Nos services de transport en détail": "خدمات النقل لدينا بالتفصيل",
+      "TaglineServ": "اكتشف جميع عروضنا المتخصصة واختر الخدمة التي تلبي احتياجك بنقرة واحدة.",
+      "Toutes distances": "جميع المسافات",
+      "En savoir +": "اكتشف المزيد",
+      "Taxi 24/7-nuit": "تاكسي 24/7 - ليلي",
+      "Navette aéroport": "خدمة نقل المطار",
+      "Navette gare": "خدمة نقل المحطة",
+      "Navette station": "خدمة نقل المنتجع",
+      "Transfert hôtel": "نقل الفندق",
+      "Service business": "خدمة رجال الأعمال",
+      "Tourisme": "سياحة",
+      "Événementiel": "خدمة الفعاليات",
+      "Détails des prestations": "تفاصيل الخدمات",
+      "TaglineDetails": "كل خدمة تتمتع بلوجستيات مخصصة وسائقين مدربين وخيارات حسب الطلب لأقصى درجات الراحة.",
+      "DD1": "سافر حيثما تشاء ومتى تشاء. سائقونا يتولون الرحلات بين المدن أو المنتجعات أو الأودية المجاورة مع تتبع GPS مستمر وتسعير شفاف.",
+      "DD2": "هل تحتاج إلى عودة متأخرة بعد عشاء أو نادٍ أو رحلة ليلية؟ نوفر خدمة ليلية وحماية معززة عبر تحديد الموقع المشترك وتنبيهات السائق.",
+      "DD3": "نقل خاص من وإلى مطارات جنيف وليون وشامبيري. مراقبة الرحلات في الوقت الحقيقي، استقبال شخصي، ومساعدة في الأمتعة.",
+      "DD4": "وصل إلى المنتجع براحة بفضل خدمة المحطة: استقبال على الرصيف، مساعدة في معدات التزلج، وتنسيق مع جداول القطار.",
+      "DD5": "اربط فال ديزير بسهولة بالمنتجعات المجاورة. سيارات مجهزة للثلوج وحاملات تزلج وسائقون متمرسون بالطرق الجبلية لضمان الدقة والأمان.",
+      "DD6": "استقبل ضيوفك المميزين من خلال استقبال عند مكتب الاستقبال مع لافتات مخصصة وزجاجة ماء فاخرة وتنسيق مع كونسيرج الفندق.",
+      "DD7": "حسّن تنقلات عملك بسيارات فاخرة وسائقين ثنائيي اللغة وواي فاي على متن السيارة وفوترة مجمعة لفرقك.",
+      "DD8": "اكتشف مناظر الألب والقرى السافوّية والمطاعم الراقية. مسارات مخصصة ونصائح محلية لإقامة مليئة باللحظات.",
+      "DD9": "مؤتمرات وحفلات زفاف وندوات: ننسق أساطيل المركبات واستقبال كبار الضيوف وخطة الحركة لضمان لوجستيات سلسة.",
+      "Processus de commande": "عملية الحجز",
+      "Demande planifiée": "طلب مجدول",
+      "P1": "اختر التاريخ والوقت وأماكن الانطلاق واذكر الأمتعة أو الاحتياجات الخاصة.",
+      "Confirmation concierge": "تأكيد الكونسيرج",
+      "P2": "يتحقق فريقنا من التوافر ثم يرسل لك ملخصاً عبر البريد الإلكتروني والرسائل النصية.",
+      "Attribution chauffeur": "تعيين السائق",
+      "P3": "نختار السائق الأمثل ونشارك بياناته حتى 24 ساعة قبل الرحلة.",
+      "Ajustements flexibles": "تعديلات مرنة",
+      "P4": "قم بتعديل الجداول أو المحطات حتى 12 ساعة قبل الانطلاق من خلال مساحة العميل.",
+      "Rappel automatique": "تذكير تلقائي",
+      "P5": "استلم إشعاراً قبل 3 ساعات من الانطلاق مع حالة السائق ووقت الوصول المتوقع.",
+      "Prise en charge": "استلام الركاب",
+      "P6": "يصل السائق في الوقت المتفق عليه، يؤكد هويتك، ويقدم المساعدة في الأمتعة.",
+      "Tarifs des transferts": "تعريفات النقل",
+      "TarifNote": "تعريفات ثابتة من فال ديزير. تعبر أعمدة \"النهار\" و\"الليل\" عن الفترات الصباحية والمسائية.",
+      "Aéroports": "المطارات",
+      "Aéroport de Chambéry": "مطار شامبيري",
+      "Capacité": "السعة",
+      "Jour": "نهار",
+      "Nuit": "ليل",
+      "1 à 4 pers.": "1 إلى 4 أشخاص",
+      "5 pers.": "5 أشخاص",
+      "6 pers.": "6 أشخاص",
+      "7 pers.": "7 أشخاص",
+      "8 pers.": "8 أشخاص",
+      "Aéroport de Genève": "مطار جنيف",
+      "Aéroport de Grenoble": "مطار غرونوبل",
+      "Aéroport de Lyon": "مطار ليون",
+      "Gares": "محطات القطار",
+      "Gare de Bourg St Maurice": "محطة بور سان موريس",
+      "Gare de Chambéry": "محطة شامبيري",
+      "Gare de Lyon": "محطة ليون",
+      "Gare de Moûtiers": "محطة مووتييه",
+      "Stations & longues distances": "المنتجعات والمسافات الطويلة",
+      "Stations voisines": "المنتجعات المجاورة",
+      "Trajet": "الرحلة",
+      "Ste Foy – Villaroger (1 à 4 pers.)": "سانت فوي – فيلاروجيه (1 إلى 4)",
+      "Ste Foy – Villaroger (5 pers.)": "سانت فوي – فيلاروجيه (5)",
+      "Ste Foy – Villaroger (6 pers.)": "سانت فوي – فيلاروجيه (6)",
+      "Ste Foy – Villaroger (7 pers.)": "سانت فوي – فيلاروجيه (7)",
+      "Ste Foy – Villaroger (8 pers.)": "سانت فوي – فيلاروجيه (8)",
+      "La Rosière (1 à 4 pers.)": "لا روزيير (1 إلى 4)",
+      "La Rosière (5 pers.)": "لا روزيير (5)",
+      "La Rosière (6 pers.)": "لا روزيير (6)",
+      "La Rosière (7 pers.)": "لا روزيير (7)",
+      "La Rosière (8 pers.)": "لا روزيير (8)",
+      "Grandes distances": "مسافات طويلة",
+      "Turin (1 à 4 pers.)": "تورينو (1 إلى 4)",
+      "Turin (5 pers.)": "تورينو (5)",
+      "Turin (6 pers.)": "تورينو (6)",
+      "Turin (7 pers.)": "تورينو (7)",
+      "Turin (8 pers.)": "تورينو (8)",
+      "Milan (1 à 4 pers.)": "ميلانو (1 إلى 4)",
+      "Milan (5 pers.)": "ميلانو (5)",
+      "Milan (6 pers.)": "ميلانو (6)",
+      "Milan (7 pers.)": "ميلانو (7)",
+      "Milan (8 pers.)": "ميلانو (8)",
+      "Paris (1 à 4 pers.)": "باريس (1 إلى 4)",
+      "Paris (5 pers.)": "باريس (5)",
+      "Paris (6 pers.)": "باريس (6)",
+      "Paris (7 pers.)": "باريس (7)",
+      "Paris (8 pers.)": "باريس (8)",
+      "FooterTitle": "تاكسي فال ديزير • خدمة فال ديزير",
+      "FooterContact": "البريد الإلكتروني: Taxisvaldisere@gmail.com • متاحون 24/7",
+      "FooterPhone": "هاتف: +33 6 26 33 98 13",
+      "FooterRights": "© 2025 تاكسي فال ديزير — جميع الحقوق محفوظة."
     }
   };
 
   function applyTranslations(lang){
     document.querySelectorAll("[data-i18n]").forEach(el=>{
       const key = el.dataset.i18n;
-      const t = translations[lang] && translations[lang][key];
-      if(t) {
-        el.textContent = t;
+      const translation = translations[lang] && translations[lang][key];
+      if(translation){
+        el.textContent = translation;
       }
     });
-    const flagMap = {fr:"🇫🇷", en:"🇬🇧", es:"🇪🇸"};
-    langLabel.textContent = lang.toUpperCase();
-    const oldFlag = langBtn.querySelector(".flag");
-    if(oldFlag) oldFlag.remove();
-    const flagSpan = document.createElement("span");
-    flagSpan.className = "flag";
-    flagSpan.textContent = flagMap[lang] || "🌐";
-    langBtn.insertBefore(flagSpan, langBtn.firstChild);
     document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   }
 
-  // Toggle language menu
-  langBtn.addEventListener("click",(e)=>{
-    e.preventDefault();
-    e.stopPropagation();
-    langMenu.classList.toggle("open");
-  });
+  function updateLangButtons(lang){
+    langButtons.forEach(btn=>{
+      const isActive = btn.dataset.lang === lang;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  }
 
-  // Language option clicks
-  document.querySelectorAll(".lang-option").forEach(opt=>{
-    opt.addEventListener("click", function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      const lang = this.getAttribute("data-lang");
-      localStorage.setItem("lang", lang);
-      applyTranslations(lang);
-      langMenu.classList.remove("open");
+  function setLanguage(lang){
+    if(!translations[lang]) lang = "fr";
+    localStorage.setItem("lang", lang);
+    applyTranslations(lang);
+    updateLangButtons(lang);
+  }
+
+  langButtons.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      setLanguage(btn.dataset.lang);
     });
   });
 
-  // Close menus on outside click
-  document.addEventListener("click",(e)=>{
-    if(!drawer.contains(e.target) && !hamburger.contains(e.target)){
-      closeMenu();
-    }
-    if(!langMenu.contains(e.target) && !langBtn.contains(e.target)){
-      langMenu.classList.remove("open");
-    }
-  });
-
-  // Apply saved language on load
-  const savedLang = localStorage.getItem("lang") || "fr";
-  applyTranslations(savedLang);
+  setLanguage(localStorage.getItem("lang") || "fr");
 </script>
 
 <a
@@ -1741,4 +1826,4 @@
   </svg>
 </a>
 </body>
-    </html>
+</html>
