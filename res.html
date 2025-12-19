@@ -149,49 +149,49 @@
       font-size:.86rem;
     }
     .drawer.open{left:0;}
-    .lang-selector{
-      position:absolute;
-      right:clamp(12px,3vw,48px);
-      top:50%;
-      transform:translateY(-50%);
+
+    .lang-bar{
       display:flex;
-      align-items:center;
-      z-index:110;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:center;
     }
-    .lang-btn{
+    .lang-bar--header{
+      width:min(1200px,92vw);
+      margin:12px auto 0;
+    }
+    .lang-item{
       border:1px solid rgba(255,255,255,.35);
       background:rgba(0,0,0,.55);
-      color:#fff;
-      border-radius:18px;
-      padding:10px 16px;
-      cursor:pointer;
-      display:flex;
+      color:#f5f5f5;
+      border-radius:999px;
+      padding:8px 16px;
+      letter-spacing:.08em;
+      font-weight:600;
+      display:inline-flex;
       align-items:center;
       gap:8px;
-      font-weight:600;
-    }
-    .lang-menu{
-      position:absolute;
-      top:60px;
-      right:0;
-      min-width:150px;
-      background:#05070f;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:16px;
-      box-shadow:0 20px 50px rgba(0,0,0,.5);
-      display:none;
-      overflow:hidden;
-    }
-    .lang-menu.open{display:block;}
-    .lang-option{
-      padding:12px 16px;
-      display:flex;
-      align-items:center;
-      gap:10px;
       cursor:pointer;
-      color:#fff;
+      transition:background .25s,color .25s,border-color .25s,transform .25s;
     }
-    .lang-option:hover{background:rgba(255,255,255,.08);}
+    .lang-item .flag{font-size:1rem;}
+    .lang-item.active{
+      background:#fff;
+      color:#0b0d16;
+      border-color:transparent;
+      transform:translateY(-1px);
+    }
+    .footer-lang-bar{
+      margin:22px auto 10px;
+    }
+    .footer-lang-bar .lang-item{
+      border-color:rgba(255,255,255,.25);
+    }
+    @media(max-width:640px){
+      .lang-bar--header{width:94vw;}
+      .lang-item{padding:8px 14px;}
+    }
+
     .hero{
       width:min(1200px,90vw);
       margin:50px auto 140px;
@@ -731,38 +731,38 @@
     }
 
     .whatsapp-floating{
-  position:fixed;
-  bottom:26px;
-  right:26px;
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  background:#25D366;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 20px 45px rgba(6,10,30,0.55);
-  text-decoration:none;
-  z-index:220;
-  transition:transform .25s ease, box-shadow .25s ease;
-}
-.whatsapp-floating:hover{
-  transform:translateY(-4px) scale(1.04);
-  box-shadow:0 28px 60px rgba(6,10,30,0.65);
-}
-.whatsapp-floating svg{
-  width:32px;
-  height:32px;
-}
-@media(max-width:640px){
-  .whatsapp-floating{
-    bottom:18px;
-    right:18px;
-    width:56px;
-    height:56px;
-  }
-}
+      position:fixed;
+      bottom:26px;
+      right:26px;
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      background:#25D366;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 20px 45px rgba(6,10,30,0.55);
+      text-decoration:none;
+      z-index:220;
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .whatsapp-floating:hover{
+      transform:translateY(-4px) scale(1.04);
+      box-shadow:0 28px 60px rgba(6,10,30,0.65);
+    }
+    .whatsapp-floating svg{
+      width:32px;
+      height:32px;
+    }
+    @media(max-width:640px){
+      .whatsapp-floating{
+        bottom:18px;
+        right:18px;
+        width:56px;
+        height:56px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -779,15 +779,15 @@
           <img src="https://i.postimg.cc/4x3R5yGY/Photo-Room-20251205-173426.png" alt="TAXI VAL-D’ISÈRE">
         </a>
       </nav>
-      <div class="lang-selector">
-        <button class="lang-btn" id="langBtn"><span class="flag">🇫🇷</span><span id="langLabel">FR</span></button>
-        <div class="lang-menu" id="langMenu">
-          <div class="lang-option" data-lang="fr"><span class="flag">🇫🇷</span><span>Français</span></div>
-          <div class="lang-option" data-lang="en"><span class="flag">🇬🇧</span><span>English</span></div>
-          <div class="lang-option" data-lang="es"><span class="flag">🇪🇸</span><span>Español</span></div>
-        </div>
-      </div>
     </div>
+
+    <div class="lang-bar lang-bar--header" role="group" aria-label="Sélecteur de langue principal">
+      <button class="lang-item" data-lang-btn data-lang="fr" aria-pressed="false"><span class="flag">🇫🇷</span><span>FR</span></button>
+      <button class="lang-item" data-lang-btn data-lang="en" aria-pressed="false"><span class="flag">🇬🇧</span><span>EN</span></button>
+      <button class="lang-item" data-lang-btn data-lang="es" aria-pressed="false"><span class="flag">🇪🇸</span><span>ES</span></button>
+      <button class="lang-item" data-lang-btn data-lang="ar" aria-pressed="false"><span class="flag">🇦🇪</span><span>AR</span></button>
+    </div>
+
     <aside class="drawer" id="drawer">
       <a href="index.html" data-i18n="NavHome">Accueil</a>
       <a href="#booking" data-i18n="NavReservation">Réservation</a>
@@ -909,6 +909,7 @@
                     <option value="fr" data-i18n="LangFR">Français</option>
                     <option value="en" data-i18n="LangEN">Anglais</option>
                     <option value="es" data-i18n="LangES">Espagnol</option>
+                    <option value="ar" data-i18n="LangAR">Arabe</option>
                   </select>
                 </div>
               </div>
@@ -1251,6 +1252,12 @@
       <img src="https://i.postimg.cc/4x3R5yGY/Photo-Room-20251205-173426.png" alt="TAXI VAL-D’ISÈRE logo">
       <strong data-i18n="FooterTitle">TAXI VAL-D’ISÈRE • Val-d'Isère</strong>
       <p data-i18n="FooterContact">Email : Taxisvaldisere@gmail.com • WhatsApp : +330626339813</p>
+      <div class="lang-bar footer-lang-bar" role="group" aria-label="Sélecteur de langue pied de page">
+        <button class="lang-item" data-lang-btn data-lang="fr" aria-pressed="false"><span class="flag">🇫🇷</span><span>FR</span></button>
+        <button class="lang-item" data-lang-btn data-lang="en" aria-pressed="false"><span class="flag">🇬🇧</span><span>EN</span></button>
+        <button class="lang-item" data-lang-btn data-lang="es" aria-pressed="false"><span class="flag">🇪🇸</span><span>ES</span></button>
+        <button class="lang-item" data-lang-btn data-lang="ar" aria-pressed="false"><span class="flag">🇦🇪</span><span>AR</span></button>
+      </div>
       <p data-i18n="FooterRights">© 2025 TAXI VAL-D’ISÈRE — Tous droits réservés.</p>
     </div>
   </footer>
@@ -1258,9 +1265,7 @@
     const hamburger = document.getElementById("hamburger");
     const drawer = document.getElementById("drawer");
     const overlay = document.getElementById("overlay");
-    const langBtn = document.getElementById("langBtn");
-    const langMenu = document.getElementById("langMenu");
-    const langLabel = document.getElementById("langLabel");
+    const langButtons = document.querySelectorAll("[data-lang-btn]");
     const pickupDate = document.getElementById("pickup-date");
     const pickupTime = document.getElementById("pickup-time");
     const passengerInput = document.getElementById("passenger-count");
@@ -1292,318 +1297,12 @@
       {value:"Paris",category:"Grandes distances",price:"Jour 1 600€",scopes:["pickup","dropoff"]}
     ];
     const translations = {
-      fr:{
-        NavHome:"Accueil",
-        NavReservation:"Réservation",
-        NavTarifs:"Tarifs",
-        NavFlotte:"Flotte",
-        NavAssistance:"Assistance",
-        HeroBadge:"TAXI VAL-D’ISÈRE • Alpes enneigées",
-        HeroTitle:"Planifiez votre trajet sur-mesure",
-        HeroText:"Réservez votre transfert premium avec chauffeurs insiders, suivi en temps réel et assistance disponible instantanément.",
-        HeroPrimary:"Planifier maintenant",
-        HeroSecondary:"Consulter le calendrier",
-        BookingTitle:"Réservation express",
-        BookingTagline:"Formulaire unifié avec calendrier dynamique, options sur mesure et envoi sécurisé via Web3Forms.",
-        FieldsetTrip:"Votre itinéraire",
-        LabelPickup:"Point de départ",
-        LabelDropoff:"Destination",
-        LabelPickupDate:"Date de départ",
-        LabelPickupTime:"Heure de départ",
-        LabelReturnDate:"Date de retour",
-        LabelReturnTime:"Heure de retour",
-        LabelOptional:"Optionnel",
-        LabelPassengers:"Nombre de passagers",
-        LabelLuggage:"Volume bagages",
-        FieldsetTraveller:"Passagers & contact",
-        LabelTraveller:"Nom complet",
-        LabelEmail:"Email",
-        LabelPhone:"Téléphone",
-        LabelLanguage:"Langue de contact",
-        FieldsetVehicle:"Véhicule & confort",
-        LabelVehicle:"Sélectionnez votre véhicule",
-        VehicleChip1:"Mercedes Classe V 4Matic",
-        VehicleChip2:"Renault Trafic Executive",
-        VehicleChip3:"Mercedes GLE Coupé",
-        VehicleChip1Desc:"Salon mobile 7 sièges • Wi-Fi",
-        VehicleChip2Desc:"9 places • coffre XXL",
-        VehicleChip3Desc:"SUV sport • routes sinueuses",
-        LabelOptions:"Options additionnelles",
-        OptionsChildSeat:"Siège enfant / rehausseur",
-        OptionsSkiRack:"Porte-skis & équipement neige",
-        OptionsConcierge:"Concierge bagages & accueil",
-        FieldsetNotes:"Notes au chauffeur",
-        LabelNotes:"Instructions particulières",
-        AgreeTerms:"J'accepte les conditions de transport et la politique de confidentialité.",
-        SubmitButton:"Envoyer la demande sécurisée",
-        PickupPlaceholder:"Val-d'Isère • Chalet Perce-Neige",
-        DropoffPlaceholder:"Aéroport de Genève • Terminal 1",
-        NamePlaceholder:"Nom Prénom",
-        EmailPlaceholder:"vous@email.com",
-        PhonePlaceholder:"+330626339813",
-        NotesPlaceholder:"Allergies, équipements, accueil VIP...",
-        LangFR:"Français",
-        LangEN:"Anglais",
-        LangES:"Espagnol",
-        BagLight:"Standard (2 valises)",
-        BagMedium:"XL (4 valises + skis)",
-        BagHeavy:"Sur mesure (+5 bagages)",
-        CalendarTitle:"Calendrier intelligent",
-        CalendarHint:"Choisissez un créneau suggéré pour préremplir date & heure.",
-        CalendarStatusIdle:"Choisissez un créneau pour préremplir le formulaire.",
-        CalendarSelected:"Créneau appliqué : vous pouvez encore ajuster manuellement.",
-        SummaryTitle:"Résumé en direct",
-        SummaryDateLabel:"Départ",
-        SummaryVehicleLabel:"Véhicule",
-        SummaryPassengersLabel:"Passagers",
-        SummaryOptionsLabel:"Options",
-        SummaryDatePlaceholder:"En attente de date",
-        SummaryVehiclePlaceholder:"Choisissez un véhicule",
-        SummaryPassengersPlaceholder:"—",
-        SummaryOptionsPlaceholder:"Aucune option ajoutée",
-        StatSupport:"Support 24/7",
-        StatSupportDesc:"Dispatch local basé à Val-d'Isère, réponse moyenne < 2 min.",
-        StatConcierge:"Conciergerie digitale",
-        StatConciergeDesc:"Modifiez ou dupliquez vos trajets depuis l'espace client.",
-        ContactCTA:"Écrire à la conciergerie",
-        FleetTitle:"Notre flotte signature",
-        FleetTagline:"Des véhicules 4Matic entretenus chaque nuit et équipés neige premium.",
-        FleetCard1Title:"Mercedes Classe V Noir",
-        FleetCard1Desc:"Salon mobile 7 passagers, sièges capitonnés, USB-C & Wi-Fi.",
-        FleetCard2Title:"Renault Trafic Executive",
-        FleetCard2Desc:"9 places + méga coffre, parfait pour équipes ou familles.",
-        FleetCard3Title:"Mercedes GLE Coupé 350d",
-        FleetCard3Desc:"SUV sport pour routes sinueuses et conditions hivernales.",
-        AssistanceTitle:"Besoin d'un accompagnement humain ?",
-        AssistanceTagline:"Nos coordinatrices suivent vos convois en temps réel et synchronisent vols, trains ou événements.",
-        AssistanceList1:"Partage de trajet en direct avec vos invités.",
-        AssistanceList2:"Demandes VIP (champagne, panneau personnalisé).",
-        AssistanceList3:"Facturation consolidée multi-devises.",
-        AssistanceCTA:"Contacter la conciergerie",
-        FooterTitle:"TAXI VAL-D’ISÈRE • Val-d'Isère",
-        FooterContact:"Email : Taxisvaldisere@gmail.com • WhatsApp : +330626339813",
-        FooterRights:"© 2025 TAXI VAL-D’ISÈRE — Tous droits réservés.",
-        TarifsTitle:"Tarifs des transferts",
-        TarifNote:"Forfaits au départ de Val-d'Isère. Les colonnes \"Jour\" et \"Nuit\" correspondent aux créneaux diurnes et nocturnes.",
-        TarifCategoryAirports:"Aéroports",
-        TarifCategoryTrains:"Gares",
-        TarifCategoryStations:"Stations & longues distances",
-        TarifCapacity:"Capacité",
-        TarifRoute:"Trajet",
-        TarifDay:"Jour",
-        TarifNight:"Nuit",
-        SearchSelectHint:"Tapez pour rechercher • Entrée pour valider.",
-        SearchEmpty:"Aucun résultat pour cette recherche."
-      },
-      en:{
-        NavHome:"Home",
-        NavReservation:"Booking",
-        NavTarifs:"Rates",
-        NavFlotte:"Fleet",
-        NavAssistance:"Support",
-        HeroBadge:"TAXI VAL-D’ISÈRE • Snow Alps",
-        HeroTitle:"Design your bespoke transfer",
-        HeroText:"Book premium rides with alpine drivers, live tracking, and concierge support on standby.",
-        HeroPrimary:"Start booking",
-        HeroSecondary:"View smart calendar",
-        BookingTitle:"Express booking",
-        BookingTagline:"Unified form with dynamic calendar, tailored extras, and secure Web3Forms submission.",
-        FieldsetTrip:"Your route",
-        LabelPickup:"Pick-up point",
-        LabelDropoff:"Drop-off",
-        LabelPickupDate:"Departure date",
-        LabelPickupTime:"Departure time",
-        LabelReturnDate:"Return date",
-        LabelReturnTime:"Return time",
-        LabelOptional:"Optional",
-        LabelPassengers:"Number of passengers",
-        LabelLuggage:"Luggage volume",
-        FieldsetTraveller:"Passengers & contact",
-        LabelTraveller:"Full name",
-        LabelEmail:"Email",
-        LabelPhone:"Phone",
-        LabelLanguage:"Contact language",
-        FieldsetVehicle:"Vehicle & comfort",
-        LabelVehicle:"Select your vehicle",
-        VehicleChip1:"Mercedes V-Class 4Matic",
-        VehicleChip2:"Renault Trafic Executive",
-        VehicleChip3:"Mercedes GLE Coupé",
-        VehicleChip1Desc:"Rolling lounge 7 seats • Wi-Fi",
-        VehicleChip2Desc:"9 seats • XL trunk",
-        VehicleChip3Desc:"Sport SUV • winding roads",
-        LabelOptions:"Additional options",
-        OptionsChildSeat:"Child seat / booster",
-        OptionsSkiRack:"Ski rack & snow gear",
-        OptionsConcierge:"Concierge & luggage care",
-        FieldsetNotes:"Notes for the chauffeur",
-        LabelNotes:"Special instructions",
-        AgreeTerms:"I accept the transport terms and the privacy policy.",
-        SubmitButton:"Send secure request",
-        PickupPlaceholder:"Val-d'Isère • Chalet Perce-Neige",
-        DropoffPlaceholder:"Geneva Airport • Terminal 1",
-        NamePlaceholder:"First name Last name",
-        EmailPlaceholder:"you@email.com",
-        PhonePlaceholder:"+330626339813",
-        NotesPlaceholder:"Allergies, equipment, VIP welcome...",
-        LangFR:"French",
-        LangEN:"English",
-        LangES:"Spanish",
-        BagLight:"Standard (2 suitcases)",
-        BagMedium:"XL (4 suitcases + skis)",
-        BagHeavy:"Custom (+5 bags)",
-        CalendarTitle:"Smart calendar",
-        CalendarHint:"Pick a suggested slot to pre-fill date & time.",
-        CalendarStatusIdle:"Choose a slot to pre-fill the form.",
-        CalendarSelected:"Slot applied — feel free to fine-tune manually.",
-        SummaryTitle:"Live summary",
-        SummaryDateLabel:"Departure",
-        SummaryVehicleLabel:"Vehicle",
-        SummaryPassengersLabel:"Passengers",
-        SummaryOptionsLabel:"Options",
-        SummaryDatePlaceholder:"Awaiting date",
-        SummaryVehiclePlaceholder:"Select a vehicle",
-        SummaryPassengersPlaceholder:"—",
-        SummaryOptionsPlaceholder:"No option selected",
-        StatSupport:"24/7 support",
-        StatSupportDesc:"Local dispatch in Val-d'Isère, average reply < 2 min.",
-        StatConcierge:"Digital concierge",
-        StatConciergeDesc:"Amend or duplicate rides straight from your client hub.",
-        ContactCTA:"Email concierge team",
-        FleetTitle:"Signature fleet",
-        FleetTagline:"4Matic vehicles serviced nightly and fitted with premium snow gear.",
-        FleetCard1Title:"Mercedes V-Class Black",
-        FleetCard1Desc:"Lounge on wheels for 7 guests, quilted seats, USB-C & Wi-Fi.",
-        FleetCard2Title:"Renault Trafic Executive",
-        FleetCard2Desc:"9 seats plus huge trunk — perfect for crews or families.",
-        FleetCard3Title:"Mercedes GLE Coupé 350d",
-        FleetCard3Desc:"Sport SUV for winding roads and winter grip.",
-        AssistanceTitle:"Need human assistance?",
-        AssistanceTagline:"Our coordinators track your convoys live and sync flights, trains, or events.",
-        AssistanceList1:"Live ride sharing with your guests.",
-        AssistanceList2:"VIP requests (champagne, branded sign).",
-        AssistanceList3:"Consolidated invoicing in multiple currencies.",
-        AssistanceCTA:"Talk to concierge",
-        FooterTitle:"TAXI VAL-D’ISÈRE • Val-d'Isère",
-        FooterContact:"Email: Taxisvaldisere@gmail.com • WhatsApp: +330626339813",
-        FooterRights:"© 2025 TAXI VAL-D’ISÈRE — All rights reserved.",
-        TarifsTitle:"Transfer rates",
-        TarifNote:"Packages departing from Val-d'Isère. \"Day\" and \"Night\" refer to daytime and overnight slots.",
-        TarifCategoryAirports:"Airports",
-        TarifCategoryTrains:"Rail stations",
-        TarifCategoryStations:"Resorts & long distances",
-        TarifCapacity:"Capacity",
-        TarifRoute:"Route",
-        TarifDay:"Day",
-        TarifNight:"Night",
-        SearchSelectHint:"Type to search • Enter to confirm.",
-        SearchEmpty:"No results for this search."
-      },
-      es:{
-        NavHome:"Inicio",
-        NavReservation:"Reserva",
-        NavTarifs:"Tarifas",
-        NavFlotte:"Flota",
-        NavAssistance:"Asistencia",
-        HeroBadge:"TAXI VAL-D’ISÈRE • Alpes nevados",
-        HeroTitle:"Planifica tu traslado a medida",
-        HeroText:"Reserva trayectos premium con conductores alpinos, seguimiento en vivo y concierge disponible al instante.",
-        HeroPrimary:"Iniciar reserva",
-        HeroSecondary:"Ver calendario inteligente",
-        BookingTitle:"Reserva exprés",
-        BookingTagline:"Formulario único con calendario dinámico, extras personalizados y envío seguro vía Web3Forms.",
-        FieldsetTrip:"Tu itinerario",
-        LabelPickup:"Punto de recogida",
-        LabelDropoff:"Destino",
-        LabelPickupDate:"Fecha de salida",
-        LabelPickupTime:"Hora de salida",
-        LabelReturnDate:"Fecha de regreso",
-        LabelReturnTime:"Hora de regreso",
-        LabelOptional:"Opcional",
-        LabelPassengers:"Número de pasajeros",
-        LabelLuggage:"Volumen de equipaje",
-        FieldsetTraveller:"Pasajeros y contacto",
-        LabelTraveller:"Nombre completo",
-        LabelEmail:"Email",
-        LabelPhone:"Teléfono",
-        LabelLanguage:"Idioma de contacto",
-        FieldsetVehicle:"Vehículo y confort",
-        LabelVehicle:"Selecciona tu vehículo",
-        VehicleChip1:"Mercedes Clase V 4Matic",
-        VehicleChip2:"Renault Trafic Executive",
-        VehicleChip3:"Mercedes GLE Coupé",
-        VehicleChip1Desc:"Salón rodante 7 plazas • Wi-Fi",
-        VehicleChip2Desc:"9 plazas • maletero XL",
-        VehicleChip3Desc:"SUV deportivo • carreteras sinuosas",
-        LabelOptions:"Opciones adicionales",
-        OptionsChildSeat:"Silla infantil / elevador",
-        OptionsSkiRack:"Porta esquís y nieve",
-        OptionsConcierge:"Concierge y equipaje",
-        FieldsetNotes:"Notas para el conductor",
-        LabelNotes:"Instrucciones especiales",
-        AgreeTerms:"Acepto las condiciones de transporte y la política de privacidad.",
-        SubmitButton:"Enviar solicitud segura",
-        PickupPlaceholder:"Val-d'Isère • Chalet Perce-Neige",
-        DropoffPlaceholder:"Aeropuerto de Ginebra • Terminal 1",
-        NamePlaceholder:"Nombre y apellidos",
-        EmailPlaceholder:"tu@email.com",
-        PhonePlaceholder:"+330626339813",
-        NotesPlaceholder:"Alergias, equipamiento, bienvenida VIP...",
-        LangFR:"Francés",
-        LangEN:"Inglés",
-        LangES:"Español",
-        BagLight:"Estándar (2 maletas)",
-        BagMedium:"XL (4 maletas + esquís)",
-        BagHeavy:"A medida (+5 bultos)",
-        CalendarTitle:"Calendario inteligente",
-        CalendarHint:"Elige un horario sugerido para completar fecha y hora automáticamente.",
-        CalendarStatusIdle:"Selecciona un horario para completar el formulario.",
-        CalendarSelected:"Horario aplicado — puedes ajustarlo manualmente.",
-        SummaryTitle:"Resumen en vivo",
-        SummaryDateLabel:"Salida",
-        SummaryVehicleLabel:"Vehículo",
-        SummaryPassengersLabel:"Pasajeros",
-        SummaryOptionsLabel:"Opciones",
-        SummaryDatePlaceholder:"Esperando fecha",
-        SummaryVehiclePlaceholder:"Elige un vehículo",
-        SummaryPassengersPlaceholder:"—",
-        SummaryOptionsPlaceholder:"Sin opciones añadidas",
-        StatSupport:"Soporte 24/7",
-        StatSupportDesc:"Central local en Val-d'Isère, respuesta media < 2 min.",
-        StatConcierge:"Concierge digital",
-        StatConciergeDesc:"Modifica o duplica viajes desde tu área cliente.",
-        ContactCTA:"Escribir al concierge",
-        FleetTitle:"Nuestra flota insignia",
-        FleetTagline:"Vehículos 4Matic revisados cada noche y equipados para la nieve.",
-        FleetCard1Title:"Mercedes Clase V Negra",
-        FleetCard1Desc:"Salón rodante para 7 pax, asientos acolchados, USB-C y Wi-Fi.",
-        FleetCard2Title:"Renault Trafic Executive",
-        FleetCard2Desc:"9 plazas y gran maletero — ideal para equipos o familias.",
-        FleetCard3Title:"Mercedes GLE Coupé 350d",
-        FleetCard3Desc:"SUV deportivo para carreteras sinuosas y nieve.",
-        AssistanceTitle:"¿Necesitas asistencia humana?",
-        AssistanceTagline:"Nuestras coordinadoras siguen tus convoyes en vivo y sincronizan vuelos, trenes o eventos.",
-        AssistanceList1:"Compartir trayecto en directo con tus invitados.",
-        AssistanceList2:"Peticiones VIP (champán, cartel personalizado).",
-        AssistanceList3:"Facturación consolidada en varias divisas.",
-        AssistanceCTA:"Hablar con concierge",
-        FooterTitle:"TAXI VAL-D’ISÈRE • Val-d'Isère",
-        FooterContact:"Email: Taxisvaldisere@gmail.com • WhatsApp: +330626339813",
-        FooterRights:"© 2025 TAXI VAL-D’ISÈRE — Todos los derechos reservados.",
-        TarifsTitle:"Tarifas de traslados",
-        TarifNote:"Paquetes con salida de Val-d'Isère. \"Día\" y \"Noche\" indican franjas diurnas y nocturnas.",
-        TarifCategoryAirports:"Aeropuertos",
-        TarifCategoryTrains:"Estaciones",
-        TarifCategoryStations:"Estaciones & larga distancia",
-        TarifCapacity:"Capacidad",
-        TarifRoute:"Trayecto",
-        TarifDay:"Día",
-        TarifNight:"Noche",
-        SearchSelectHint:"Escribe para buscar • Enter para validar.",
-        SearchEmpty:"Sin resultados para esta búsqueda."
-      }
+      fr:{NavHome:"Accueil",NavReservation:"Réservation",NavTarifs:"Tarifs",NavFlotte:"Flotte",NavAssistance:"Assistance",HeroBadge:"TAXI VAL-D’ISÈRE • Alpes enneigées",HeroTitle:"Planifiez votre trajet sur-mesure",HeroText:"Réservez votre transfert premium avec chauffeurs insiders, suivi en temps réel et assistance disponible instantanément.",HeroPrimary:"Planifier maintenant",HeroSecondary:"Consulter le calendrier",BookingTitle:"Réservation express",BookingTagline:"Formulaire unifié avec calendrier dynamique, options sur mesure et envoi sécurisé via Web3Forms.",FieldsetTrip:"Votre itinéraire",LabelPickup:"Point de départ",LabelDropoff:"Destination",LabelPickupDate:"Date de départ",LabelPickupTime:"Heure de départ",LabelReturnDate:"Date de retour",LabelReturnTime:"Heure de retour",LabelOptional:"Optionnel",LabelPassengers:"Nombre de passagers",LabelLuggage:"Volume bagages",FieldsetTraveller:"Passagers & contact",LabelTraveller:"Nom complet",LabelEmail:"Email",LabelPhone:"Téléphone",LabelLanguage:"Langue de contact",FieldsetVehicle:"Véhicule & confort",LabelVehicle:"Sélectionnez votre véhicule",VehicleChip1:"Mercedes Classe V 4Matic",VehicleChip2:"Renault Trafic Executive",VehicleChip3:"Mercedes GLE Coupé",VehicleChip1Desc:"Salon mobile 7 sièges • Wi-Fi",VehicleChip2Desc:"9 places • coffre XXL",VehicleChip3Desc:"SUV sport • routes sinueuses",LabelOptions:"Options additionnelles",OptionsChildSeat:"Siège enfant / rehausseur",OptionsSkiRack:"Porte-skis & équipement neige",OptionsConcierge:"Concierge bagages & accueil",FieldsetNotes:"Notes au chauffeur",LabelNotes:"Instructions particulières",AgreeTerms:"J'accepte les conditions de transport et la politique de confidentialité.",SubmitButton:"Envoyer la demande sécurisée",PickupPlaceholder:"Val-d'Isère • Chalet Perce-Neige",DropoffPlaceholder:"Aéroport de Genève • Terminal 1",NamePlaceholder:"Nom Prénom",EmailPlaceholder:"vous@email.com",PhonePlaceholder:"+330626339813",NotesPlaceholder:"Allergies, équipements, accueil VIP...",LangFR:"Français",LangEN:"Anglais",LangES:"Espagnol",LangAR:"Arabe",BagLight:"Standard (2 valises)",BagMedium:"XL (4 valises + skis)",BagHeavy:"Sur mesure (+5 bagages)",CalendarTitle:"Calendrier intelligent",CalendarHint:"Choisissez un créneau suggéré pour préremplir date & heure.",CalendarStatusIdle:"Choisissez un créneau pour préremplir le formulaire.",CalendarSelected:"Créneau appliqué : vous pouvez encore ajuster manuellement.",SummaryTitle:"Résumé en direct",SummaryDateLabel:"Départ",SummaryVehicleLabel:"Véhicule",SummaryPassengersLabel:"Passagers",SummaryOptionsLabel:"Options",SummaryDatePlaceholder:"En attente de date",SummaryVehiclePlaceholder:"Choisissez un véhicule",SummaryPassengersPlaceholder:"—",SummaryOptionsPlaceholder:"Aucune option ajoutée",StatSupport:"Support 24/7",StatSupportDesc:"Dispatch local basé à Val-d'Isère, réponse moyenne < 2 min.",StatConcierge:"Conciergerie digitale",StatConciergeDesc:"Modifiez ou dupliquez vos trajets depuis l'espace client.",ContactCTA:"Écrire à la conciergerie",FleetTitle:"Notre flotte signature",FleetTagline:"Des véhicules 4Matic entretenus chaque nuit et équipés neige premium.",FleetCard1Title:"Mercedes Classe V Noir",FleetCard1Desc:"Salon mobile 7 passagers, sièges capitonnés, USB-C & Wi-Fi.",FleetCard2Title:"Renault Trafic Executive",FleetCard2Desc:"9 places + méga coffre, parfait pour équipes ou familles.",FleetCard3Title:"Mercedes GLE Coupé 350d",FleetCard3Desc:"SUV sport pour routes sinueuses et conditions hivernales.",AssistanceTitle:"Besoin d'un accompagnement humain ?",AssistanceTagline:"Nos coordinatrices suivent vos convois en temps réel et synchronisent vols, trains ou événements.",AssistanceList1:"Partage de trajet en direct avec vos invités.",AssistanceList2:"Demandes VIP (champagne, panneau personnalisé).",AssistanceList3:"Facturation consolidée multi-devises.",AssistanceCTA:"Contacter la conciergerie",FooterTitle:"TAXI VAL-D’ISÈRE • Val-d'Isère",FooterContact:"Email : Taxisvaldisere@gmail.com • WhatsApp : +330626339813",FooterRights:"© 2025 TAXI VAL-D’ISÈRE — Tous droits réservés.",TarifsTitle:"Tarifs des transferts",TarifNote:"Forfaits au départ de Val-d'Isère. Les colonnes \"Jour\" et \"Nuit\" correspondent aux créneaux diurnes et nocturnes.",TarifCategoryAirports:"Aéroports",TarifCategoryTrains:"Gares",TarifCategoryStations:"Stations & longues distances",TarifCapacity:"Capacité",TarifRoute:"Trajet",TarifDay:"Jour",TarifNight:"Nuit",SearchSelectHint:"Tapez pour rechercher • Entrée pour valider.",SearchEmpty:"Aucun résultat pour cette recherche."},
+      en:{NavHome:"Home",NavReservation:"Booking",NavTarifs:"Rates",NavFlotte:"Fleet",NavAssistance:"Support",HeroBadge:"TAXI VAL-D’ISÈRE • Snow Alps",HeroTitle:"Design your bespoke transfer",HeroText:"Book premium rides with alpine drivers, live tracking, and concierge support on standby.",HeroPrimary:"Start booking",HeroSecondary:"View smart calendar",BookingTitle:"Express booking",BookingTagline:"Unified form with dynamic calendar, tailored extras, and secure Web3Forms submission.",FieldsetTrip:"Your route",LabelPickup:"Pick-up point",LabelDropoff:"Drop-off",LabelPickupDate:"Departure date",LabelPickupTime:"Departure time",LabelReturnDate:"Return date",LabelReturnTime:"Return time",LabelOptional:"Optional",LabelPassengers:"Number of passengers",LabelLuggage:"Luggage volume",FieldsetTraveller:"Passengers & contact",LabelTraveller:"Full name",LabelEmail:"Email",LabelPhone:"Phone",LabelLanguage:"Contact language",FieldsetVehicle:"Vehicle & comfort",LabelVehicle:"Select your vehicle",VehicleChip1:"Mercedes V-Class 4Matic",VehicleChip2:"Renault Trafic Executive",VehicleChip3:"Mercedes GLE Coupé",VehicleChip1Desc:"Rolling lounge 7 seats • Wi-Fi",VehicleChip2Desc:"9 seats • XL trunk",VehicleChip3Desc:"Sport SUV • winding roads",LabelOptions:"Additional options",OptionsChildSeat:"Child seat / booster",OptionsSkiRack:"Ski rack & snow gear",OptionsConcierge:"Concierge & luggage care",FieldsetNotes:"Notes for the chauffeur",LabelNotes:"Special instructions",AgreeTerms:"I accept the transport terms and the privacy policy.",SubmitButton:"Send secure request",PickupPlaceholder:"Val-d'Isère • Chalet Perce-Neige",DropoffPlaceholder:"Geneva Airport • Terminal 1",NamePlaceholder:"First name Last name",EmailPlaceholder:"you@email.com",PhonePlaceholder:"+330626339813",NotesPlaceholder:"Allergies, equipment, VIP welcome...",LangFR:"French",LangEN:"English",LangES:"Spanish",LangAR:"Arabic",BagLight:"Standard (2 suitcases)",BagMedium:"XL (4 suitcases + skis)",BagHeavy:"Custom (+5 bags)",CalendarTitle:"Smart calendar",CalendarHint:"Pick a suggested slot to pre-fill date & time.",CalendarStatusIdle:"Choose a slot to pre-fill the form.",CalendarSelected:"Slot applied — feel free to fine-tune manually.",SummaryTitle:"Live summary",SummaryDateLabel:"Departure",SummaryVehicleLabel:"Vehicle",SummaryPassengersLabel:"Passengers",SummaryOptionsLabel:"Options",SummaryDatePlaceholder:"Awaiting date",SummaryVehiclePlaceholder:"Select a vehicle",SummaryPassengersPlaceholder:"—",SummaryOptionsPlaceholder:"No option selected",StatSupport:"24/7 support",StatSupportDesc:"Local dispatch in Val-d'Isère, average reply < 2 min.",StatConcierge:"Digital concierge",StatConciergeDesc:"Amend or duplicate rides straight from your client hub.",ContactCTA:"Email concierge team",FleetTitle:"Signature fleet",FleetTagline:"4Matic vehicles serviced nightly and fitted with premium snow gear.",FleetCard1Title:"Mercedes V-Class Black",FleetCard1Desc:"Lounge on wheels for 7 guests, quilted seats, USB-C & Wi-Fi.",FleetCard2Title:"Renault Trafic Executive",FleetCard2Desc:"9 seats plus huge trunk — perfect for crews or families.",FleetCard3Title:"Mercedes GLE Coupé 350d",FleetCard3Desc:"Sport SUV for winding roads and winter grip.",AssistanceTitle:"Need human assistance?",AssistanceTagline:"Our coordinators track your convoys live and sync flights, trains, or events.",AssistanceList1:"Live ride sharing with your guests.",AssistanceList2:"VIP requests (champagne, branded sign).",AssistanceList3:"Consolidated invoicing in multiple currencies.",AssistanceCTA:"Talk to concierge",FooterTitle:"TAXI VAL-D’ISÈRE • Val-d'Isère",FooterContact:"Email: Taxisvaldisere@gmail.com • WhatsApp: +330626339813",FooterRights:"© 2025 TAXI VAL-D’ISÈRE — All rights reserved.",TarifsTitle:"Transfer rates",TarifNote:"Packages departing from Val-d'Isère. \"Day\" and \"Night\" refer to daytime and overnight slots.",TarifCategoryAirports:"Airports",TarifCategoryTrains:"Rail stations",TarifCategoryStations:"Resorts & long distances",TarifCapacity:"Capacity",TarifRoute:"Route",TarifDay:"Day",TarifNight:"Night",SearchSelectHint:"Type to search • Enter to confirm.",SearchEmpty:"No results for this search."},
+      es:{NavHome:"Inicio",NavReservation:"Reserva",NavTarifs:"Tarifas",NavFlotte:"Flota",NavAssistance:"Asistencia",HeroBadge:"TAXI VAL-D’ISÈRE • Alpes nevados",HeroTitle:"Planifica tu traslado a medida",HeroText:"Reserva trayectos premium con conductores alpinos, seguimiento en vivo y concierge disponible al instante.",HeroPrimary:"Iniciar reserva",HeroSecondary:"Ver calendario inteligente",BookingTitle:"Reserva exprés",BookingTagline:"Formulario único con calendario dinámico, extras personalizados y envío seguro vía Web3Forms.",FieldsetTrip:"Tu itinerario",LabelPickup:"Punto de recogida",LabelDropoff:"Destino",LabelPickupDate:"Fecha de salida",LabelPickupTime:"Hora de salida",LabelReturnDate:"Fecha de regreso",LabelReturnTime:"Hora de regreso",LabelOptional:"Opcional",LabelPassengers:"Número de pasajeros",LabelLuggage:"Volumen de equipaje",FieldsetTraveller:"Pasajeros y contacto",LabelTraveller:"Nombre completo",LabelEmail:"Email",LabelPhone:"Teléfono",LabelLanguage:"Idioma de contacto",FieldsetVehicle:"Vehículo y confort",LabelVehicle:"Selecciona tu vehículo",VehicleChip1:"Mercedes Clase V 4Matic",VehicleChip2:"Renault Trafic Executive",VehicleChip3:"Mercedes GLE Coupé",VehicleChip1Desc:"Salón rodante 7 plazas • Wi-Fi",VehicleChip2Desc:"9 plazas • maletero XL",VehicleChip3Desc:"SUV deportivo • carreteras sinuosas",LabelOptions:"Opciones adicionales",OptionsChildSeat:"Silla infantil / elevador",OptionsSkiRack:"Porta esquís y nieve",OptionsConcierge:"Concierge y equipaje",FieldsetNotes:"Notas para el conductor",LabelNotes:"Instrucciones especiales",AgreeTerms:"Acepto las condiciones de transporte y la política de privacidad.",SubmitButton:"Enviar solicitud segura",PickupPlaceholder:"Val-d'Isère • Chalet Perce-Neige",DropoffPlaceholder:"Aeropuerto de Ginebra • Terminal 1",NamePlaceholder:"Nombre y apellidos",EmailPlaceholder:"tu@email.com",PhonePlaceholder:"+330626339813",NotesPlaceholder:"Alergias, equipamiento, bienvenida VIP...",LangFR:"Francés",LangEN:"Inglés",LangES:"Español",LangAR:"Árabe",BagLight:"Estándar (2 maletas)",BagMedium:"XL (4 maletas + esquís)",BagHeavy:"A medida (+5 bultos)",CalendarTitle:"Calendario inteligente",CalendarHint:"Elige un horario sugerido para completar fecha y hora automáticamente.",CalendarStatusIdle:"Selecciona un horario para completar el formulario.",CalendarSelected:"Horario aplicado — puedes ajustarlo manualmente.",SummaryTitle:"Resumen en vivo",SummaryDateLabel:"Salida",SummaryVehicleLabel:"Vehículo",SummaryPassengersLabel:"Pasajeros",SummaryOptionsLabel:"Opciones",SummaryDatePlaceholder:"Esperando fecha",SummaryVehiclePlaceholder:"Elige un vehículo",SummaryPassengersPlaceholder:"—",SummaryOptionsPlaceholder:"Sin opciones añadidas",StatSupport:"Soporte 24/7",StatSupportDesc:"Central local en Val-d'Isère, respuesta media < 2 min.",StatConcierge:"Concierge digital",StatConciergeDesc:"Modifica o duplica viajes desde tu área cliente.",ContactCTA:"Escribir al concierge",FleetTitle:"Nuestra flota insignia",FleetTagline:"Vehículos 4Matic revisados cada noche y equipados para la nieve.",FleetCard1Title:"Mercedes Clase V Negra",FleetCard1Desc:"Salón rodante para 7 pax, asientos acolchados, USB-C y Wi-Fi.",FleetCard2Title:"Renault Trafic Executive",FleetCard2Desc:"9 plazas y gran maletero — ideal para equipos o familias.",FleetCard3Title:"Mercedes GLE Coupé 350d",FleetCard3Desc:"SUV deportivo para carreteras sinuosas y nieve.",AssistanceTitle:"¿Necesitas asistencia humana?",AssistanceTagline:"Nuestras coordinadoras siguen tus convoyes en vivo y sincronizan vuelos, trenes o eventos.",AssistanceList1:"Compartir trayecto en directo con tus invitados.",AssistanceList2:"Peticiones VIP (champán, cartel personalizado).",AssistanceList3:"Facturación consolidada en varias divisas.",AssistanceCTA:"Hablar con concierge",FooterTitle:"TAXI VAL-D’ISÈRE • Val-d'Isère",FooterContact:"Email: Taxisvaldisere@gmail.com • WhatsApp: +330626339813",FooterRights:"© 2025 TAXI VAL-D’ISÈRE — Todos los derechos reservados.",TarifsTitle:"Tarifas de traslados",TarifNote:"Paquetes con salida de Val-d'Isère. \"Día\" y \"Noche\" indican franjas diurnas y nocturnas.",TarifCategoryAirports:"Aeropuertos",TarifCategoryTrains:"Estaciones",TarifCategoryStations:"Estaciones & larga distancia",TarifCapacity:"Capacidad",TarifRoute:"Trayecto",TarifDay:"Día",TarifNight:"Noche",SearchSelectHint:"Escribe para buscar • Enter para validar.",SearchEmpty:"Sin resultados para esta búsqueda."},
+      ar:{NavHome:"الرئيسية",NavReservation:"الحجز",NavTarifs:"التعريفات",NavFlotte:"الأسطول",NavAssistance:"الدعم",HeroBadge:"تاكسي فال ديزير • جبال الألب الثلجية",HeroTitle:"خطط رحلتك المخصصة",HeroText:"احجز نقلك الفاخر مع سائقين خبراء في الألب، وتتبع لحظي، وكونسيرج متاح دائماً.",HeroPrimary:"ابدأ الحجز",HeroSecondary:"عرض التقويم الذكي",BookingTitle:"حجز سريع",BookingTagline:"نموذج موحد مع تقويم ديناميكي، خيارات مخصصة، وإرسال آمن عبر Web3Forms.",FieldsetTrip:"مسار رحلتك",LabelPickup:"نقطة الانطلاق",LabelDropoff:"الوجهة",LabelPickupDate:"تاريخ الانطلاق",LabelPickupTime:"وقت الانطلاق",LabelReturnDate:"تاريخ العودة",LabelReturnTime:"وقت العودة",LabelOptional:"اختياري",LabelPassengers:"عدد الركاب",LabelLuggage:"حجم الأمتعة",FieldsetTraveller:"الركاب وبيانات الاتصال",LabelTraveller:"الاسم الكامل",LabelEmail:"البريد الإلكتروني",LabelPhone:"رقم الهاتف",LabelLanguage:"لغة التواصل",FieldsetVehicle:"المركبة والراحة",LabelVehicle:"اختر مركبتك",VehicleChip1:"مرسيدس V-Class 4Matic",VehicleChip2:"رينو ترافيك إكزكيوتيف",VehicleChip3:"مرسيدس GLE كوبيه",VehicleChip1Desc:"صالون متنقل 7 مقاعد • واي فاي",VehicleChip2Desc:"٩ مقاعد • صندوق XL",VehicleChip3Desc:"SUV رياضي • للطرق المتعرجة",LabelOptions:"خيارات إضافية",OptionsChildSeat:"مقعد طفل / رافع",OptionsSkiRack:"حامل تزلج ومعدات ثلج",OptionsConcierge:"كونسيرج للأمتعة والاستقبال",FieldsetNotes:"ملاحظات للسائق",LabelNotes:"تعليمات خاصة",AgreeTerms:"أوافق على شروط النقل وسياسة الخصوصية.",SubmitButton:"إرسال الطلب الآمن",PickupPlaceholder:"فال ديزير • شاليه بيرس-نيج",DropoffPlaceholder:"مطار جنيف • المبنى 1",NamePlaceholder:"الاسم واللقب",EmailPlaceholder:"you@email.com",PhonePlaceholder:"+330626339813",NotesPlaceholder:"حساسيات، معدات، استقبال كبار الشخصيات...",LangFR:"الفرنسية",LangEN:"الإنجليزية",LangES:"الإسبانية",LangAR:"العربية",BagLight:"عادي (حقيبتان)",BagMedium:"XL (٤ حقائب + معدات تزلج)",BagHeavy:"مخصص (+٥ حقائب)",CalendarTitle:"تقويم ذكي",CalendarHint:"اختر فترة مقترحة لملء التاريخ والوقت تلقائياً.",CalendarStatusIdle:"اختر فترة لملء النموذج تلقائياً.",CalendarSelected:"تم تطبيق الفترة — يمكنك التعديل يدوياً.",SummaryTitle:"ملخص مباشر",SummaryDateLabel:"المغادرة",SummaryVehicleLabel:"المركبة",SummaryPassengersLabel:"الركاب",SummaryOptionsLabel:"الخيارات",SummaryDatePlaceholder:"بانتظار التاريخ",SummaryVehiclePlaceholder:"اختر مركبة",SummaryPassengersPlaceholder:"—",SummaryOptionsPlaceholder:"لا توجد خيارات مضافة",StatSupport:"دعم 24/7",StatSupportDesc:"غرفة عمليات محلية في فال ديزير، متوسط الرد أقل من دقيقتين.",StatConcierge:"كونسيرج رقمي",StatConciergeDesc:"عدّل أو كرر رحلاتك من مساحة العميل.",ContactCTA:"مراسلة فريق الكونسيرج",FleetTitle:"أسطولنا المميز",FleetTagline:"مركبات 4Matic تتم صيانتها كل ليلة ومجهزة لمواجهة الثلوج.",FleetCard1Title:"مرسيدس Classe V سوداء",FleetCard1Desc:"صالون متنقل لـ 7 ركاب، مقاعد مبطنة، USB-C وواي فاي.",FleetCard2Title:"رينو ترافيك إكزكيوتيف",FleetCard2Desc:"٩ مقاعد وصندوق ضخم — مثالي للفرق أو العائلات.",FleetCard3Title:"مرسيدس GLE Coupé 350d",FleetCard3Desc:"SUV رياضي للطرق المتعرجة وظروف الشتاء.",AssistanceTitle:"هل تحتاج إلى مرافقة بشرية؟",AssistanceTagline:"منسقاتنا يتتبعن قوافلكم في الوقت الحقيقي وينسقن الرحلات الجوية والقطارات والفعاليات.",AssistanceList1:"مشاركة الرحلة مباشرة مع ضيوفك.",AssistanceList2:"طلبات VIP (شمبانيا، لافتة مخصصة).",AssistanceList3:"فواتير موحدة بعملات متعددة.",AssistanceCTA:"التواصل مع الكونسيرج",FooterTitle:"تاكسي فال ديزير • Val-d'Isère",FooterContact:"البريد: Taxisvaldisere@gmail.com • واتساب: +330626339813",FooterRights:"© 2025 تاكسي فال ديزير — جميع الحقوق محفوظة.",TarifsTitle:"تعريفات النقل",TarifNote:"عروض ثابتة انطلاقاً من فال ديزير. تعني أعمدة \"نهار\" و\"ليل\" الفترات الصباحية والليلية.",TarifCategoryAirports:"المطارات",TarifCategoryTrains:"محطات القطار",TarifCategoryStations:"المنتجعات والمسافات الطويلة",TarifCapacity:"السعة",TarifRoute:"المسار",TarifDay:"نهار",TarifNight:"ليل",SearchSelectHint:"اكتب للبحث • اضغط إدخال للتأكيد.",SearchEmpty:"لا توجد نتائج لهذا البحث."}
     };
-    const flagMap = {fr:"🇫🇷", en:"🇬🇧", es:"🇪🇸"};
-    const localeMap = {fr:"fr-FR", en:"en-GB", es:"es-ES"};
+    const localeMap = {fr:"fr-FR", en:"en-GB", es:"es-ES", ar:"ar-SA"};
     let currentLang = localStorage.getItem("taxilink-lang") || "fr";
     const getDict = ()=>translations[currentLang] || translations.fr;
 
@@ -1626,15 +1325,18 @@
     });
     overlay?.addEventListener("click",closeMenu);
 
-    const updateLangButton = ()=>{
-      if(!langBtn || !langLabel) return;
-      langLabel.textContent = currentLang.toUpperCase();
-      const existingFlag = langBtn.querySelector(".flag");
-      if(existingFlag) existingFlag.remove();
-      const flagSpan = document.createElement("span");
-      flagSpan.className = "flag";
-      flagSpan.textContent = flagMap[currentLang] || "🌐";
-      langBtn.insertBefore(flagSpan, langBtn.firstChild);
+    document.addEventListener("click",e=>{
+      if(drawer && !drawer.contains(e.target) && !hamburger.contains(e.target)){
+        closeMenu();
+      }
+    });
+
+    const updateLangButtons = lang=>{
+      langButtons.forEach(btn=>{
+        const isActive = btn.dataset.lang === lang;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
     };
 
     const capitalize = str => str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
@@ -1669,20 +1371,6 @@
       if(!pickupDate) return;
       pickupDate.scrollIntoView({behavior:"smooth", block:"center"});
       setTimeout(()=>pickupDate.focus({preventScroll:true}),400);
-    };
-
-    const attachAvailabilityHandlers = ()=>{
-      document.querySelectorAll("[data-availability-slot]").forEach(btn=>{
-        btn.addEventListener("click",()=>{
-          document.querySelectorAll("[data-availability-slot]").forEach(b=>b.classList.remove("active"));
-          btn.classList.add("active");
-          if(pickupDate) pickupDate.value = btn.dataset.date;
-          if(pickupTime) pickupTime.value = btn.dataset.time;
-          updateSummary();
-          updateCalendarStatus("selected");
-          focusDateField();
-        });
-      });
     };
 
     const updateCalendarStatus = (mode="idle")=>{
@@ -1726,8 +1414,9 @@
         if(dict[key]) el.placeholder = dict[key];
       });
       document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
       localStorage.setItem("taxilink-lang", currentLang);
-      updateLangButton();
+      updateLangButtons(currentLang);
       renderAvailability();
       updateSummary();
       updateCalendarStatus("idle");
@@ -1750,27 +1439,10 @@
     pickupTime?.addEventListener("input",updateSummary);
     passengerInput?.addEventListener("input",updateSummary);
 
-    langBtn?.addEventListener("click",e=>{
-      e.preventDefault();
-      e.stopPropagation();
-      langMenu?.classList.toggle("open");
-    });
-    document.querySelectorAll(".lang-option").forEach(option=>{
-      option.addEventListener("click",e=>{
-        e.stopPropagation();
-        const lang = option.dataset.lang;
-        langMenu?.classList.remove("open");
-        applyTranslations(lang);
+    langButtons.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        applyTranslations(btn.dataset.lang);
       });
-    });
-
-    document.addEventListener("click",e=>{
-      if(drawer && !drawer.contains(e.target) && !hamburger.contains(e.target)){
-        closeMenu();
-      }
-      if(langMenu && !langMenu.contains(e.target) && !langBtn.contains(e.target)){
-        langMenu.classList.remove("open");
-      }
     });
 
     document.querySelectorAll("[data-scroll]").forEach(btn=>{
@@ -1779,6 +1451,20 @@
         if(target) target.scrollIntoView({behavior:"smooth"});
       });
     });
+
+    const attachAvailabilityHandlers = ()=>{
+      document.querySelectorAll("[data-availability-slot]").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          document.querySelectorAll("[data-availability-slot]").forEach(b=>b.classList.remove("active"));
+          btn.classList.add("active");
+          if(pickupDate) pickupDate.value = btn.dataset.date;
+          if(pickupTime) pickupTime.value = btn.dataset.time;
+          updateSummary();
+          updateCalendarStatus("selected");
+          focusDateField();
+        });
+      });
+    };
 
     const initSnow = ()=>{
       if(!snowCanvas) return;
@@ -1875,12 +1561,8 @@
           `).join("");
         };
 
-        const openDropdown = ()=>{
-          component.classList.add("open");
-        };
-        const closeDropdown = ()=>{
-          component.classList.remove("open");
-        };
+        const openDropdown = ()=>component.classList.add("open");
+        const closeDropdown = ()=>component.classList.remove("open");
 
         textInput.addEventListener("focus",()=>{
           renderOptions(textInput.value);
@@ -1968,4 +1650,4 @@
   </svg>
 </a>
 </body>
-</html>x
+</html>
