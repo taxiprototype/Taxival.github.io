@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Review Card</title>
+    <!-- Importation de la librairie QRCode.js pour générer le code QR sans image externe -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        /* --- STYLE DU WIDGET --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #EA4335;
+            --google-yellow: #FBAD18;
+            --google-green: #34A853;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-card: #ffffff;
+        }
+
+        .gr-card-container {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            width: 100%;
+            max-width: 320px; /* Largeur max de la carte */
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #eee;
+            margin: 20px auto;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .gr-card-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        }
+
+        /* En-tête */
+        .gr-header {
+            background: #f8f9fa;
+            padding: 20px 15px 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .gr-logo-circle {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .gr-logo-svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .gr-business-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Section Note */
+        .gr-rating-section {
+            padding: 20px;
+        }
+
+        .gr-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .gr-stars {
+            color: var(--google-yellow);
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .gr-reviews-count {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Section QR Code */
+        .gr-qr-section {
+            background: #f8f9fa;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .gr-qr-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #gr-qrcode {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        #gr-qrcode img {
+            display: block; /* Correction d'affichage */
+        }
+
+        /* Bouton Lien */
+        .gr-btn {
+            display: inline-block;
+            background-color: var(--google-blue);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background-color 0.2s;
+            width: 80%;
+            box-sizing: border-box;
+        }
+
+        .gr-btn:hover {
+            background-color: #3367d6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- WIDGET START -->
+<div class="gr-card-container" id="googleReviewCard">
+    
+    <!-- Header -->
+    <div class="gr-header">
+        <div class="gr-logo-circle">
+            <!-- Logo Google SVG -->
+            <svg class="gr-logo-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBAD18"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+        </div>
+        <div class="gr-business-name" id="grBusinessName">Votre Entreprise</div>
+    </div>
+
+    <!-- Rating -->
+    <div class="gr-rating-section">
+        <div class="gr-score" id="grScore">4.8</div>
+        <div class="gr-stars" id="grStars">★★★★★</div>
+        <div class="gr-reviews-count" id="grCount">Basé sur 124 avis</div>
+    </div>
+
+    <!-- QR Code Action -->
+    <div class="gr-qr-section">
+        <div class="gr-qr-label">Laissez un avis</div>
+        <div id="gr-qrcode"></div>
+        <a href="#" target="_blank" class="gr-btn" id="grLinkBtn">Donner mon avis</a>
+    </div>
+
+</div>
+<!-- WIDGET END -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // --- CONFIGURATION (À MODIFIER ICI) ---
+        
+        // 1. Le lien vers votre avis Google.
+        // Pour trouver ce lien : Allez sur votre fiche Google > Partager > Integrer un lien > Copiez l'URL.
+        // OU utilisez search.google.com/local/reviews?placeid=VOTRE_ID_LIEU
+        const REVIEW_URL = "https://search.google.com/local/reviews?placeid=ChIJw6BwuF3u5kcRYv6sj1G9Q_8";
+
+        // 2. Le nom de votre établissement
+        const BUSINESS_NAME = "Le Café de Paris";
+
+        // 3. La note (ex: 4.5)
+        const RATING_SCORE = 4.8;
+
+        // 4. Le nombre d'avis
+        const REVIEWS_COUNT = 248;
+
+        // --- FIN DE LA CONFIGURATION ---
+
+        // Mise à jour du texte
+        document.getElementById('grBusinessName').textContent = BUSINESS_NAME;
+        document.getElementById('grScore').textContent = RATING_SCORE;
+        document.getElementById('grCount').textContent = `Basé sur ${REVIEWS_COUNT} avis`;
+        
+        // Mise à jour du lien du bouton
+        const linkBtn = document.getElementById('grLinkBtn');
+        linkBtn.href = REVIEW_URL;
+
+        // Génération des étoiles
+        const starsContainer = document.getElementById('grStars');
+        starsContainer.innerHTML = ''; // Vide le contenu par défaut
+        for (let i = 1; i <= 5; i++) {
+            const star = document.createElement('span');
+            star.textContent = '★';
+            if (i <= Math.round(RATING_SCORE)) {
+                star.style.color = '#FBAD18'; // Couleur étoile pleine
+            } else {
+                star.style.color = '#ddd'; // Couleur étoile vide (grise)
+            }
+            starsContainer.appendChild(star);
+        }
+
+        // Génération du QR Code
+        // Utilise la librairie qrcode.js chargée dans le head
+        new QRCode(document.getElementById("gr-qrcode"), {
+            text: REVIEW_URL,
+            width: 128,
+            height: 128,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    });
+</script>
+
+</body>
+</html>
