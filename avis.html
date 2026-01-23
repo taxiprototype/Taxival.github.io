@@ -173,7 +173,7 @@
     <!-- QR Code Action -->
     <div class="gr-qr-section">
         <div class="gr-qr-label">Laissez un avis</div>
-        <div id="gr-qrcode"></div>
+        <div id="gr-qrcode"><img src="QR.png" alt="Code QR" /></div>
         <a href="#" target="_blank" class="gr-btn" id="grLinkBtn">Donner mon avis</a>
     </div>
 
@@ -187,7 +187,7 @@
         // 1. Le lien vers votre avis Google.
         // Pour trouver ce lien : Allez sur votre fiche Google > Partager > Integrer un lien > Copiez l'URL.
         // OU utilisez search.google.com/local/reviews?placeid=VOTRE_ID_LIEU
-        const REVIEW_URL = "https://search.google.com/local/reviews?placeid=ChIJw6BwuF3u5kcRYv6sj1G9Q_8";
+        const REVIEW_URL = "https://g.page/r/CRIXkZscnlWxEAE/review";
 
         // 2. Le nom de votre établissement
         const BUSINESS_NAME = "Taxi Val-d'Isère";
@@ -223,16 +223,8 @@
             starsContainer.appendChild(star);
         }
 
-        // Génération du QR Code
-        // Utilise la librairie qrcode.js chargée dans le head
-        new QRCode(document.getElementById("gr-qrcode"), {
-            text: REVIEW_URL,
-            width: 128,
-            height: 128,
-            colorDark : "#000000",
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.H
-        });
+        // Note : La génération du QR Code est désactivée car on utilise l'image QR.png
+        // (Le code QR est déjà dans le fichier QR.png et n'est plus généré dynamiquement)
     });
 </script>
 
